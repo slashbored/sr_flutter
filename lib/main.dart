@@ -23,6 +23,28 @@ class addPlayers extends StatefulWidget  {
 class addPlayersState extends State<addPlayers> {
   final List<String> _playerlist = <String>[];
   final TextStyle _normalFont = const TextStyle(fontSize: 18.0, color: Colors.black);
+  final _malebuttoncontainer = new InkWell(
+      child:  Container(
+        child:  new Icon(
+            Icons.add_circle, color: Colors.blue
+        ),
+      ),
+      onTap:  ()  {
+        print("Tappy tap male!");
+      }
+  );
+  final _femalbuttoncontainer = new InkWell(
+      child:  Container(
+          child:  new Icon(
+              Icons.add_circle, color: Colors.red
+          ),
+      ),
+      onTap:  ()  {
+        print("Tappy tap female!");
+      }
+  );
+  final _textinputcontainer = new Container();
+
 
   @override
   Widget build(BuildContext context)  {
@@ -31,13 +53,24 @@ class addPlayersState extends State<addPlayers> {
         title: Text('SR'),
         centerTitle: true,
       ), */
-        body: Column(
+        body: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:[
-          _txtaddPlayers()
+          children: [
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _malebuttoncontainer,
+                new Container(
+                  child: new Flexible(
+                    child: _txtaddPlayers()
+                  )
+                ),
+                _femalbuttoncontainer,
+              ]
+            )
           ]
         )
-      );
+    );
   }
 
   Widget _txtaddPlayers() {
