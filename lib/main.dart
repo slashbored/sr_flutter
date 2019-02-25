@@ -22,7 +22,8 @@ class addPlayers extends StatefulWidget  {
 
 class addPlayersState extends State<addPlayers> {
   final List<String> _playerlist = <String>[];
-  final Text _txtListPLayers = new Text('');
+  final Text _txtmid = new Text('Middle');
+  final Text _txtbot = new Text('Bottom');
   final TextStyle _normalFont = const TextStyle(fontSize: 18.0, color: Colors.black);
   /*final _malebuttoncontainer = new InkWell(
       child:  Container(
@@ -77,7 +78,8 @@ class addPlayersState extends State<addPlayers> {
                 ]
               ),
             ),
-            new Container(child: _txtListPLayers),
+            new Container(child: _txtmid),
+            new Container(child: _txtbot),
             new Container(child: null)
           ]
         ),
@@ -89,7 +91,7 @@ class addPlayersState extends State<addPlayers> {
     return new TextField(
       decoration: InputDecoration(
         border: InputBorder.none,
-        hintText: 'Please enter a name',
+        hintText: 'Enter a name',
       ),
       textAlign: TextAlign.center,
       autocorrect: false,
