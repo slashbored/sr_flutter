@@ -22,8 +22,9 @@ class addPlayers extends StatefulWidget  {
 
 class addPlayersState extends State<addPlayers> {
   final List<String> _playerlist = <String>[];
+  final Text _txtListPLayers = new Text('');
   final TextStyle _normalFont = const TextStyle(fontSize: 18.0, color: Colors.black);
-  final _malebuttoncontainer = new InkWell(
+  /*final _malebuttoncontainer = new InkWell(
       child:  Container(
         child:  new Icon(
             Icons.add_circle, color: Colors.blue
@@ -32,8 +33,8 @@ class addPlayersState extends State<addPlayers> {
       onTap:  ()  {
         print("Tappy tap male!");
       }
-  );
-  final _femalbuttoncontainer = new InkWell(
+  );*/
+  /*final _femalbuttoncontainer = new InkWell(
       child:  Container(
           child:  new Icon(
               Icons.add_circle, color: Colors.red
@@ -42,34 +43,45 @@ class addPlayersState extends State<addPlayers> {
       onTap:  ()  {
         print("Tappy tap female!");
       }
-  );
-  final _textinputcontainer = new Container();
+  );*/
 
 
   @override
   Widget build(BuildContext context)  {
     return new Scaffold(
-      /* appBar: new AppBar(
-        title: Text('SR'),
+      appBar: new AppBar(
+        title: Text('Add/remove players'),
         centerTitle: true,
-      ), */
+      ),
         body: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _malebuttoncontainer,
-                new Container(
-                  child: new Flexible(
-                    child: _txtaddPlayers()
+            new Container(child:
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  new Expanded(
+                    /*child: _malebuttoncontainer*/
+                    child: _iconbuttonmale(),
+                    flex: 1
+                  ),
+                  new Expanded(
+                    child: _txtaddPlayers(),
+                    flex: 1
+                  ),
+                  new Expanded(
+                    /*child: _femalbuttoncontainer*/
+                    child: _iconbuttonfemale(),
+                  flex: 1
                   )
-                ),
-                _femalbuttoncontainer,
-              ]
-            )
+                ]
+              ),
+            ),
+            new Container(child: _txtListPLayers),
+            new Container(child: null)
           ]
-        )
+        ),
+        resizeToAvoidBottomPadding: false,
     );
   }
 
@@ -92,8 +104,29 @@ class addPlayersState extends State<addPlayers> {
     );
   }
 
-  void _donothing()  {
+   Widget _iconbuttonfemale()  {
+    return new IconButton(
+      icon: Icon(Icons.add_circle),
+      color: Colors.red,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onPressed: () {
+        print("TAP TAP FEMALE");
 
+      },
+    );
   }
 
+  Widget _iconbuttonmale()  {
+    return new IconButton(
+      icon: Icon(Icons.add_circle),
+      color: Colors.blue,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onPressed: () {
+        print("TAP TAP MALE");
+
+      },
+    );
+  }
 }
