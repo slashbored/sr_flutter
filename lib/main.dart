@@ -78,7 +78,7 @@ class addPlayersState extends State<addPlayers> {
                 ]
               ),
             ),
-            new Container(child: _txtmid),
+            new Container(child: _buildgrid()),
             new Container(child: _txtbot),
             new Container(child: null)
           ]
@@ -132,6 +132,7 @@ class addPlayersState extends State<addPlayers> {
       highlightColor: Colors.transparent,
       onPressed: () {
         print("TAP TAP MALE");
+        setState(()  {});
 
       },
     );
