@@ -87,6 +87,10 @@ class addPlayersState extends State<addPlayers> {
     );
   }
 
+  Widget _buildgrid() {
+    return new Row(children: _playerlist.map((item) => new Text(item)).toList());
+  }
+
   Widget _txtaddPlayers() {
     return new TextField(
       decoration: InputDecoration(
@@ -102,6 +106,7 @@ class addPlayersState extends State<addPlayers> {
         print("Text is: $text");
         _playerlist.add(text);
         print(_playerlist);
+        _buildgrid();
       },
     );
   }
