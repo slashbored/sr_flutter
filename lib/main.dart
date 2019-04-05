@@ -22,7 +22,7 @@ class addPlayers extends StatefulWidget  {
 
 class addPlayersState extends State<addPlayers> {
   final List<String> _playerlist = <String>[];
-  final Text _txtmid = new Text('Middle');
+  /*final Text _txtmid = new Text('Middle');*/
   final Text _txtbot = new Text('Bottom');
   final TextStyle _normalFont = const TextStyle(fontSize: 18.0, color: Colors.black);
   /*final _malebuttoncontainer = new InkWell(
@@ -120,6 +120,7 @@ class addPlayersState extends State<addPlayers> {
       onPressed: () {
         print("TAP TAP FEMALE");
         setState((){});
+        _buildgrid();
       },
     );
   }
@@ -133,6 +134,7 @@ class addPlayersState extends State<addPlayers> {
       onPressed: () {
         print("TAP TAP MALE");
         setState(()  {});
+        _buildgrid();
 
       },
     );
