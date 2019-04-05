@@ -21,6 +21,7 @@ class addPlayers extends StatefulWidget  {
 }
 
 class addPlayersState extends State<addPlayers> {
+  final _txtaddPlayersController = new TextEditingController();
   final List<String> _playerlist = <String>[];
   String txtplayername;
   /*final Text _txtmid = new Text('Middle');*/
@@ -94,6 +95,7 @@ class addPlayersState extends State<addPlayers> {
 
   Widget _txtaddPlayers() {
     return new TextField(
+      controller: _txtaddPlayersController,
       decoration: InputDecoration(
         border: InputBorder.none,
         hintText: 'Enter a name',
@@ -125,6 +127,7 @@ class addPlayersState extends State<addPlayers> {
         _playerlist.add(txtplayername);
         print(_playerlist);
         _buildgrid();
+        _txtaddPlayersController.clear();
         setState((){});
       },
     );
@@ -142,6 +145,7 @@ class addPlayersState extends State<addPlayers> {
         _playerlist.add(txtplayername);
         print(_playerlist);
         _buildgrid();
+        _txtaddPlayersController.clear();
         setState((){});
       },
     );
