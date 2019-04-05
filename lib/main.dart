@@ -119,7 +119,7 @@ class addPlayersState extends State<addPlayers> {
       highlightColor: Colors.transparent,
       onPressed: () {
         print("TAP TAP FEMALE");
-
+        setState((){});
       },
     );
   }
