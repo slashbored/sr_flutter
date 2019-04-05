@@ -22,6 +22,7 @@ class addPlayers extends StatefulWidget  {
 
 class addPlayersState extends State<addPlayers> {
   final List<String> _playerlist = <String>[];
+  String txtplayername;
   /*final Text _txtmid = new Text('Middle');*/
   final Text _txtbot = new Text('Bottom');
   final TextStyle _normalFont = const TextStyle(fontSize: 18.0, color: Colors.black);
@@ -101,13 +102,14 @@ class addPlayersState extends State<addPlayers> {
       autocorrect: false,
       style: _normalFont,
       onChanged: (text) {
+        txtplayername = (text.toString());
       },
-      onSubmitted: (text) {
+      /* onSubmitted: (text) {
         print("Text is: $text");
         _playerlist.add(text);
         print(_playerlist);
         _buildgrid();
-      },
+      }, */
     );
   }
 
@@ -119,8 +121,11 @@ class addPlayersState extends State<addPlayers> {
       highlightColor: Colors.transparent,
       onPressed: () {
         print("TAP TAP FEMALE");
-        setState((){});
+        print(txtplayername);
+        _playerlist.add(txtplayername);
+        print(_playerlist);
         _buildgrid();
+        setState((){});
       },
     );
   }
@@ -133,9 +138,11 @@ class addPlayersState extends State<addPlayers> {
       highlightColor: Colors.transparent,
       onPressed: () {
         print("TAP TAP MALE");
-        setState(()  {});
+        print(txtplayername);
+        _playerlist.add(txtplayername);
+        print(_playerlist);
         _buildgrid();
-
+        setState((){});
       },
     );
   }
