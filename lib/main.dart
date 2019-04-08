@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'player.dart';
+import 'question.dart';
+import 'category.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,6 +30,7 @@ class addPlayersState extends State<addPlayers> {
   /*final Text _txtmid = new Text('Middle');*/
   final Text _txtbot = new Text('Bottom');
   final TextStyle _normalFont = const TextStyle(fontSize: 18.0, color: Colors.black);
+  String placeholder;
   /*final _malebuttoncontainer = new InkWell(
       child:  Container(
         child:  new Icon(
@@ -115,24 +119,6 @@ class addPlayersState extends State<addPlayers> {
     );
   }
 
-   Widget _iconbuttonfemale()  {
-    return new IconButton(
-      icon: Icon(Icons.add_circle),
-      color: Colors.red,
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onPressed: () {
-        print("TAP TAP FEMALE");
-        print(txtplayername);
-        _playerlist.add(txtplayername);
-        print(_playerlist);
-        _buildgrid();
-        _txtaddPlayersController.clear();
-        setState((){});
-      },
-    );
-  }
-
   Widget _iconbuttonmale()  {
     return new IconButton(
       icon: Icon(Icons.add_circle),
@@ -143,6 +129,29 @@ class addPlayersState extends State<addPlayers> {
         print("TAP TAP MALE");
         print(txtplayername);
         _playerlist.add(txtplayername);
+        player.addPlayer(txtplayername, "m", 0);
+        placeholder=player.playerbase2[player.i]['name'];
+        print(placeholder);
+        /*print(_playerlist);*/
+        _buildgrid();
+        _txtaddPlayersController.clear();
+        setState((){});
+      },
+    );
+  }
+
+   Widget _iconbuttonfemale()  {
+    return new IconButton(
+      icon: Icon(Icons.add_circle),
+      color: Colors.red,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onPressed: () {
+        print("TAP TAP FEMALE");
+        print(txtplayername);
+        _playerlist.add(txtplayername);
+        player.addPlayer(txtplayername, "f", 0);
+
         print(_playerlist);
         _buildgrid();
         _txtaddPlayersController.clear();
@@ -150,4 +159,5 @@ class addPlayersState extends State<addPlayers> {
       },
     );
   }
+
 }
