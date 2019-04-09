@@ -6,4 +6,6 @@ class question  {
   String questiont;
   String questionr;
   int time;
+  static int i;
+  static var questionbase = {};
 }

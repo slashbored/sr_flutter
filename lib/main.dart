@@ -127,12 +127,11 @@ class addPlayersState extends State<addPlayers> {
       highlightColor: Colors.transparent,
       onPressed: () {
         print("TAP TAP MALE");
-        print(txtplayername);
+        /*print(txtplayername);*/
         _playerlist.add(txtplayername);
-        player.addPlayer(txtplayername, "m", 0);
-        placeholder=player.playerbase2[player.i]['name'];
-        print(placeholder);
-        /*print(_playerlist);*/
+        player.addPlayer(txtplayername, "m", player.i);
+        print(player.returnPlayerbaseNameAsString(player.i) + ', MOFO');
+        player.i++;
         _buildgrid();
         _txtaddPlayersController.clear();
         setState((){});

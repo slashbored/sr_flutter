@@ -1,35 +1,30 @@
 class player {
   int id;
-  static int i = 0;
   String name;
   String sex;
   int points;
-  static Map playerbase;
-  static var playerbase2;
+  static int i = 0;
+  static var playerbase = {};
 
   player(this.id, this.name, this.sex, this.points);
 
   player.addPlayer(String newName, String newSex, int newPoints) {
-    /*newPlayer.id = i;
-    player newPlayer = new player(newId, newName, newSex, newPoints);
-    newPlayer.name = newName;
-    newPlayer.sex = newSex;*/
-    playerbase = {id: i, name: newName, sex: newSex, points: newPoints};
-    playerbase.pu
-    playerbase2 = {id: i, name: newName, sex: newSex, points: newPoints};
-    i++;
+    player newPlayer = new player(i, newName, newSex, newPoints);
+    /* playerbase = {id: i, name: newName, sex: newSex, points: newPoints};*/
+    playerbase[i] = newPlayer;
   }
 
   Map returnPlayerbase() {
     return playerbase;
   }
 
-  player returnPlayer()
+  player returnPlayer(int id)
   {
-
+    return playerbase[i];
   }
 
-  String returnPlayerbaseAsString(int id) {
-    return playerbase2[id][name];
+  static String returnPlayerbaseNameAsString(int id) {
+    player placeholder = playerbase[id];
+    return placeholder.name.toString();
   }
 }
