@@ -130,7 +130,8 @@ class addPlayersState extends State<addPlayers> {
         /*print(txtplayername);*/
         _playerlist.add(txtplayername);
         player.addPlayer(txtplayername, "m", player.i);
-        print(player.returnPlayerbaseNameAsString(player.i) + ', MOFO');
+        /*print(player.returnPlayerbaseNameAsString(player.i) + ', MOFO');*/
+        print('${player.playerbase[player.i].name} + mofo!');
         player.i++;
         _buildgrid();
         _txtaddPlayersController.clear();
