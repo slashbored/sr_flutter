@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'player.dart';
+import 'db.dart';
 import 'question.dart';
 import 'category.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -26,32 +28,27 @@ class addPlayers extends StatefulWidget  {
 class addPlayersState extends State<addPlayers> {
   final _txtaddPlayersController = new TextEditingController();
   final List<String> _playerlist = <String>[];
+  List<String> _questionlist = <String>[];
   String txtplayername;
-  /*final Text _txtmid = new Text('Middle');*/
+  int mic;
   final Text _txtbot = new Text('Bottom');
-  final TextStyle _normalFont = const TextStyle(fontSize: 18.0, color: Colors.black);
-  String placeholder;
-  /*final _malebuttoncontainer = new InkWell(
-      child:  Container(
-        child:  new Icon(
-            Icons.add_circle, color: Colors.blue
-        ),
-      ),
-      onTap:  ()  {
-        print("Tappy tap male!");
-      }
-  );*/
-  /*final _femalbuttoncontainer = new InkWell(
-      child:  Container(
-          child:  new Icon(
-              Icons.add_circle, color: Colors.red
-          ),
-      ),
-      onTap:  ()  {
-        print("Tappy tap female!");
-      }
-  );*/
+  final TextStyle _normalFont = const TextStyle(
+      fontSize: 18.0, color: Colors.black);
 
+  @override
+  void initState()  {
+    super.initState();
+    setState(() {
+      if(player.playerbase[0]==null){
+        builddb();
+       /*         print('"${question.questionbase[question.qic].descr} + " has been pulled from the db!');
+        for(var i = 0;i <= question.qic; i++){
+          _questionlist.add(question.questionbase[i].descr.toString());
+        }
+        _buildgridbot();*/
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context)  {
@@ -68,7 +65,6 @@ class addPlayersState extends State<addPlayers> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   new Expanded(
-                    /*child: _malebuttoncontainer*/
                     child: _iconbuttonmale(),
                     flex: 1
                   ),
@@ -77,15 +73,14 @@ class addPlayersState extends State<addPlayers> {
                     flex: 1
                   ),
                   new Expanded(
-                    /*child: _femalbuttoncontainer*/
                     child: _iconbuttonfemale(),
                   flex: 1
                   )
                 ]
               ),
             ),
-            new Container(child: _buildgrid()),
-            new Container(child: _txtbot),
+            new Container(child: _buildgridmid()),
+            new Container(child: _buildgridbot()),
             new Container(child: null)
           ]
         ),
@@ -93,8 +88,13 @@ class addPlayersState extends State<addPlayers> {
     );
   }
 
-  Widget _buildgrid() {
+  Widget _buildgridmid() {
     return new Row(children: _playerlist.map((item) => new Text(item)).toList());
+
+  }
+
+  Widget _buildgridbot(){
+    return new Row(children: _questionlist.map((item) => new Text(item)).toList());
   }
 
   Widget _txtaddPlayers() {
@@ -110,12 +110,6 @@ class addPlayersState extends State<addPlayers> {
       onChanged: (text) {
         txtplayername = (text.toString());
       },
-      /* onSubmitted: (text) {
-        print("Text is: $text");
-        _playerlist.add(text);
-        print(_playerlist);
-        _buildgrid();
-      }, */
     );
   }
 
@@ -127,13 +121,13 @@ class addPlayersState extends State<addPlayers> {
       highlightColor: Colors.transparent,
       onPressed: () {
         print("TAP TAP MALE");
-        /*print(txtplayername);*/
         _playerlist.add(txtplayername);
-        player.addPlayer(txtplayername, "m", player.i);
-        /*print(player.returnPlayerbaseNameAsString(player.i) + ', MOFO');*/
-        print('${player.playerbase[player.i].name} + mofo!');
-        player.i++;
-        _buildgrid();
+        player.addPlayer(txtplayername, "m", player.pic);
+        _playerlist.add(player.playerbase[player.pic].name.toString());
+        //print('${player.playerbase[player.pic].name} + mofo!');x
+        //builddb();
+        print('"${question.questionbase[question.qic].descr} + " has been pulled from the db!');
+        _buildgridmid();
         _txtaddPlayersController.clear();
         setState((){});
       },
@@ -150,10 +144,9 @@ class addPlayersState extends State<addPlayers> {
         print("TAP TAP FEMALE");
         print(txtplayername);
         _playerlist.add(txtplayername);
-        player.addPlayer(txtplayername, "f", 0);
-
-        print(_playerlist);
-        _buildgrid();
+        player.addPlayer(txtplayername, "f", player.pic);
+        //print('${player.playerbase[player.pic].name} + mofo!');
+        _buildgridmid();
         _txtaddPlayersController.clear();
         setState((){});
       },
