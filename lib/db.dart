@@ -13,11 +13,10 @@ Future builddb() async{
     )
   );
 
-  var results = await connection.query('select taska from questions_german');
+  var results = await connection.query('select * from questions_german');
 
   for (var row in results)  {
-    /*print('${row[0]}');*/
-    question.addQuestion(row[0].toString());
+    question.addQuestion(row[0], row[1].toString(), row[2], row[3].toString(), row[4].toString(), row[5].toString(), row[6].toString(), row[7].toString());
   }
 
   connection.close();

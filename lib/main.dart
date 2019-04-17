@@ -3,6 +3,7 @@ import 'player.dart';
 import 'db.dart';
 import 'question.dart';
 import 'category.dart';
+import 'secondscreen.dart';
 
 
 void main() => runApp(MyApp());
@@ -41,11 +42,6 @@ class addPlayersState extends State<addPlayers> {
     setState(() {
       if(player.playerbase[0]==null){
         builddb();
-       /*         print('"${question.questionbase[question.qic].descr} + " has been pulled from the db!');
-        for(var i = 0;i <= question.qic; i++){
-          _questionlist.add(question.questionbase[i].descr.toString());
-        }
-        _buildgridbot();*/
       }
     });
   }
@@ -57,8 +53,9 @@ class addPlayersState extends State<addPlayers> {
         title: Text('Add/remove players'),
         centerTitle: true,
       ),
-        body: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      drawer: theDrawer(),
+      body: new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             new Container(child:
               new Row(
@@ -80,7 +77,7 @@ class addPlayersState extends State<addPlayers> {
               ),
             ),
             new Container(child: _buildgridmid()),
-            new Container(child: _buildgridbot()),
+            new Container(child: null),
             new Container(child: null)
           ]
         ),
@@ -93,8 +90,14 @@ class addPlayersState extends State<addPlayers> {
 
   }
 
-  Widget _buildgridbot(){
-    return new Row(children: _questionlist.map((item) => new Text(item)).toList());
+  Widget _buildgrilowerdmid() {
+    /*return RaisedButton(
+      onPressed: (){
+        Navigator.push(context,
+          MaterialPageRoute(builder: (context) => secondscreen())
+        );
+      }
+    );*/
   }
 
   Widget _txtaddPlayers() {
@@ -124,9 +127,7 @@ class addPlayersState extends State<addPlayers> {
         _playerlist.add(txtplayername);
         player.addPlayer(txtplayername, "m", player.pic);
         _playerlist.add(player.playerbase[player.pic].name.toString());
-        //print('${player.playerbase[player.pic].name} + mofo!');x
-        //builddb();
-        print('"${question.questionbase[question.qic].descr} + " has been pulled from the db!');
+        print('"${question.questionbase[2].descr}" has been pulled from the db!');
         _buildgridmid();
         _txtaddPlayersController.clear();
         setState((){});
@@ -145,7 +146,6 @@ class addPlayersState extends State<addPlayers> {
         print(txtplayername);
         _playerlist.add(txtplayername);
         player.addPlayer(txtplayername, "f", player.pic);
-        //print('${player.playerbase[player.pic].name} + mofo!');
         _buildgridmid();
         _txtaddPlayersController.clear();
         setState((){});
