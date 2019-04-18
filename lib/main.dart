@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'disclaimer.dart';
-import 'overView.dart';
+import 'splasScreen.dart';
+
 
 
 void main() => runApp(MyApp());
@@ -13,8 +13,10 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.black,
       ),
-      home: new viewDisclaimer(),
+      home: new viewSplashScreen(),
     );
   }
 }
+
+
 

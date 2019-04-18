@@ -4,6 +4,7 @@ import 'question.dart';
 import 'category.dart';
 
 
+
 Future buildDatabase() async{
   var connection = await MySqlConnection.connect(new ConnectionSettings(
       host: 'h2670460.stratoserver.net',
@@ -22,4 +23,6 @@ Future buildDatabase() async{
 
   connection.close();
 }
+
+
 

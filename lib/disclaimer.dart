@@ -10,7 +10,7 @@ class viewDisclaimer extends StatefulWidget{
 
 class viewDisclaimerState extends State<viewDisclaimer>{
 
-  @override
+  /*@override
   void initState()  {
     super.initState();
     setState(() {
@@ -18,7 +18,7 @@ class viewDisclaimerState extends State<viewDisclaimer>{
         buildDatabase();
       }
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
