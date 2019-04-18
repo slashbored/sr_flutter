@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget theDrawer(){
+Widget menuDrawer(){
   return new Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -16,13 +16,18 @@ Widget theDrawer(){
               color: Colors.black,
             ),
           ),
+         ListTile(
+           title: Text('Übersicht'),
+           onTap: () {
+           },
+         ),
           ListTile(
-            title: Text('Players'),
+            title: Text('Spieler'),
             onTap: () {
             },
           ),
           ListTile(
-            title: Text('Categories'),
+            title: Text('Kategorien'),
             onTap: () {
             },
           ),

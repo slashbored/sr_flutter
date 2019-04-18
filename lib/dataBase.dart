@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'question.dart';
 import 'package:mysql1/mysql1.dart';
+import 'question.dart';
+import 'category.dart';
 
 
-Future builddb() async{
+Future buildDatabase() async{
   var connection = await MySqlConnection.connect(new ConnectionSettings(
       host: 'h2670460.stratoserver.net',
       port: 3306,
