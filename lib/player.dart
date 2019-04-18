@@ -49,10 +49,10 @@ class editPlayersState extends State<editPlayers> {
   Widget build(BuildContext context)  {
     return new Scaffold(
       appBar: new AppBar(
-        title: Text('Add/remove players'),
+        title: Text('Spieler bearbeiten'),
         centerTitle: true,
       ),
-      drawer: menuDrawer(),
+      drawer: menuDrawer(context),
       body: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

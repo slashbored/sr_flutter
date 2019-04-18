@@ -1,42 +1,98 @@
 import 'package:flutter/material.dart';
+import 'overView.dart';
+import 'player.dart';
+import 'category.dart';
+import 'extras.dart';
 
-Widget menuDrawer(){
-  return new Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-         DrawerHeader(
-            child: Text('Drawer Header',
-              style: TextStyle(
-                color: Colors.white,
+Widget menuDrawer(BuildContext context){
+  return FractionallySizedBox(
+    widthFactor: 0.4,
+    child: Drawer(
+      child: Container(
+        color: Colors.black,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: InkWell(
+                child: Container(
+                  child: Text('',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  decoration: BoxDecoration(
+              //color: Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  //Navigator.of(context).pop();
+                },
               ),
-            textAlign: TextAlign.center,
             ),
-            decoration: BoxDecoration(
-              color: Colors.black,
-            ),
-          ),
          ListTile(
-           title: Text('Übersicht'),
+           title: Text('Übersicht',
+               style: TextStyle(
+                   color: Colors.white,
+                 //backgroundColor: Colors.black
+               ),
+               textAlign: TextAlign.center
+           ),
            onTap: () {
+             Navigator.push(context, MaterialPageRoute(builder: (context) => viewOverview()));
            },
          ),
           ListTile(
-            title: Text('Spieler'),
-            onTap: () {
-            },
+              title: Text('Spieler',
+                  style: TextStyle(
+                      color: Colors.white,
+                      //backgroundColor: Colors.black
+                  ),
+                  textAlign: TextAlign.center
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => editPlayers()));
+              },
           ),
           ListTile(
-            title: Text('Kategorien'),
+            title: Text('Kategorien',
+                style: TextStyle(
+                    color: Colors.white,
+                    //backgroundColor: Colors.black
+                ),
+                textAlign: TextAlign.center
+            ),
             onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => editCategories()));
             },
           ),
-          ListTile(
-            title: Text('Extras'),
-            onTap: () {
-            },
-          ),
+            ListTile(
+              title: Text('Extras',
+                  style: TextStyle(
+                    color: Colors.white,
+                    //backgroundColor: Colors.black
+                  ),
+                  textAlign: TextAlign.center
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => editExtras()));
+              },
+            ),
+         ListTile(
+           title: Text('Feuer!',
+            style: TextStyle(
+                color: Colors.red,
+                //backgroundColor: Colors.black
+            ),
+           textAlign: TextAlign.center
+           ),
+           onTap: () {
+           },
+         )
         ],
       ),
-    );
+    )
+  )
+  );
 }

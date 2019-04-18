@@ -9,5 +9,14 @@ class editExtras extends StatefulWidget{
 class editExtrasState extends State<editExtras>{
   @override
   Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: Text('Extras'),
+        centerTitle: true,
+      ),
+      drawer: menuDrawer(context),
+        body: new Text('Hier stehen die Extras.',
+          textAlign: TextAlign.center)
+    );
   }
 }

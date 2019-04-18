@@ -17,5 +17,14 @@ class editCategories extends StatefulWidget{
 class editCategoriesState extends State<editCategories>{
   @override
   Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: Text('Kategorien bearbeiten'),
+        centerTitle: true,
+      ),
+      drawer: menuDrawer(context),
+        body: new Text('Hier stehen die Kategorien.',
+          textAlign: TextAlign.center)
+    );
   }
 }
