@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'player.dart';
 import 'dataBase.dart';
 import 'question.dart';
 import 'category.dart';
-import 'menuDrawer.dart';
 
 
 void main() => runApp(MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.black,
       ),
-      home: new addPlayers(),
+      home: new editPlayers(),
     );
   }
 }

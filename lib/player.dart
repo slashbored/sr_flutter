@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dataBase.dart';
 import 'menuDrawer.dart';
+import 'dataBase.dart';
 
 class player {
   int id;
@@ -20,12 +20,12 @@ class player {
 
 }
 
-class addPlayers extends StatefulWidget  {
+class editPlayers extends StatefulWidget  {
   @override
-  addPlayersState createState() => new addPlayersState();
+  editPlayersState createState() => new editPlayersState();
 }
 
-class addPlayersState extends State<addPlayers> {
+class editPlayersState extends State<editPlayers> {
   final _txtaddPlayersController = new TextEditingController();
   final List<String> _playerlist = <String>[];
   List<String> _questionlist = <String>[];
