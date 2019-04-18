@@ -19,16 +19,31 @@ class viewSplashScreenState extends State<viewSplashScreen>{
       if(question.questionbase[0]==null){
         buildDatabase();
       }
+      _disclaimerread();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    _disclaimerread();
+    return new Scaffold(
+        /*appBar: new AppBar(
+          title: Text('Extras'),
+          centerTitle: true,
+        ),*/
+        body: Center(
+          child: new Text('💩',
+              style: TextStyle(
+                fontSize: 54
+              ),
+              textAlign: TextAlign.center,
+          )
+        )
+    );
   }
 
   _disclaimerread() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await Future.delayed(const Duration(seconds: 5), (){});
     int dcr = (prefs.getInt('dcr'));
     if (dcr==null||dcr==0){
       await prefs.setInt('dcr', 1);
