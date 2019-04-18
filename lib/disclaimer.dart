@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'menuDrawer.dart';
+import 'question.dart';
+import 'dataBase.dart';
 
 class viewDisclaimer extends StatefulWidget{
   @override
@@ -7,6 +9,17 @@ class viewDisclaimer extends StatefulWidget{
 }
 
 class viewDisclaimerState extends State<viewDisclaimer>{
+
+  @override
+  void initState()  {
+    super.initState();
+    setState(() {
+      if(question.questionbase[0]==null){
+        buildDatabase();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -16,7 +29,8 @@ class viewDisclaimerState extends State<viewDisclaimer>{
       ),
       drawer: menuDrawer(context),
       body: new Text('Hier steht das Vorwort.',
-      textAlign: TextAlign.center)
+        textAlign: TextAlign.center
+      )
     );
   }
 }

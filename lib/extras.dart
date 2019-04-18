@@ -15,8 +15,9 @@ class editExtrasState extends State<editExtras>{
         centerTitle: true,
       ),
       drawer: menuDrawer(context),
-        body: new Text('Hier stehen die Extras.',
-          textAlign: TextAlign.center)
+      body: new Text('Hier stehen die Extras.',
+          textAlign: TextAlign.center
+      )
     );
   }
 }

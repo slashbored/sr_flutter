@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'menuDrawer.dart';
-import 'dataBase.dart';
+//import 'dataBase.dart';
 
 class player {
   int id;
@@ -35,7 +35,7 @@ class editPlayersState extends State<editPlayers> {
   final TextStyle _normalFont = const TextStyle(
       fontSize: 18.0, color: Colors.black);
 
-  @override
+  /*@override
   void initState()  {
     super.initState();
     setState(() {
@@ -43,7 +43,7 @@ class editPlayersState extends State<editPlayers> {
         buildDatabase();
       }
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context)  {

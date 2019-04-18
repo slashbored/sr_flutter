@@ -23,8 +23,9 @@ class editCategoriesState extends State<editCategories>{
         centerTitle: true,
       ),
       drawer: menuDrawer(context),
-        body: new Text('Hier stehen die Kategorien.',
-          textAlign: TextAlign.center)
+      body: new Text('Hier stehen die Kategorien.',
+        textAlign: TextAlign.center
+      )
     );
   }
 }

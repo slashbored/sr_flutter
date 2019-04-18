@@ -6,7 +6,7 @@ import 'extras.dart';
 
 Widget menuDrawer(BuildContext context){
   return FractionallySizedBox(
-    widthFactor: 0.4,
+    widthFactor: 0.35,
     child: Drawer(
       child: Container(
         color: Colors.black,
@@ -14,7 +14,6 @@ Widget menuDrawer(BuildContext context){
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: InkWell(
                 child: Container(
                   child: Text('',
                     style: TextStyle(
@@ -26,10 +25,6 @@ Widget menuDrawer(BuildContext context){
               //color: Colors.black,
                   ),
                 ),
-                onTap: () {
-                  //Navigator.of(context).pop();
-                },
-              ),
             ),
          ListTile(
            title: Text('Übersicht',
