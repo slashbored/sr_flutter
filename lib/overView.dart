@@ -9,7 +9,7 @@ class viewOverview extends StatefulWidget{
 
 class viewOverviewState extends State<viewOverview>{
 
-  Future<bool> _onWillPop() {
+  Future<bool> onWillPop() {
     return showDialog(
       context: context,
       builder: (context) => new AlertDialog(
@@ -39,8 +39,8 @@ class viewOverviewState extends State<viewOverview>{
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(onWillPop: _onWillPop,
-    child: new Scaffold(
+    return new WillPopScope(onWillPop: onWillPop,
+      child: new Scaffold(
         appBar: new AppBar(
           automaticallyImplyLeading: false,
           title: Text('Übersicht'),

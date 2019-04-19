@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'menuDrawer.dart';
-//import 'dataBase.dart';
 
 class player {
   int id;

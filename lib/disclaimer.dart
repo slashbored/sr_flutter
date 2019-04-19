@@ -8,19 +8,37 @@ class viewDisclaimer extends StatefulWidget{
 
 class viewDisclaimerState extends State<viewDisclaimer>{
 
-  /*@override
-  void initState()  {
-    super.initState();
-    setState(() {
-      if(question.questionbase[0]==null){
-        buildDatabase();
-      }
-    });
-  }*/
+  Future<bool> onWillPop() {
+    return showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Tschüsschen?',
+          textAlign: TextAlign.center,),
+        content: new Text('Willst du die App wirklich beenden?',
+          textAlign: TextAlign.center,),
+        actions: <Widget>[
+          new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children:[
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: new Text('Ja'),
+                ),
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text('Nein'),
+                ),
+              ]
+          )
+
+        ],
+      ),
+    ) ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(onWillPop: () async => false,
+    return new WillPopScope(onWillPop: onWillPop,
       child: new Scaffold(
         appBar: new AppBar(
           automaticallyImplyLeading: false,
@@ -30,6 +48,7 @@ class viewDisclaimerState extends State<viewDisclaimer>{
     //drawer: menuDrawer(context),
         body: Center(
           child: new Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 new Text('Dieses Spiel sollte mit Vorsicht genossen werden.\n'
                   'Der Entwickler und alle, die an der Entwicklung beteiligt waren übernehmen keinerlei Haftung für jegliche Folgen.\n'
@@ -40,7 +59,7 @@ class viewDisclaimerState extends State<viewDisclaimer>{
                 ),
                 textAlign: TextAlign.center,
               ),
-                _closeButton()
+                _closeButton(),
               ]
           )
         )
