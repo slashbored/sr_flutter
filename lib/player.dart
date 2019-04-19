@@ -14,7 +14,7 @@ class player {
   player.addPlayer(String newName, String newSex, int newPoints) {
     player newPlayer = new player(pic, newName, newSex, newPoints);
     playerbase[pic] = newPlayer;
-
+    pic++;
   }
 
 }
@@ -26,13 +26,9 @@ class editPlayers extends StatefulWidget  {
 
 class editPlayersState extends State<editPlayers> {
   final _txtaddPlayersController = new TextEditingController();
-  final List<String> _playerlist = <String>[];
-  List<String> _questionlist = <String>[];
-  String txtplayername;
-  int mic;
-  final Text _txtbot = new Text('Bottom');
   final TextStyle _normalFont = const TextStyle(
       fontSize: 18.0, color: Colors.black);
+  String txtplayername;
 
   @override
   Widget build(BuildContext context)  {
@@ -91,18 +87,9 @@ class editPlayersState extends State<editPlayers> {
   }
 
   Widget _buildgridmid() {
-    return new Row(children: _playerlist.map((item) => new Text(item)).toList());
-
   }
 
   Widget _buildgrilowerdmid() {
-    /*return RaisedButton(
-      onPressed: (){
-        Navigator.push(context,
-          MaterialPageRoute(builder: (context) => secondscreen())
-        );
-      }
-    );*/
   }
 
   Widget _txtaddPlayers() {
@@ -128,10 +115,7 @@ class editPlayersState extends State<editPlayers> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed: () {
-        print("TAP TAP MALE");
-        _playerlist.add(txtplayername);
-        player.addPlayer(txtplayername, "m", player.pic);
-        _playerlist.add(player.playerbase[player.pic].name.toString());
+        player.addPlayer(txtplayername, "m", 0);
         _buildgridmid();
         _txtaddPlayersController.clear();
         setState((){});
@@ -146,10 +130,7 @@ class editPlayersState extends State<editPlayers> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed: () {
-        print("TAP TAP FEMALE");
-        print(txtplayername);
-        _playerlist.add(txtplayername);
-        player.addPlayer(txtplayername, "f", player.pic);
+        player.addPlayer(txtplayername, "f", 0);
         _buildgridmid();
         _txtaddPlayersController.clear();
         setState((){});
