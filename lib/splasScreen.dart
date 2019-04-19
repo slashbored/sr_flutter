@@ -47,10 +47,10 @@ class viewSplashScreenState extends State<viewSplashScreen>{
     int dcr = (prefs.getInt('dcr'));
     if (dcr==null||dcr==0){
       await prefs.setInt('dcr', 1);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => viewDisclaimer()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => viewDisclaimer()));
     }
     else{
-      Navigator.push(context, MaterialPageRoute(builder: (context) => viewOverview()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => viewOverview()));
     }
   }
 
