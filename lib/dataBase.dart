@@ -18,7 +18,7 @@ Future buildDatabase() async{
   var results = await connection.query('select * from questions_german');
 
   for (var row in results)  {
-    question.addQuestion(row[0], row[1].toString(), row[2], row[3].toString(), row[4].toString(), row[5].toString(), row[6].toString(), row[7].toString());
+    question.addQuestion(row[0], row[1].toString(), row[2], row[3].toString(), row[4].toString(), row[5].toString(), row[6].toString(), row[7].toString(), row[8].toString());
   }
 
   connection.close();
