@@ -35,49 +35,56 @@ class editPlayersState extends State<editPlayers> {
   final TextStyle _normalFont = const TextStyle(
       fontSize: 18.0, color: Colors.black);
 
-  /*@override
-  void initState()  {
-    super.initState();
-    setState(() {
-      if(player.playerbase[0]==null){
-        buildDatabase();
-      }
-    });
-  }*/
-
   @override
   Widget build(BuildContext context)  {
     return new Scaffold(
-      appBar: new AppBar(
-        title: Text('Spieler bearbeiten'),
-        centerTitle: true,
-      ),
-      drawer: menuDrawer(context),
-      body: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            new Container(child:
+      appBar:
+        new AppBar(
+          title: Text(
+            'Spieler bearbeiten'
+          ),
+          centerTitle: true,
+        ),
+        drawer:
+          menuDrawer(
+            context
+          ),
+      body:
+        new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          new Container(child:
             new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  new Expanded(
-                      child: _iconbuttonmale(),
-                      flex: 1
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                new Expanded(
+                  child:
+                    _iconbuttonmale(),
+                    flex: 1
                   ),
-                  new Expanded(
-                      child: _txtaddPlayers(),
+                new Expanded(
+                  child:
+                    _txtaddPlayers(),
+                    flex: 1
+                ),
+                new Expanded(
+                    child:
+                      _iconbuttonfemale(),
                       flex: 1
-                  ),
-                  new Expanded(
-                      child: _iconbuttonfemale(),
-                      flex: 1
-                  )
-                ]
+                )
+
+              ]
             ),
-            ),
-            new Container(child: _buildgridmid()),
-            new Container(child: null),
-            new Container(child: null)
+          ),
+          new Container(
+            child:
+              _buildgridmid()),
+          new Container(
+            child:
+              null),
+          new Container(
+            child:
+              null)
           ]
       ),
       resizeToAvoidBottomPadding: false,

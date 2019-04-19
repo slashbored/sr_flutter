@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'menuDrawer.dart';
 
 class viewOverview extends StatefulWidget{
@@ -8,19 +9,37 @@ class viewOverview extends StatefulWidget{
 
 class viewOverviewState extends State<viewOverview>{
 
-  /*@override
-  void initState()  {
-    super.initState();
-    setState(() {
-      if(question.questionbase[0]==null){
-        buildDatabase();
-      }
-    });
-  }*/
+  Future<bool> _onWillPop() {
+    return showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Tschüsschen?',
+          textAlign: TextAlign.center,),
+        content: new Text('Willst du die App wirklich beenden?',
+          textAlign: TextAlign.center,),
+        actions: <Widget>[
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children:[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Ja'),
+              ),
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('Nein'),
+              ),
+            ]
+          )
+
+        ],
+      ),
+    ) ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(onWillPop: () async => null,
+    return new WillPopScope(onWillPop: _onWillPop,
     child: new Scaffold(
         appBar: new AppBar(
           automaticallyImplyLeading: false,

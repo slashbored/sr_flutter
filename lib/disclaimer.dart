@@ -34,7 +34,7 @@ class viewDisclaimerState extends State<viewDisclaimer>{
                 new Text('Dieses Spiel sollte mit Vorsicht genossen werden.\n'
                   'Der Entwickler und alle, die an der Entwicklung beteiligt waren übernehmen keinerlei Haftung für jegliche Folgen.\n'
                   'Desweiteren werden die eingegeben Daten nur lokal und nicht online verarbeitet.\n'
-                  'Die Onlineverbindung dient lediglich zum Download und zur Aktualisierung des Fragenkatalogs.',
+                  'Die Onlineverbindung dient lediglich zum Download und zur Aktualisierung des Aufgabenkatalogs.',
                 style: TextStyle(
                     fontSize: 18
                 ),
