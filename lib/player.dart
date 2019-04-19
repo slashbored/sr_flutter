@@ -14,7 +14,18 @@ class player {
   player.addPlayer(String newName, String newSex, int newPoints) {
     player newPlayer = new player(pic, newName, newSex, newPoints);
     playerbase[pic] = newPlayer;
-    pic = player.playerbase.length;
+    pic++;
+  }
+
+
+  static String getPlayerName(int id){
+    player _playerplaceholder = player.playerbase[id];
+    return _playerplaceholder.name.toString();
+  }
+
+  static String getPlayerSex(int id){
+    player _playerplaceholder = player.playerbase[id];
+    return _playerplaceholder.sex.toString();
   }
 
 }
@@ -28,7 +39,7 @@ class editPlayersState extends State<editPlayers> {
   final _txtaddPlayersController = new TextEditingController();
   String txtplayername;
   List playerlist;
-  String playerlistAsString;
+  String _playerNamesAsString;
   final TextStyle _normalFont = const TextStyle(
       fontSize: 18.0, color: Colors.black);
 
@@ -50,7 +61,7 @@ class editPlayersState extends State<editPlayers> {
         new Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          new Container(child:
+          new Expanded(child:
             new Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -72,16 +83,28 @@ class editPlayersState extends State<editPlayers> {
 
               ]
             ),
+            flex: 2
           ),
-          new Container(
+          new Expanded(
             child:
-              _buildgridmid()),
-          new Container(
+              new Container(
+                child:
+                  _buildgridmid(),
+              ),
+              flex: 10,
+          ),
+          /*new Expanded(
             child:
-              null),
-          new Container(
+              new Container(
+                child: null
+              ),
+              flex: 1),
+          new Expanded(
             child:
-              null)
+              new Container(
+                child:
+                  null),
+              flex: 1)*/
           ]
       ),
       resizeToAvoidBottomPadding: false,
@@ -89,25 +112,72 @@ class editPlayersState extends State<editPlayers> {
   }
 
   Widget _buildgridmid() {
-    playerlistAsString = '';
-    int playerCounter = 0;
-    int modPlayerCounter;
-    int timesPlayerCounter;
-    int rowCounter;
-    int columnCounter;
-    for (player _playerplaceholder in player.playerbase.values){
-      playerlistAsString = playerlistAsString + '${_playerplaceholder.name}, ';
-      playerCounter++;
-    }
-    print(playerlistAsString);
-    timesPlayerCounter = playerCounter ~/ 3;
-    modPlayerCounter = playerCounter % 3;
-    return GridView.count(
-      crossAxisCount: 3,
-      children:[
 
-      ]
-    );
+    if (player.playerbase.length>0){
+      List _playerIds = new List();
+      _playerIds.clear();
+      String _playerNamesAsString = '';
+      int _playerCounter = 0;
+      /*int modPlayerCounter;
+      int timesPlayerCounter;
+      int rowCounter;
+      int columnCounter;*/
+      for (player _playerplaceholder in player.playerbase.values){
+        _playerNamesAsString = _playerNamesAsString + '${_playerplaceholder.name}, ';
+        _playerIds.add(_playerplaceholder.id);
+        _playerCounter++;
+      }
+      print(_playerNamesAsString);
+      /*timesPlayerCounter = playerCounter ~/ 3;
+      modPlayerCounter = playerCounter % 3;*/
+      return new GridView.count(
+        crossAxisCount: 3,
+        children: List.generate(_playerCounter, (index) {
+              return GridTile(
+                child: new Card(
+                  child: new Center(
+                      child: new Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children:[
+                          new Expanded(
+                          child: new Container(
+                            child: null
+                          ),
+                          ),
+                          new Expanded(
+                            child: new Center(
+                              child: new Text(
+                                  player.getPlayerName(_playerIds[index]).toString(),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: (player.getPlayerSex(_playerIds[index]).toString()=='m')?Colors.blue:Colors.red
+                                  )
+                              )
+                            ),
+                            flex: 1
+                          ),
+                          new Expanded(
+                            child: new IconButton(icon: Icon(Icons.clear), onPressed: (){
+                                player.playerbase.remove(_playerIds[index]);
+                                setState((){});
+                              }
+                            ),
+                            flex: 1
+                          )
+                        ]
+                      )
+                  )
+                )
+              );
+        }
+        )
+      );
+      setState((){});
+    }
+    else  {
+      return new Text('Sgehtn');
+    }
+
   }
 
   Widget _buildgrilowerdmid() {
@@ -136,10 +206,14 @@ class editPlayersState extends State<editPlayers> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed: () {
+        if  (txtplayername==''){}
+        else  {
         player.addPlayer(txtplayername, "m", 0);
         _buildgridmid();
         _txtaddPlayersController.clear();
-        //setState((){});
+        txtplayername = '';
+        setState((){});
+        }
       },
     );
   }
@@ -151,10 +225,14 @@ class editPlayersState extends State<editPlayers> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed: () {
-        player.addPlayer(txtplayername, "f", 0);
-        _buildgridmid();
-        _txtaddPlayersController.clear();
-        //setState((){});
+        if  (txtplayername==''){}
+        else {
+          player.addPlayer(txtplayername, "f", 0);
+          _buildgridmid();
+          _txtaddPlayersController.clear();
+          txtplayername = '';
+          setState((){});
+        }
       },
     );
   }
