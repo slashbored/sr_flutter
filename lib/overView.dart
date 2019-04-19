@@ -42,7 +42,7 @@ class viewOverviewState extends State<viewOverview>{
     return new WillPopScope(onWillPop: onWillPop,
       child: new Scaffold(
         appBar: new AppBar(
-          automaticallyImplyLeading: false,
+          //automaticallyImplyLeading: false,
           title: Text('Übersicht'),
           centerTitle: true,
         ),
