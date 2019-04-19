@@ -7,14 +7,14 @@ class player {
   String sex;
   int points;
   static int pic = 0;
-  static Map playerbase = {};
+  static var playerbase = {};
 
   player(this.id, this.name, this.sex, this.points);
 
   player.addPlayer(String newName, String newSex, int newPoints) {
     player newPlayer = new player(pic, newName, newSex, newPoints);
     playerbase[pic] = newPlayer;
-    pic++;
+    pic = player.playerbase.length;
   }
 
 }
@@ -89,10 +89,21 @@ class editPlayersState extends State<editPlayers> {
 
   Widget _buildgridmid() {
     playerlist = '';
-    for (player playerName in player.playerbase.values){
-      playerlist = playerlist + '${playerName.name}, ';
+    int i = 0;
+    int modi;
+    int timesi;
+    int rowCounter;
+    int columnCounter;
+    for (player _playerplaceholder in player.playerbase.values){
+      playerlist = playerlist + '${_playerplaceholder.name}, ';
+      i++;
     }
     print(playerlist);
+    modi = i % 3;
+    timesi = i ~/ 3;
+    if (i<3){
+
+    }
   }
 
   Widget _buildgrilowerdmid() {
