@@ -7,7 +7,7 @@ class player {
   String sex;
   int points;
   static int pic = 0;
-  static var playerbase = {};
+  static Map playerbase = {};
 
   player(this.id, this.name, this.sex, this.points);
 
@@ -26,9 +26,10 @@ class editPlayers extends StatefulWidget  {
 
 class editPlayersState extends State<editPlayers> {
   final _txtaddPlayersController = new TextEditingController();
+  String txtplayername;
+  String playerlist;
   final TextStyle _normalFont = const TextStyle(
       fontSize: 18.0, color: Colors.black);
-  String txtplayername;
 
   @override
   Widget build(BuildContext context)  {
@@ -87,6 +88,11 @@ class editPlayersState extends State<editPlayers> {
   }
 
   Widget _buildgridmid() {
+    playerlist = '';
+    for (player playerName in player.playerbase.values){
+      playerlist = playerlist + '${playerName.name}, ';
+    }
+    print(playerlist);
   }
 
   Widget _buildgrilowerdmid() {
@@ -97,7 +103,7 @@ class editPlayersState extends State<editPlayers> {
       controller: _txtaddPlayersController,
       decoration: InputDecoration(
         border: InputBorder.none,
-        hintText: 'Bitte gib einen Namen ein',
+        hintText: 'Name',
       ),
       textAlign: TextAlign.center,
       autocorrect: false,
@@ -118,7 +124,7 @@ class editPlayersState extends State<editPlayers> {
         player.addPlayer(txtplayername, "m", 0);
         _buildgridmid();
         _txtaddPlayersController.clear();
-        setState((){});
+        //setState((){});
       },
     );
   }
@@ -133,7 +139,7 @@ class editPlayersState extends State<editPlayers> {
         player.addPlayer(txtplayername, "f", 0);
         _buildgridmid();
         _txtaddPlayersController.clear();
-        setState((){});
+        //setState((){});
       },
     );
   }

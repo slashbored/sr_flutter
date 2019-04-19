@@ -44,7 +44,7 @@ class viewSplashScreenState extends State<viewSplashScreen>{
 
   _disclaimerread() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await Future.delayed(const Duration(seconds: 5), (){});
+    await Future.delayed(const Duration(seconds: 2), (){});
     int dcr = (prefs.getInt('dcr'));
     if (dcr==null||dcr==0){
       await prefs.setInt('dcr', 1);
