@@ -27,7 +27,8 @@ class editPlayers extends StatefulWidget  {
 class editPlayersState extends State<editPlayers> {
   final _txtaddPlayersController = new TextEditingController();
   String txtplayername;
-  String playerlist;
+  List playerlist;
+  String playerlistAsString;
   final TextStyle _normalFont = const TextStyle(
       fontSize: 18.0, color: Colors.black);
 
@@ -88,22 +89,25 @@ class editPlayersState extends State<editPlayers> {
   }
 
   Widget _buildgridmid() {
-    playerlist = '';
-    int i = 0;
-    int modi;
-    int timesi;
+    playerlistAsString = '';
+    int playerCounter = 0;
+    int modPlayerCounter;
+    int timesPlayerCounter;
     int rowCounter;
     int columnCounter;
     for (player _playerplaceholder in player.playerbase.values){
-      playerlist = playerlist + '${_playerplaceholder.name}, ';
-      i++;
+      playerlistAsString = playerlistAsString + '${_playerplaceholder.name}, ';
+      playerCounter++;
     }
-    print(playerlist);
-    modi = i % 3;
-    timesi = i ~/ 3;
-    if (i<3){
+    print(playerlistAsString);
+    timesPlayerCounter = playerCounter ~/ 3;
+    modPlayerCounter = playerCounter % 3;
+    return GridView.count(
+      crossAxisCount: 3,
+      children:[
 
-    }
+      ]
+    );
   }
 
   Widget _buildgrilowerdmid() {
