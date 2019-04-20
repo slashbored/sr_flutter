@@ -7,24 +7,24 @@ class player {
   String sex;
   int points;
   static int pic = 0;
-  static var playerbase = {};
+  static var playerDatabase = {};
 
   player(this.id, this.name, this.sex, this.points);
 
   player.addPlayer(String newName, String newSex, int newPoints) {
     player newPlayer = new player(pic, newName, newSex, newPoints);
-    playerbase[pic] = newPlayer;
+    playerDatabase[pic] = newPlayer;
     pic++;
   }
 
 
   static String getPlayerName(int id){
-    player _playerplaceholder = player.playerbase[id];
+    player _playerplaceholder = player.playerDatabase[id];
     return _playerplaceholder.name.toString();
   }
 
   static String getPlayerSex(int id){
-    player _playerplaceholder = player.playerbase[id];
+    player _playerplaceholder = player.playerDatabase[id];
     return _playerplaceholder.sex.toString();
   }
 
@@ -113,7 +113,7 @@ class editPlayersState extends State<editPlayers> {
 
   Widget _buildgridmid() {
 
-    if (player.playerbase.length>0){
+    if (player.playerDatabase.length>0){
       List _playerIds = new List();
       _playerIds.clear();
       String _playerNamesAsString = '';
@@ -122,7 +122,7 @@ class editPlayersState extends State<editPlayers> {
       int timesPlayerCounter;
       int rowCounter;
       int columnCounter;*/
-      for (player _playerplaceholder in player.playerbase.values){
+      for (player _playerplaceholder in player.playerDatabase.values){
         _playerNamesAsString = _playerNamesAsString + '${_playerplaceholder.name}, ';
         _playerIds.add(_playerplaceholder.id);
         _playerCounter++;
@@ -158,7 +158,7 @@ class editPlayersState extends State<editPlayers> {
                           ),
                           new Expanded(
                             child: new IconButton(icon: Icon(Icons.clear), onPressed: (){
-                                player.playerbase.remove(_playerIds[index]);
+                                player.playerDatabase.remove(_playerIds[index]);
                                 setState((){});
                               }
                             ),

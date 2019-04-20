@@ -17,7 +17,7 @@ class viewSplashScreenState extends State<viewSplashScreen>{
   void initState()  {
     super.initState();
     setState(() {
-      if(question.questionbase[0]==null){
+      if(question.questionDatabase[0]==null){
         buildDatabase();
       }
       _disclaimerread();

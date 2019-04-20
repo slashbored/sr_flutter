@@ -3,10 +3,23 @@ import 'menuDrawer.dart';
 
 class category{
   int id;
-  String name;
-  String description;
-  static int i = 0;
-  static var categorybase = {};
+  String descr;
+  static int cic = 0;
+  static var categoryDatabase = {};
+}
+
+class type{
+  int id;
+  String descr;
+  static int tid = 0;
+  static var typeDatabase ={};
+}
+
+class subtype{
+  int id;
+  String descr;
+  static int stid = 0;
+  static var subtypeDatabase ={};
 }
 
 class editCategories extends StatefulWidget{
