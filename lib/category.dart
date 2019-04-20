@@ -6,6 +6,13 @@ class category{
   String descr;
   static int cic = 0;
   static var categoryDatabase = {};
+
+  category(this.id, this.descr);
+
+  category.addCategory(int id, String descr){
+    category newCategory = new category(id, descr);
+    categoryDatabase[id] = newCategory;
+  }
 }
 
 class type{
@@ -13,6 +20,13 @@ class type{
   String descr;
   static int tid = 0;
   static var typeDatabase ={};
+
+  type(this.id, this.descr);
+
+  type.addType(int id, String descr){
+    type newType = new type(id, descr);
+    typeDatabase[id] = newType;
+  }
 }
 
 class subtype{
@@ -20,6 +34,13 @@ class subtype{
   String descr;
   static int stid = 0;
   static var subtypeDatabase ={};
+
+  subtype(this.id, this.descr);
+
+  subtype.addSubtype(int id, String descr){
+    subtype newSubtype = new subtype(id, descr);
+    subtypeDatabase[id] = newSubtype;
+  }
 }
 
 class editCategories extends StatefulWidget{
