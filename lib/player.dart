@@ -175,12 +175,12 @@ class editPlayersState extends State<editPlayers> {
       setState((){});
     }
     else  {
-      return new Text('Sgehtn');
+      return new Center(
+        child:
+          new Text('Bitte einen Spieler hinzufügen.')
+      );
     }
 
-  }
-
-  Widget _buildgrilowerdmid() {
   }
 
   Widget _txtaddPlayers() {
