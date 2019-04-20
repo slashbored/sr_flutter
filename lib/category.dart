@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'menuDrawer.dart';
 
 class category{
   int id;
   String descr;
+  String title_german;
   static int cic = 0;
   static var categoryDatabase = {};
 
-  category(this.id, this.descr);
+  category(this.id, this.descr, this.title_german);
 
-  category.addCategory(int id, String descr){
-    category newCategory = new category(id, descr);
+  category.addCategory(int id, String descr, String title_german){
+    category newCategory = new category(id, descr, title_german);
     categoryDatabase[id] = newCategory;
   }
 }
@@ -57,8 +59,10 @@ class editCategoriesState extends State<editCategories>{
         centerTitle: true,
       ),
       drawer: menuDrawer(context),
-      body: new Text('Hier stehen die Kategorien.',
-        textAlign: TextAlign.center
+      body: new Center(
+        child: new Text('Hier stehen die Kategorien.',
+            textAlign: TextAlign.center
+        )
       )
     );
   }

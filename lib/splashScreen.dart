@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 import 'disclaimer.dart';
 import 'overView.dart';
 import 'question.dart';
@@ -44,7 +45,7 @@ class viewSplashScreenState extends State<viewSplashScreen>{
 
   _disclaimerread() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await Future.delayed(const Duration(seconds: 2), (){});
+    await Future.delayed(const Duration(seconds: 2  ), (){});
     int dcr = (prefs.getInt('dcr'));
     if (dcr==null||dcr==0){
       await prefs.setInt('dcr', 1);
