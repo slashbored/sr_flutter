@@ -15,6 +15,17 @@ class category{
     category newCategory = new category(id, descr, title_german);
     categoryDatabase[id] = newCategory;
   }
+
+  static String getCatergoryDescr(int id){
+    category _categoryplaceholder = category.categoryDatabase[id];
+    return _categoryplaceholder.descr.toString();
+  }
+  
+  static String getCatergoryTitle_german(int id){
+    category _categoryplaceholder = category.categoryDatabase[id];
+    return _categoryplaceholder.title_german.toString();
+  }
+  
 }
 
 class type{
@@ -51,10 +62,18 @@ class editCategories extends StatefulWidget{
 }
 
 class editCategoriesState extends State<editCategories>{
-  bool setIt = false;
+  bool ranOnce = false;
+  var cbValues = {};
 
   @override
   Widget build(BuildContext context) {
+    if (ranOnce==false){
+      for(category _categoryplaceholder in category.categoryDatabase.values){
+        cbValues[_categoryplaceholder.id] = false;
+      }
+    }
+    ranOnce=true;
+
     return new Scaffold(
       appBar: new AppBar(
         title: Text('Kategorien bearbeiten'),
@@ -66,23 +85,41 @@ class editCategoriesState extends State<editCategories>{
           children:[
             new Spacer(flex: 1),
             new Flexible(
-              child: new SwitchListTile(
-                title: const Text('Animate Slowly'),
-                onChanged: (bool newValue) {
-                  setState(() {
-                    setIt==true?newValue=false:newValue=true;
-                    setIt=newValue;
-                  });
-                },
-                value: setIt,
+              child: new ListView(
+                children: <Widget>[
+                  ListView.builder(itemCount: category.categoryDatabase.length,
+                      itemBuilder: (BuildContext context, int index){
+                        return new SwitchListTile(
+                          title: new Text(category.getCatergoryTitle_german(index+1)),
+                          value: cbValues[index+1],
+                          onChanged: (bool newCBValue) {
+                            setState(() {
+                              cbValues[index+1]==true?newCBValue=false:newCBValue=true;
+                              cbValues[index+1]=newCBValue;
+                            });
+                          }
+                        );
+                      },
+                    shrinkWrap: true,
+                  )
+                ]
               ),
               flex: 7,
             ),
             new Spacer(flex: 1)
           ]
         )
-
       )
     );
   }
 }
+
+/*
+
+                children: category.categoryDatabase.map((int _id){
+                  return new SwitchListTile(
+                      title: new Text(category.getCatergoryTitle_german(_id)),
+                      value: 
+                      onChanged: null)
+                })
+ */

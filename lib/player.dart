@@ -29,6 +29,11 @@ class player {
     return _playerplaceholder.sex.toString();
   }
 
+  static int getPlayerPoints(int id){
+    player _playerplaceholder = player.playerDatabase[id];
+    return _playerplaceholder.points;
+  }
+
 }
 
 class editPlayers extends StatefulWidget  {
@@ -148,7 +153,7 @@ class editPlayersState extends State<editPlayers> {
                           new Expanded(
                             child: new Center(
                               child: new Text(
-                                  player.getPlayerName(_playerIds[index]).toString(),
+                                  player.getPlayerName(_playerIds[index]),
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: (player.getPlayerSex(_playerIds[index]).toString()=='m')?Colors.blue:Colors.red
