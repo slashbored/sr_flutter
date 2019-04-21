@@ -80,35 +80,42 @@ class editCategoriesState extends State<editCategories>{
         centerTitle: true,
       ),
       drawer: menuDrawer(context),
-      body: new Center(
-        child: new Row(
-          children:[
+      body: new Column(
+          children: [
             new Spacer(flex: 1),
             new Flexible(
-              child: new ListView(
-                children: <Widget>[
-                  ListView.builder(itemCount: category.categoryDatabase.length,
-                      itemBuilder: (BuildContext context, int index){
-                        return new SwitchListTile(
-                          title: new Text(category.getCatergoryTitle_german(index+1)),
-                          value: cbValues[index+1],
-                          onChanged: (bool newCBValue) {
-                            setState(() {
-                              cbValues[index+1]==true?newCBValue=false:newCBValue=true;
-                              cbValues[index+1]=newCBValue;
-                            });
-                          }
-                        );
-                      },
-                    shrinkWrap: true,
-                  )
-                ]
+              child: new Row(
+                children:[
+                  new Spacer(flex: 1),
+                  new Flexible(
+                    child: new ListView(
+                        children: <Widget>[
+                          ListView.builder(itemCount: category.categoryDatabase.length,
+                            itemBuilder: (BuildContext context, int index){
+                              return new SwitchListTile(
+                                  title: new Text(category.getCatergoryTitle_german(index+1)),
+                                  value: cbValues[index+1],
+                                  onChanged: (bool newCBValue) {
+                                    setState(() {
+                                      cbValues[index+1]==true?newCBValue=false:newCBValue=true;
+                                      cbValues[index+1]=newCBValue;
+                                    });
+                                  }
+                              );
+                            },
+                            shrinkWrap: true,
+                          )
+                        ]
+                    ),
+                    flex: 7,
+                  ),
+                  new Spacer(flex: 1)
+                ],
               ),
-              flex: 7,
+              flex: 5,
             ),
             new Spacer(flex: 1)
           ]
-        )
       )
     );
   }
