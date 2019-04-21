@@ -51,6 +51,8 @@ class editCategories extends StatefulWidget{
 }
 
 class editCategoriesState extends State<editCategories>{
+  bool setIt = false;
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -60,9 +62,26 @@ class editCategoriesState extends State<editCategories>{
       ),
       drawer: menuDrawer(context),
       body: new Center(
-        child: new Text('Hier stehen die Kategorien.',
-            textAlign: TextAlign.center
+        child: new Row(
+          children:[
+            new Spacer(flex: 1),
+            new Flexible(
+              child: new SwitchListTile(
+                title: const Text('Animate Slowly'),
+                onChanged: (bool newValue) {
+                  setState(() {
+                    setIt==true?newValue=false:newValue=true;
+                    setIt=newValue;
+                  });
+                },
+                value: setIt,
+              ),
+              flex: 7,
+            ),
+            new Spacer(flex: 1)
+          ]
         )
+
       )
     );
   }
