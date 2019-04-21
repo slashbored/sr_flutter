@@ -80,44 +80,33 @@ class editCategoriesState extends State<editCategories>{
         centerTitle: true,
       ),
       drawer: menuDrawer(context),
-      body: new Column(
-          children: [
-            new Spacer(flex: 1),
-            new Flexible(
-              child: new Row(
-                children:[
-                  new Spacer(flex: 1),
-                  new Flexible(
-                    child: new ListView(
-                        children: <Widget>[
-                          ListView.builder(itemCount: category.categoryDatabase.length,
-                            itemBuilder: (BuildContext context, int index){
-                              return new SwitchListTile(
-                                  title: new Text(category.getCatergoryTitle_german(index+1)),
-                                  value: cbValues[index+1],
-                                  onChanged: (bool newCBValue) {
-                                    setState(() {
-                                      cbValues[index+1]==true?newCBValue=false:newCBValue=true;
-                                      cbValues[index+1]=newCBValue;
-                                    });
-                                  }
-                              );
+      body: Center(
+          child:new FractionallySizedBox(
+            alignment: Alignment.center,
+            heightFactor: 0.75,
+            widthFactor: 0.75,
+              child: new ListView(
+                  children: <Widget>[
+                    ListView.builder(itemCount: category.categoryDatabase.length,
+                      itemBuilder: (BuildContext context, int index){
+                        return new SwitchListTile(
+                            title: new Text(category.getCatergoryTitle_german(index+1)),
+                            value: cbValues[index+1],
+                            onChanged: (bool newCBValue) {
+                              setState(() {
+                                cbValues[index+1]==true?newCBValue=false:newCBValue=true;
+                                cbValues[index+1]=newCBValue;
+                              });
                             },
-                            shrinkWrap: true,
-                          )
-                        ]
-                    ),
-                    flex: 7,
-                  ),
-                  new Spacer(flex: 1)
-                ],
-              ),
-              flex: 5,
-            ),
-            new Spacer(flex: 1)
-          ]
+                        );
+                      },
+                      shrinkWrap: true,
+                    )
+                  ],
+              )
       )
-    );
+      )
+      );
   }
 }
 

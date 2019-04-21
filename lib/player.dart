@@ -212,7 +212,7 @@ class editPlayersState extends State<editPlayers> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed: () {
-        if  (txtplayername==''){}
+        if  (txtplayername==''||txtplayername==null||txtplayername=='null'){}
         else  {
         player.addPlayer(txtplayername, "m", 0);
         _buildgridmid();
@@ -231,7 +231,7 @@ class editPlayersState extends State<editPlayers> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed: () {
-        if  (txtplayername==''){}
+        if  (txtplayername==''||txtplayername==null||txtplayername=='null'){}
         else {
           player.addPlayer(txtplayername, "f", 0);
           _buildgridmid();
