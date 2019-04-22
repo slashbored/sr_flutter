@@ -8,6 +8,36 @@ import 'question.dart';
 import 'category.dart';
 import 'overView.dart';
 
+class order{
+  int id;
+  int questionID;
+  int catID;
+  int typeID;
+  int subtypeID;
+  int allowedAmount;
+  int usedAmount;
+  static int oic = 0;
+  static var orderDB = {};
+
+  order(this.id,  this.questionID, this.catID, this.typeID, this.subtypeID, this.allowedAmount, this.usedAmount);
+
+  order.addOrder(int questionID, int catID, int typeID, int subtypeID, int allowedAmount, int usedAmount){
+    order _orderplaceholder = new order(oic, questionID, catID, typeID, subtypeID,  allowedAmount, usedAmount);
+    orderDB[oic] = _orderplaceholder;
+    oic++;
+  }
+
+  /*order.getOrder(int id){
+    order _orderplaceholder = orderDB[id];
+  }*/
+
+  static int getQuestionID(int id){
+    order _orderplaceholder = orderDB[id];
+    return _orderplaceholder.questionID;
+  }
+
+}
+
 
 class viewOrder extends StatefulWidget{
   @override
@@ -15,6 +45,21 @@ class viewOrder extends StatefulWidget{
 }
 
 class viewOrderState extends State<viewOrder>{
+  @override
+   void initState() {
+    super.initState();
+    setState(() {
+      for (category _categoryplaceholder in category.categoryDatabase.values){
+        if (category.cbValues[_categoryplaceholder.id]){
+          for (question _questionplaceholder in question.questionDatabase.values){
+            if (_categoryplaceholder.id == _questionplaceholder.cat_id) {
+              order.addOrder(_questionplaceholder.id, _questionplaceholder.cat_id, _questionplaceholder.type_id, _questionplaceholder.subtype_id, 1, 1);
+            }
+          }
+        }
+      }
+    });
+  }
   //String formattedOrder;
 
   @override
@@ -38,8 +83,11 @@ class viewOrderState extends State<viewOrder>{
             automaticallyImplyLeading: false,
           ),
     //drawer: menuDrawer(context),
-        body: new Text(
-          sprintf(question.getQuestionText(7, 'm'), ["Herbert"])
+        body: new Center(
+            child: new Text(
+              //sprintf(question.getQuestionText(7, 'm'), ["Herbert"])
+                question.getQuestionText(order.getQuestionID(7), 'm')
+            )
         )
         ),
       onWillPop: () async => false
