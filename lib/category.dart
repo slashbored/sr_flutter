@@ -8,6 +8,8 @@ class category{
   String title_german;
   static int cic = 0;
   static var categoryDatabase = {};
+  static bool ranOnce;
+  static var cbValues = {};
 
   category(this.id, this.descr, this.title_german);
 
@@ -49,7 +51,6 @@ class subtype{
   static var subtypeDatabase ={};
 
   subtype(this.id, this.descr);
-
   subtype.addSubtype(int id, String descr){
     subtype newSubtype = new subtype(id, descr);
     subtypeDatabase[id] = newSubtype;
@@ -62,17 +63,15 @@ class editCategories extends StatefulWidget{
 }
 
 class editCategoriesState extends State<editCategories>{
-  bool ranOnce = false;
-  var cbValues = {};
 
   @override
   Widget build(BuildContext context) {
-    if (ranOnce==false){
+    if (category.ranOnce!=true){
       for(category _categoryplaceholder in category.categoryDatabase.values){
-        cbValues[_categoryplaceholder.id] = false;
+        category.cbValues[_categoryplaceholder.id] = false;
       }
     }
-    ranOnce=true;
+    category.ranOnce=true;
 
     return new Scaffold(
       appBar: new AppBar(
@@ -91,11 +90,11 @@ class editCategoriesState extends State<editCategories>{
                       itemBuilder: (BuildContext context, int index){
                         return new SwitchListTile(
                             title: new Text(category.getCatergoryTitle_german(index+1)),
-                            value: cbValues[index+1],
+                            value: category.cbValues[index+1],
                             onChanged: (bool newCBValue) {
                               setState(() {
-                                cbValues[index+1]==true?newCBValue=false:newCBValue=true;
-                                cbValues[index+1]=newCBValue;
+                                category.cbValues[index+1]==true?newCBValue=false:newCBValue=true;
+                                category.cbValues[index+1]=newCBValue;
                               });
                             },
                         );
