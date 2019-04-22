@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:async/async.dart';
+import 'dart:math';
 import 'menuDrawer.dart';
 import 'player.dart';
 import 'question.dart';
@@ -45,6 +46,9 @@ class viewOrder extends StatefulWidget{
 }
 
 class viewOrderState extends State<viewOrder>{
+  static Random random = new Random();
+  static int randomQuestionID;
+
   @override
    void initState() {
     super.initState();
@@ -58,6 +62,7 @@ class viewOrderState extends State<viewOrder>{
           }
         }
       }
+      randomQuestionID = random.nextInt(order.orderDB.length);
     });
   }
   //String formattedOrder;
@@ -83,11 +88,22 @@ class viewOrderState extends State<viewOrder>{
             automaticallyImplyLeading: false,
           ),
     //drawer: menuDrawer(context),
-        body: new Center(
-            child: new Text(
-              //sprintf(question.getQuestionText(7, 'm'), ["Herbert"])
-                question.getQuestionText(order.getQuestionID(7), 'm')
+        body: new Column(
+          children:[
+            new Center(
+              child: new Text(
+                //sprintf(question.getQuestionText(7, 'm'), ["Herbert"])
+                  question.getQuestionText(order.getQuestionID(randomQuestionID), 'm')
+              ),
+            ),
+            FloatingActionButton(
+              child: Icon(Icons.cached),
+              onPressed: () {
+                randomQuestionID = random.nextInt(order.orderDB.length);
+                setState(() {});
+              },
             )
+          ]
         )
         ),
       onWillPop: () async => false
