@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'overView.dart';
 import 'player.dart';
 import 'category.dart';
@@ -84,7 +85,9 @@ Widget menuDrawer(BuildContext context){
            textAlign: TextAlign.center
            ),
            onTap: () {
-             Navigator.push(context, MaterialPageRoute(builder: (context) => viewOrder()));
+             SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]).then((_) {
+               Navigator.push(context, MaterialPageRoute(builder: (context) => viewOrder()));
+             });
            },
          )
         ],
