@@ -3,6 +3,7 @@ import 'overView.dart';
 import 'player.dart';
 import 'category.dart';
 import 'extras.dart';
+import 'order.dart';
 
 Widget menuDrawer(BuildContext context){
   return FractionallySizedBox(
@@ -83,6 +84,7 @@ Widget menuDrawer(BuildContext context){
            textAlign: TextAlign.center
            ),
            onTap: () {
+             Navigator.push(context, MaterialPageRoute(builder: (context) => viewOrder()));
            },
          )
         ],
