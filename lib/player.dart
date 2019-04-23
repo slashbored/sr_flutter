@@ -9,6 +9,7 @@ class player {
   int points;
   static int pic = 0;
   static var playerDatabase = {};
+  static List playerIds = new List();
 
   player(this.id, this.name, this.sex, this.points);
 
@@ -32,6 +33,11 @@ class player {
   static int getPlayerPoints(int id){
     player _playerplaceholder = player.playerDatabase[id];
     return _playerplaceholder.points;
+  }
+
+  static int getPlayerIdFromList(int id){
+    player _playerplaceholder = player.playerDatabase[playerIds[id]];
+    return _playerplaceholder.id;
   }
 
 }
@@ -120,8 +126,7 @@ class editPlayersState extends State<editPlayers> {
   Widget _buildgridmid() {
 
     if (player.playerDatabase.length>0){
-      List _playerIds = new List();
-      _playerIds.clear();
+      player.playerIds.clear();
       String _playerNamesAsString = '';
       int _playerCounter = 0;
       /*int modPlayerCounter;
@@ -130,7 +135,7 @@ class editPlayersState extends State<editPlayers> {
       int columnCounter;*/
       for (player _playerplaceholder in player.playerDatabase.values){
         _playerNamesAsString = _playerNamesAsString + '${_playerplaceholder.name}, ';
-        _playerIds.add(_playerplaceholder.id);
+        player.playerIds.add(_playerplaceholder.id);
         _playerCounter++;
       }
       print(_playerNamesAsString);
@@ -153,10 +158,10 @@ class editPlayersState extends State<editPlayers> {
                           new Expanded(
                             child: new Center(
                               child: new Text(
-                                  player.getPlayerName(_playerIds[index]),
+                                  player.getPlayerName(player.playerIds[index]),
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: (player.getPlayerSex(_playerIds[index]).toString()=='m')?Colors.blue:Colors.red
+                                      color: (player.getPlayerSex(player.playerIds[index]).toString()=='m')?Colors.blue:Colors.red
                                   )
                               )
                             ),
@@ -164,7 +169,7 @@ class editPlayersState extends State<editPlayers> {
                           ),
                           new Expanded(
                             child: new IconButton(icon: Icon(Icons.clear), onPressed: (){
-                                player.playerDatabase.remove(_playerIds[index]);
+                                player.playerDatabase.remove(player.playerIds[index]);
                                 setState((){});
                               }
                             ),

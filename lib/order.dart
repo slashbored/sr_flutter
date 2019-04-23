@@ -62,6 +62,8 @@ class viewOrderState extends State<viewOrder>{
   static Random random = new Random();
   static int randomQuestionID;
   static int randomSelectorID;
+  static int randomFirstPlayerID;
+  static int randomSecondPlayerID;
   static String randomSelectorChar;
   static String finalOrderString;
 
@@ -128,6 +130,8 @@ class viewOrderState extends State<viewOrder>{
   }
 
   void _buildorder(){
+
+    //Questionblock
     randomQuestionID = random.nextInt(order.orderDatabase.length);
     order _orderplaceholder = order.orderDatabase[randomQuestionID];
     if (_orderplaceholder.usedAmount<_orderplaceholder.allowedAmount) {
@@ -181,11 +185,13 @@ class viewOrderState extends State<viewOrder>{
         }
       }
       _orderplaceholder.usedAmount++;
-      finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
-      if(finalOrderString==null){
-        print('dafuq');
-      }
-      print(finalOrderString);
+
+      //Playerblock
+
+      randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
+      player _playerplaceholder = player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
+
+      finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar) + '\n' + _playerplaceholder.name;
     }
     else{
       order.uoic++;
