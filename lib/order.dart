@@ -59,12 +59,23 @@ class viewOrder extends StatefulWidget{
 }
 
 class viewOrderState extends State<viewOrder>{
+
+  // Randomblock
   static Random random = new Random();
   static int randomQuestionID;
   static int randomSelectorID;
   static int randomFirstPlayerID;
   static int randomSecondPlayerID;
   static String randomSelectorChar;
+
+  //Avoid the same
+  static int lastQuestionID;
+  static int lastPlayerID;
+
+  //Final block
+  static player finalFirstPlayer;
+  static player finalSecondPlayer;
+  static question finalQuestion;
   static String finalOrderString;
 
   @override
@@ -83,7 +94,6 @@ class viewOrderState extends State<viewOrder>{
       _buildorder();
     });
   }
-  //String formattedOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +120,11 @@ class viewOrderState extends State<viewOrder>{
           children:[
             new Center(
               child: new Text(
-                //sprintf(question.getQuestionText(7, 'm'), ["Herbert"])
-                  //question.getQuestionText(order.getQuestionID(randomQuestionID), 'm')
+                finalFirstPlayer.name
+              )
+            ),
+            new Center(
+              child: new Text(
                 finalOrderString
               ),
             ),
@@ -187,12 +200,25 @@ class viewOrderState extends State<viewOrder>{
       _orderplaceholder.usedAmount++;
 
       //Playerblock
-
       randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
-      player _playerplaceholder = player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
+      finalFirstPlayer = player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
+      lastPlayerID = finalFirstPlayer.id;
 
-      finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar) + '\n' + _playerplaceholder.name;
+      if(randomSelectorID==1){
+        while(randomSecondPlayerID==null||randomSecondPlayerID==randomFirstPlayerID){
+          randomSecondPlayerID = random.nextInt(player.playerDatabase.length);
+        }
+        finalSecondPlayer = player.playerDatabase[player.getPlayerIdFromList(randomSecondPlayerID)];
+      }
+
+
+
+      finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
+      if (finalOrderString.contains('%s')){
+        finalOrderString = sprintf(finalOrderString, [finalSecondPlayer.name]);
+      }
     }
+
     else{
       order.uoic++;
       if(order.uoic >= order.orderDatabase.length * 0.75){
