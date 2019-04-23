@@ -18,14 +18,27 @@ class order{
   int allowedAmount;
   int usedAmount;
   static int oic = 0;
-  static var orderDB = {};
+  static int uoic = 0;
+  static var orderDatabase = {};
 
   order(this.id,  this.questionID, this.catID, this.typeID, this.subtypeID, this.allowedAmount, this.usedAmount);
 
   order.addOrder(int questionID, int catID, int typeID, int subtypeID, int allowedAmount, int usedAmount){
     order _orderplaceholder = new order(oic, questionID, catID, typeID, subtypeID,  allowedAmount, usedAmount);
-    orderDB[oic] = _orderplaceholder;
+    orderDatabase[oic] = _orderplaceholder;
     oic++;
+  }
+
+  order.setAllowedAmount(int id, int amount){
+    order _orderplaceholder = orderDatabase[id];
+    _orderplaceholder.allowedAmount = amount;
+    orderDatabase[id] = _orderplaceholder;
+  }
+
+  order.setUsedAmount(int id, int amount){
+    order _orderplaceholder = orderDatabase[id];
+    _orderplaceholder.usedAmount = amount;
+    orderDatabase[id] = _orderplaceholder;
   }
 
   /*order.getOrder(int id){
@@ -33,7 +46,7 @@ class order{
   }*/
 
   static int getQuestionID(int id){
-    order _orderplaceholder = orderDB[id];
+    order _orderplaceholder = orderDatabase[id];
     return _orderplaceholder.questionID;
   }
 
@@ -50,6 +63,7 @@ class viewOrderState extends State<viewOrder>{
   static int randomQuestionID;
   static int randomSelectorID;
   static String randomSelectorChar;
+  static String finalOrderString;
 
   @override
    void initState() {
@@ -64,6 +78,7 @@ class viewOrderState extends State<viewOrder>{
           }
         }
       }
+      _buildorder();
     });
   }
   //String formattedOrder;
@@ -95,12 +110,13 @@ class viewOrderState extends State<viewOrder>{
               child: new Text(
                 //sprintf(question.getQuestionText(7, 'm'), ["Herbert"])
                   //question.getQuestionText(order.getQuestionID(randomQuestionID), 'm')
-                _buildorder()
+                finalOrderString
               ),
             ),
             FloatingActionButton(
               child: Icon(Icons.cached),
               onPressed: () {
+                _buildorder();
                 setState(() {});
               },
             )
@@ -111,9 +127,9 @@ class viewOrderState extends State<viewOrder>{
     );
   }
 
-  String _buildorder(){
-    randomQuestionID = random.nextInt(order.orderDB.length);
-    order _orderplaceholder = order.orderDB[randomQuestionID];
+  void _buildorder(){
+    randomQuestionID = random.nextInt(order.orderDatabase.length);
+    order _orderplaceholder = order.orderDatabase[randomQuestionID];
     if (_orderplaceholder.usedAmount<_orderplaceholder.allowedAmount) {
       question _questionplaceholder = question.questionDatabase[order.getQuestionID(randomQuestionID)];
       randomSelectorID = random.nextInt(5);
@@ -164,9 +180,21 @@ class viewOrderState extends State<viewOrder>{
           }
         }
       }
-      return question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
+      _orderplaceholder.usedAmount++;
+      finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
+      if(finalOrderString==null){
+        print('dafuq');
+      }
+      print(finalOrderString);
     }
     else{
+      order.uoic++;
+      if(order.uoic >= order.orderDatabase.length * 0.75){
+        for(order _orderplaceholder in order.orderDatabase.values){
+          order.setUsedAmount(_orderplaceholder.id, 0);
+        }
+        order.uoic=0;
+      }
       _buildorder();
     }
   }
