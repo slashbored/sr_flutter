@@ -48,6 +48,8 @@ class viewOrder extends StatefulWidget{
 class viewOrderState extends State<viewOrder>{
   static Random random = new Random();
   static int randomQuestionID;
+  static int randomSelectorID;
+  static String randomSelectorChar;
 
   @override
    void initState() {
@@ -57,12 +59,11 @@ class viewOrderState extends State<viewOrder>{
         if (category.cbValues[_categoryplaceholder.id]){
           for (question _questionplaceholder in question.questionDatabase.values){
             if (_categoryplaceholder.id == _questionplaceholder.cat_id) {
-              order.addOrder(_questionplaceholder.id, _questionplaceholder.cat_id, _questionplaceholder.type_id, _questionplaceholder.subtype_id, 1, 1);
+              order.addOrder(_questionplaceholder.id, _questionplaceholder.cat_id, _questionplaceholder.type_id, _questionplaceholder.subtype_id, 1, 0);
             }
           }
         }
       }
-      randomQuestionID = random.nextInt(order.orderDB.length);
     });
   }
   //String formattedOrder;
@@ -93,13 +94,13 @@ class viewOrderState extends State<viewOrder>{
             new Center(
               child: new Text(
                 //sprintf(question.getQuestionText(7, 'm'), ["Herbert"])
-                  question.getQuestionText(order.getQuestionID(randomQuestionID), 'm')
+                  //question.getQuestionText(order.getQuestionID(randomQuestionID), 'm')
+                _buildorder()
               ),
             ),
             FloatingActionButton(
               child: Icon(Icons.cached),
               onPressed: () {
-                randomQuestionID = random.nextInt(order.orderDB.length);
                 setState(() {});
               },
             )
@@ -109,4 +110,66 @@ class viewOrderState extends State<viewOrder>{
       onWillPop: () async => false
     );
   }
+
+  String _buildorder(){
+    randomQuestionID = random.nextInt(order.orderDB.length);
+    order _orderplaceholder = order.orderDB[randomQuestionID];
+    if (_orderplaceholder.usedAmount<_orderplaceholder.allowedAmount) {
+      question _questionplaceholder = question.questionDatabase[order.getQuestionID(randomQuestionID)];
+      randomSelectorID = random.nextInt(5);
+      switch (randomSelectorID) {
+        case 0: {
+          randomSelectorChar = 'a';
+          break;
+        }
+        case 1: {
+          randomSelectorChar = 'm';
+          break;
+        }
+        case 2: {
+          randomSelectorChar = 'y';
+          break;
+        }
+        case 3: {
+          randomSelectorChar = 't';
+          break;
+        }
+        case 4: {
+          randomSelectorChar = 'r';
+          break;
+        }
+      }
+      while (question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==''||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==null){
+        randomSelectorID = random.nextInt(4);
+        switch (randomSelectorID) {
+          case 0: {
+            randomSelectorChar = 'a';
+            break;
+          }
+          case 1: {
+            randomSelectorChar = 'm';
+            break;
+          }
+          case 2: {
+            randomSelectorChar = 'y';
+            break;
+          }
+          case 3: {
+            randomSelectorChar = 't';
+            break;
+          }
+          case 4: {
+            randomSelectorChar = 'r';
+            break;
+          }
+        }
+      }
+      return question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
+    }
+    else{
+      _buildorder();
+    }
+  }
+
+
 }
