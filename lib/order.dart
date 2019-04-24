@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:async/async.dart';
 import 'dart:math';
-import 'menuDrawer.dart';
 import 'player.dart';
 import 'question.dart';
 import 'category.dart';
@@ -77,6 +76,7 @@ class viewOrderState extends State<viewOrder>{
   static player finalSecondPlayer;
   static question finalQuestion;
   static String finalOrderString;
+  static Row firstRow;
 
   @override
    void initState() {
@@ -117,23 +117,41 @@ class viewOrderState extends State<viewOrder>{
           ),
     //drawer: menuDrawer(context),
         body: new Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children:[
             new Center(
-              child: new Text(
-                finalFirstPlayer.name
-              )
+              child: firstRow
             ),
             new Center(
               child: new Text(
                 finalOrderString
-              ),
+              )
             ),
-            FloatingActionButton(
-              child: Icon(Icons.cached),
-              onPressed: () {
-                _buildorder();
-                setState(() {});
-              },
+            new Row(
+              children: [
+                new Expanded(
+                  child: new FloatingActionButton(
+                    heroTag: "btn1",
+                    child: Icon(Icons.add),
+                    onPressed: () {
+                      _buildorder();
+                      setState(() {});
+                    },
+                  ),
+                ),
+                new Expanded(
+                  child: new FloatingActionButton(
+                    heroTag: "btn2",
+                    child: Icon(Icons.remove),
+                    onPressed: () {
+                      finalFirstPlayer.points++;
+                      finalSecondPlayer!=null?finalSecondPlayer.points++:nyull;
+                      _buildorder();
+                      setState(() {});
+                    }
+                  )
+                )
+              ]
             )
           ]
         )
@@ -201,6 +219,9 @@ class viewOrderState extends State<viewOrder>{
 
       //Playerblock
       randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
+      while(randomFirstPlayerID==lastPlayerID){
+        randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
+      }
       finalFirstPlayer = player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
       lastPlayerID = finalFirstPlayer.id;
 
@@ -210,7 +231,10 @@ class viewOrderState extends State<viewOrder>{
         }
         finalSecondPlayer = player.playerDatabase[player.getPlayerIdFromList(randomSecondPlayerID)];
       }
-
+      else  {
+        finalSecondPlayer = null;
+      }
+      firstRow = _buildfirstRow(finalFirstPlayer, finalSecondPlayer);
 
 
       finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
@@ -229,6 +253,62 @@ class viewOrderState extends State<viewOrder>{
       }
       _buildorder();
     }
+  }
+
+  Widget _buildfirstRow(player firstPlayer, player secondPlayer){;
+  if (secondPlayer==null) {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        new Expanded(
+          child: new Text(
+            firstPlayer.points.toString(),
+              textAlign: TextAlign.center
+            ),
+            flex: 1
+        ),
+        new Expanded(
+          child: new Text(
+            firstPlayer.name,
+              textAlign: TextAlign.center
+          ),
+          flex: 1
+        ),
+        new Spacer(
+          flex: 1
+        )
+      ]
+    );
+  }
+  else{
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        new Expanded(
+          child: new Text(
+            firstPlayer.points.toString(),
+            textAlign: TextAlign.center
+          ),
+          flex: 1
+          ),
+        new Expanded(
+          child: new Text(
+            firstPlayer.name + ' & ' + secondPlayer.name,
+              textAlign: TextAlign.center
+          ),
+          flex: 1
+          ),
+        new Expanded(
+          child: new Text(
+            secondPlayer.points.toString(),
+              textAlign: TextAlign.center
+          ),
+          flex: 1
+          )
+      ]
+    );
+
+  }
   }
 
 
