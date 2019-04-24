@@ -255,7 +255,7 @@ class viewOrderState extends State<viewOrder>{
     }
   }
 
-  Widget _buildfirstRow(player firstPlayer, player secondPlayer){;
+  Widget _buildfirstRow(player firstPlayer, player secondPlayer){
   if (secondPlayer==null) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
