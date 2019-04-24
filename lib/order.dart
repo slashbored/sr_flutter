@@ -145,7 +145,7 @@ class viewOrderState extends State<viewOrder>{
                     child: Icon(Icons.remove),
                     onPressed: () {
                       finalFirstPlayer.points++;
-                      finalSecondPlayer!=null?finalSecondPlayer.points++:nyull;
+                      finalSecondPlayer!=null?finalSecondPlayer.points++:null;
                       _buildorder();
                       setState(() {});
                     }
