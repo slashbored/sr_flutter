@@ -85,9 +85,23 @@ Widget menuDrawer(BuildContext context){
            textAlign: TextAlign.center
            ),
            onTap: () {
-             SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]).then((_) {
-               Navigator.push(context, MaterialPageRoute(builder: (context) => viewOrder()));
-             });
+             /*if (player.playerDatabase.length<3){
+               final scaffold = Scaffold.of(context);
+               scaffold.showSnackBar(
+                 SnackBar(
+                  content: const Text ('Bitte gib mehr als 3 Spieler ein'),
+                  )
+               );
+             }*/
+             /*else {
+
+             }*/
+          if (player.playerDatabase.length>=3&&category.cic>=3){
+            SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]).then((_) {
+              SystemChrome.setEnabledSystemUIOverlays([]);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => viewOrder()));
+            });
+          }
            },
          )
         ],

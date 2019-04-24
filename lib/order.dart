@@ -99,7 +99,7 @@ class viewOrderState extends State<viewOrder>{
   Widget build(BuildContext context) {
     return new WillPopScope(
       child: new Scaffold(
-          appBar: new AppBar(
+          /*appBar: new AppBar(
             title: new Text('Aufgabe'),
               actions:  <Widget>[
                 IconButton(
@@ -114,7 +114,7 @@ class viewOrderState extends State<viewOrder>{
               ],
             centerTitle: true,
             automaticallyImplyLeading: false,
-          ),
+          ),*/
     //drawer: menuDrawer(context),
         body: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

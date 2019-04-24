@@ -92,10 +92,14 @@ class editCategoriesState extends State<editCategories>{
                             title: new Text(category.getCatergoryTitle_german(index+1)),
                             value: category.cbValues[index+1],
                             onChanged: (bool newCBValue) {
+                              category.cic = 0;
                               setState(() {
                                 category.cbValues[index+1]==true?newCBValue=false:newCBValue=true;
                                 category.cbValues[index+1]=newCBValue;
                               });
+                              for (bool selectedCategory in category.cbValues.values) {
+                                (selectedCategory)?category.cic++:null;
+                              }
                             },
                         );
                       },
