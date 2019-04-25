@@ -78,6 +78,15 @@ class viewOrderState extends State<viewOrder>{
   static String finalOrderString;
   static Row firstRow;
 
+  final TextStyle _maletitlestyle = const TextStyle(
+    fontSize: 36,
+    color: Colors.blue
+  );
+  final TextStyle _femaletitlestyle = const TextStyle(
+      fontSize: 36,
+      color: Colors.red
+  );
+
   @override
    void initState() {
     super.initState();
@@ -119,39 +128,47 @@ class viewOrderState extends State<viewOrder>{
         body: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children:[
-            new Center(
-              child: firstRow
-            ),
-            new Center(
-              child: new Text(
-                finalOrderString
+            new Expanded(
+              child: new Center(
+                  child: firstRow
               )
             ),
-            new Row(
-              children: [
-                new Expanded(
-                  child: new FloatingActionButton(
-                    heroTag: "btn1",
-                    child: Icon(Icons.add),
-                    onPressed: () {
-                      _buildorder();
-                      setState(() {});
-                    },
-                  ),
-                ),
-                new Expanded(
-                  child: new FloatingActionButton(
-                    heroTag: "btn2",
-                    child: Icon(Icons.remove),
-                    onPressed: () {
-                      finalFirstPlayer.points++;
-                      finalSecondPlayer!=null?finalSecondPlayer.points++:null;
-                      _buildorder();
-                      setState(() {});
-                    }
-                  )
+            new Expanded(
+                child: new Center(
+                    child: new Text(
+                        finalOrderString
+                    )
                 )
-              ]
+            ),
+            new Expanded(
+              child: new Row(
+                  children: [
+                    new Expanded(
+                        child: new FloatingActionButton(
+                            heroTag: "btn1",
+                            child: Icon(Icons.thumb_down),
+                            backgroundColor: Colors.red,
+                            onPressed: () {
+                              finalFirstPlayer.points++;
+                              finalSecondPlayer!=null?finalSecondPlayer.points++:null;
+                              _buildorder();
+                              setState(() {});
+                            }
+                        )
+                    ),
+                    new Expanded(
+                      child: new FloatingActionButton(
+                        heroTag: "btn2",
+                        backgroundColor: Colors.green,
+                        child: Icon(Icons.thumb_up),
+                        onPressed: () {
+                          _buildorder();
+                          setState(() {});
+                        },
+                      ),
+                    )
+                  ]
+              )
             )
           ]
         )
@@ -263,14 +280,18 @@ class viewOrderState extends State<viewOrder>{
         new Expanded(
           child: new Text(
             firstPlayer.points.toString(),
-              textAlign: TextAlign.center
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24
+            )
             ),
             flex: 1
         ),
         new Expanded(
           child: new Text(
             firstPlayer.name,
-              textAlign: TextAlign.center
+            textAlign: TextAlign.center,
+            style: firstPlayer.sex=='m'?_maletitlestyle:_femaletitlestyle
           ),
           flex: 1
         ),
@@ -287,21 +308,45 @@ class viewOrderState extends State<viewOrder>{
         new Expanded(
           child: new Text(
             firstPlayer.points.toString(),
-            textAlign: TextAlign.center
+            textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 24
+              )
           ),
           flex: 1
           ),
         new Expanded(
-          child: new Text(
-            firstPlayer.name + ' & ' + secondPlayer.name,
-              textAlign: TextAlign.center
-          ),
+            child: new RichText(
+              text: TextSpan(
+                children: <TextSpan>  [
+                  TextSpan(
+                      text:finalFirstPlayer.name,
+                      style: finalFirstPlayer.sex=='m'?_maletitlestyle:_femaletitlestyle
+                  ),
+                  TextSpan(
+                    text:' & ',
+                    style: TextStyle(
+                      fontSize: 36,
+                      color: Colors.black
+                    )
+                  ),
+                  TextSpan(
+                      text:finalSecondPlayer.name,
+                      style: finalSecondPlayer.sex=='m'?_maletitlestyle:_femaletitlestyle
+                  )
+                ]
+              ),
+              textAlign: TextAlign.center,
+            ),
           flex: 1
           ),
         new Expanded(
           child: new Text(
             secondPlayer.points.toString(),
-              textAlign: TextAlign.center
+            textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 24
+              )
           ),
           flex: 1
           )

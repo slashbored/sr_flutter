@@ -64,21 +64,34 @@ class viewOverviewState extends State<viewOverview>{
         drawer: menuDrawer(context),
         body: Center(
           child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Text('Kategorienanzahl: ' + category.cic.toString()),
-                  categoryIcon
-                ]
+              new Spacer(
+                flex: 1
               ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Text('Spieleranzahl: ' + player.playerDatabase.length.toString()),
-                  playerIcon
-                ]
+              new Expanded(
+                child: new Column(
+                  children: [
+                    new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          new Text('Kategorienanzahl: ' + category.cic.toString()),
+                          categoryIcon
+                        ]
+                    ),
+                    new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          new Text('Spieleranzahl: ' + player.playerDatabase.length.toString()),
+                          playerIcon
+                        ]
+                    )
+                  ]
+                ),
+                flex: 1
+              ),
+              new Spacer(
+                flex: 1
               )
             ]
           )
@@ -89,16 +102,32 @@ class viewOverviewState extends State<viewOverview>{
 
   void _getIcons(){
     if(player.playerDatabase.length<3){
-      playerIcon = IconButton(icon: Icon(Icons.close), color: Colors.red, onPressed: null);
+      playerIcon = IconButton(
+          icon: Icon(Icons.close),
+          color: Colors.red,
+          disabledColor: Colors.red,
+          onPressed: null);
     }
     else{
-      playerIcon = IconButton(icon: Icon(Icons.check), color: Colors.green, onPressed: null);
+      playerIcon = IconButton(
+          icon: Icon(Icons.check),
+          color: Colors.green,
+          disabledColor: Colors.green,
+          onPressed: null);
     }
     if(category.cic<3){
-      categoryIcon = IconButton(icon: Icon(Icons.close), color: Colors.red, onPressed: null);
+      categoryIcon = IconButton(
+          icon: Icon(Icons.close),
+          color: Colors.red,
+          disabledColor: Colors.red,
+          onPressed: null);
     }
     else{
-      categoryIcon = IconButton(icon: Icon(Icons.check), color: Colors.green, onPressed: null);
+      categoryIcon = IconButton(
+          icon: Icon(Icons.check),
+          color: Colors.green,
+          disabledColor: Colors.green,
+          onPressed: null);
     }
   }
 
