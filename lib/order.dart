@@ -487,20 +487,22 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
 
   void _starttimer(){
     _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
-    running=true;
   }
 
   void _getTime()  {
     int duration = finalQuestion.time;
     setState(() {
-      if (_countdownSeconds == 0) {
-        _countdownSeconds = duration;
-      } else {
+        if (running=false){
+          _countdownSeconds = duration;
+          running = true;
+        }
         _countdownSeconds--;
-        print('$_countdownSeconds');
         _timerbtnchild = Text('$_countdownSeconds');
         thirdRow = _buildThirdRow(finalQuestion);
-      }
+        if (_countdownSeconds == 0){
+          running = false;
+          _timer.cancel();
+        }
     });
   }
 
