@@ -86,6 +86,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
 
   static Timer _timer;
   static var _timerbtnchild;
+  static int _countdownSeconds = 0;
   static bool running;
 
   //Final block
@@ -142,6 +143,12 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
       running=false;
       _buildorder();
     });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -401,9 +408,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
           backgroundColor: Colors.blue,
           child: _timerbtnchild,
             onPressed: () {
-            _startTimer();
-            setState(() {
-            });
+            _starttimer();
           }
       );
       return new Row(
@@ -480,33 +485,22 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
     }
   }
 
-
-  void _startTimer()  {
-    refresh();
-    int duration = finalQuestion.time;
-    const _oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-        _oneSec, (Timer timer) => setState(() {
-          if (duration < 1) {
-            running=false;
-            timer.cancel();
-          } else {
-            running=true;
-            duration = duration - 1;
-            setState(() {
-              _timerbtnchild=Text(duration.toString());
-            });
-          }
-        }));
+  void _starttimer(){
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    running=true;
   }
 
-  void refresh()  {
-    Future.delayed(Duration(seconds: 1)).then((_) {
-      setState(() {
-        print("1 second closer to NYE!");
-        // Anything else you want
-      });
-      refresh();
+  void _getTime()  {
+    int duration = finalQuestion.time;
+    setState(() {
+      if (_countdownSeconds == 0) {
+        _countdownSeconds = duration;
+      } else {
+        _countdownSeconds--;
+        print('$_countdownSeconds');
+        _timerbtnchild = Text('$_countdownSeconds');
+        thirdRow = _buildThirdRow(finalQuestion);
+      }
     });
   }
 
