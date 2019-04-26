@@ -85,6 +85,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
   static int lastPlayerID;
 
   static Timer _timer;
+  static int _leftDuration;
   static var _timerbtnchild;
   static bool running;
 
@@ -394,7 +395,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
   }
 
   Widget _buildThirdRow(question question){
-    running?null:_timerbtnchild = Icon(Icons.timer);
+    running?_timerbtnchild = Text(_leftDuration.toString()):_timerbtnchild = Icon(Icons.timer);
     if (finalQuestion.type_id==2){
       _timerbtn = FloatingActionButton(
           heroTag: "btn3",
@@ -442,8 +443,10 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
       _timerbtn = FloatingActionButton(
           heroTag: "btn3",
           backgroundColor: Colors.grey,
-          child: Icon(Icons.timer),
+          child: _timerbtnchild,
           onPressed: () {
+            setState(() {
+            });
           }
       );
       return new Row(
@@ -482,7 +485,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
 
 
   void _startTimer()  {
-    refresh();
     int duration = finalQuestion.time;
     const _oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
@@ -493,21 +495,10 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
           } else {
             running=true;
             duration = duration - 1;
-            setState(() {
-              _timerbtnchild=Text(duration.toString());
-            });
+            _leftDuration = duration;
+            _buildThirdRow(finalQuestion);
           }
         }));
-  }
-
-  void refresh()  {
-    Future.delayed(Duration(seconds: 1)).then((_) {
-      setState(() {
-        print("1 second closer to NYE!");
-        // Anything else you want
-      });
-      refresh();
-    });
   }
 
 }
