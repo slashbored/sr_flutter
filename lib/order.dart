@@ -86,7 +86,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
 
   static Timer _timer;
   static var _timerbtnchild;
-  static int _countdownSeconds = 0;
+  static int _countdownSeconds;
   static bool running;
 
   //Final block
@@ -421,6 +421,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
                     onPressed: () {
                       finalFirstPlayer.points++;
                       finalSecondPlayer!=null?finalSecondPlayer.points++:null;
+                      _timer.cancel();
+                      running=false;
                       _buildorder();
                       setState(() {});
                     }
@@ -435,6 +437,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
                 backgroundColor: Colors.green,
                 child: Icon(Icons.thumb_up),
                 onPressed: () {
+                  _timer.cancel();
+                  running=false;
                   _buildorder();
                   setState(() {});
                 },
@@ -461,6 +465,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
                     onPressed: () {
                       finalFirstPlayer.points++;
                       finalSecondPlayer!=null?finalSecondPlayer.points++:null;
+                      _timer.cancel();
+                      running=false;
                       _buildorder();
                       setState(() {});
                     }
@@ -475,6 +481,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
                 backgroundColor: Colors.green,
                 child: Icon(Icons.thumb_up),
                 onPressed: () {
+                  _timer.cancel();
+                  running=false;
                   _buildorder();
                   setState(() {});
                 },
@@ -485,25 +493,24 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
     }
   }
 
-  void _starttimer(){
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
-  }
-
-  void _getTime()  {
+  void _starttimer() {
     int duration = finalQuestion.time;
-    setState(() {
-        if (running=false){
-          _countdownSeconds = duration;
-          running = true;
-        }
-        _countdownSeconds--;
-        _timerbtnchild = Text('$_countdownSeconds');
-        thirdRow = _buildThirdRow(finalQuestion);
-        if (_countdownSeconds == 0){
-          running = false;
-          _timer.cancel();
-        }
-    });
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) =>
+        setState(() {
+          if (running == false) {
+            _countdownSeconds = duration;
+            running = true;
+          }
+          _countdownSeconds--;
+          _timerbtnchild = Text('$_countdownSeconds');
+          thirdRow = _buildThirdRow(finalQuestion);
+          if (_countdownSeconds == 0) {
+            running = false;
+            _timer.cancel();
+            _timerbtnchild = Icon(Icons.timer);
+            thirdRow = _buildThirdRow(finalQuestion);
+          }
+        })
+    );
   }
-
 }
