@@ -86,12 +86,14 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   //Timerblock
   static FloatingActionButton _timerbtn;
-  static Timer _timer;
+  static Timer _foregroundTimer;
   static var _timerbtnchild;
   static int _secondsLeft;
   static int _secondsLeftHalted;
   static bool _running;
   static bool _halted;
+  static Timer _backgroundTimer;
+  static var _orderStack = {};
 
   //Finalblock
   static player finalFirstPlayer;
@@ -155,7 +157,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _foregroundTimer.cancel();
     super.dispose();
   }
 
@@ -445,11 +447,10 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                   backgroundColor: Colors.red,
                   onPressed: () {
                     finalFirstPlayer.points++;
-                    finalSecondPlayer != null
-                        ? finalSecondPlayer.points++
-                        : null;
-                    _timer==null?null:_timer.cancel();
+                    finalSecondPlayer!=null?finalSecondPlayer.points++:null;
+                    _foregroundTimer==null?null:_foregroundTimer.cancel();
                     _running = false;
+
                     _buildorder();
                     setState(() {});
                   }
@@ -464,8 +465,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
               backgroundColor: Colors.green,
               child: Icon(Icons.thumb_up),
               onPressed: () {
-                _timer==null?null:_timer.cancel();
-                _running = false;
+                _foregroundTimer==null?null:_foregroundTimer.cancel();
+                _running=false;
+                finalQuestion.type_id==3?_addToStack(finalQuestion.time, finalFirstPlayer, finalQuestion.taskq):null;
                 _buildorder();
                 setState(() {});
               },
@@ -476,13 +478,13 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   }
 
   void _buildTimerbutton() {
-    if (finalQuestion.type_id == 2) {       //if timed question
+    if (finalQuestion.type_id == 2) {       //if timed task
       _timerbtn = FloatingActionButton(
           heroTag: "btn3",
           backgroundColor: Colors.blue,
           child: Icon(Icons.timer),
           onPressed: () {
-            _starttimer(finalQuestion.time);
+            _startForegroundtimer(finalQuestion.time);
           }
       );
       if (_running) {                       // if timer is running
@@ -504,15 +506,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
               }
           );
         }
-        if  (!_halted) {                    //if timer isnt halted
-
-        }
-      }
-      else {                                //if timer isnt running
-
       }
     }
-    else {
+    else {                                  //if non timed question
       _timerbtn = FloatingActionButton(
           heroTag: "btn3",
           backgroundColor: Colors.grey,
@@ -522,9 +518,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     }
   }
 
-  void _haltTimer() {
+  void _haltTimer() {                       //halting the timer
     _secondsLeftHalted = _secondsLeft;
-    _timer.cancel();
+    _foregroundTimer.cancel();
     _halted = true;
     _timerbtnchild= Icon(Icons.pause);
     setState(() {
@@ -533,13 +529,13 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   }
 
 
-  void _resumeTimer() {
-    _starttimer(_secondsLeftHalted);
+  void _resumeTimer() {                     //resuming the timer
+    _startForegroundtimer(_secondsLeftHalted);
 
   }
 
-  void _starttimer(int _duration) {
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) =>
+  void _startForegroundtimer(int _duration) {         // starting the timer
+    _foregroundTimer = Timer.periodic(Duration(seconds: 1), (Timer t) =>
         setState(() {
           if (_running == false||_halted==true) {
             _secondsLeft = _duration;
@@ -551,11 +547,62 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           thirdRow = _buildThirdRow(finalQuestion);
           if (_secondsLeft == 0) {
             _running = false;
-            _timer.cancel();
+            _foregroundTimer.cancel();
             _timerbtnchild = Icon(Icons.timer);
             thirdRow = _buildThirdRow(finalQuestion);
           }
         })
     );
+  }
+
+  void _addToStack(int duration, player player, String task)  {
+    List<String> _splitstring;
+    _splitstring = task.split("\$placeholder");
+    _splitstring[1].replaceAll("\$placeholder", "");
+    RichText _qText = new RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+              text: _splitstring[0],
+              style: _orderstyle
+          ),
+          TextSpan(
+              text: player.name.toString(),
+              style: player.sex == 'm'
+                  ? _maleorderstyle
+                  : _femaleorderstyle
+          ),
+          TextSpan(
+              text: _splitstring[1],
+              style: _orderstyle
+          )
+        ],
+      ),
+      textAlign: TextAlign.center,
+    );
+    _orderStack.length==0?_orderStack[0]= _qText:_orderStack[_orderStack.length] = _qText;
+    int pos = _orderStack.length-1;
+    _startBackgroundtimer(duration, pos);
+  }
+
+  void  _startBackgroundtimer(int duration, int pos) {
+    _backgroundTimer = Timer(Duration(seconds: duration), () {
+      print(_orderStack[pos].toString());
+      showDialog(context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Container(child: _orderStack[pos]),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text('OK'),
+                  onPressed: (){
+                  Navigator.of(context).pop();
+                  }
+                )
+              ]
+            );
+          },
+      );
+    });
   }
 }
