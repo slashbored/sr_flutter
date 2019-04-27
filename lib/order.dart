@@ -589,6 +589,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     _backgroundTimer = Timer(Duration(seconds: duration), () {
       print(_orderStack[pos].toString());
       showDialog(context: context,
+          barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
               content: Container(child: _orderStack[pos]),
