@@ -70,7 +70,7 @@ class viewOrder extends StatefulWidget{
   viewOrderState createState() => new viewOrderState();
 }
 
-class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
+class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   // Randomblock
   static Random random = new Random();
@@ -84,24 +84,29 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
   static int lastQuestionID;
   static int lastPlayerID;
 
+  //Timerblock
+  static FloatingActionButton _timerbtn;
   static Timer _timer;
   static var _timerbtnchild;
-  static int _countdownSeconds;
-  static bool running;
+  static int _secondsLeft;
+  static int _secondsLeftHalted;
+  static bool _running;
+  static bool _halted;
 
-  //Final block
+  //Finalblock
   static player finalFirstPlayer;
   static player finalSecondPlayer;
   static question finalQuestion;
   static String finalOrderString;
 
+  //Rowblock
   static Row firstRow;
   static RichText secondRow;
   static Row thirdRow;
 
   final TextStyle _maletitlestyle = const TextStyle(
-    fontSize: 36,
-    color: Colors.blue
+      fontSize: 36,
+      color: Colors.blue
   );
 
   final TextStyle _maleorderstyle = const TextStyle(
@@ -120,27 +125,30 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
   );
 
   final TextStyle _orderstyle = const TextStyle(
-    fontSize: 24,
-    color: Colors.black
+      fontSize: 24,
+      color: Colors.black
   );
 
 
-  static FloatingActionButton _timerbtn;
-
   @override
-   void initState() {
+  void initState() {
     super.initState();
     setState(() {
-      for (category _categoryplaceholder in category.categoryDatabase.values){
-        if (category.cbValues[_categoryplaceholder.id]){
-          for (question _questionplaceholder in question.questionDatabase.values){
+      for (category _categoryplaceholder in category.categoryDatabase.values) {
+        if (category.cbValues[_categoryplaceholder.id]) {
+          for (question _questionplaceholder in question.questionDatabase
+              .values) {
             if (_categoryplaceholder.id == _questionplaceholder.cat_id) {
-              order.addOrder(_questionplaceholder.id, _questionplaceholder.cat_id, _questionplaceholder.type_id, _questionplaceholder.subtype_id, 1, 0);
+              order.addOrder(
+                  _questionplaceholder.id, _questionplaceholder.cat_id,
+                  _questionplaceholder.type_id, _questionplaceholder.subtype_id,
+                  1, 0);
             }
           }
         }
       }
-      running=false;
+      _running = false;
+      _halted = false;
       _buildorder();
     });
   }
@@ -154,108 +162,127 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
-      child: new Scaffold(
-        body: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children:[
-            new Expanded(
-              child: new Center(
-                  child: firstRow
-              )
-            ),
-            new Expanded(
-              child: new Center(
-                  child: secondRow
-              )
-            ),
-            new Expanded(
-              child: thirdRow
+        child: new Scaffold(
+            body: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  new Expanded(
+                      child: new Center(
+                          child: firstRow
+                      )
+                  ),
+                  new Expanded(
+                      child: new Center(
+                          child: secondRow
+                      )
+                  ),
+                  new Expanded(
+                      child: thirdRow
+                  )
+                ]
             )
-          ]
-        )
         ),
-      onWillPop: () async => false
+        onWillPop: () async => false
     );
   }
 
-  void _buildorder(){
-
+  void _buildorder() {
     //Questionblock
     randomQuestionID = random.nextInt(order.orderDatabase.length);
     order _orderplaceholder = order.orderDatabase[randomQuestionID];
-    if (_orderplaceholder.usedAmount<_orderplaceholder.allowedAmount) {
-      question _questionplaceholder = question.questionDatabase[order.getQuestionID(randomQuestionID)];
+    if (_orderplaceholder.usedAmount < _orderplaceholder.allowedAmount) {
+      question _questionplaceholder = question.questionDatabase[order
+          .getQuestionID(randomQuestionID)];
       randomSelectorID = random.nextInt(5);
       switch (randomSelectorID) {
-        case 0: {
-          randomSelectorChar = 'a';
-          break;
-        }
-        case 1: {
-          randomSelectorChar = 'm';
-          break;
-        }
-        case 2: {
-          randomSelectorChar = 'y';
-          break;
-        }
-        case 3: {
-          randomSelectorChar = 't';
-          break;
-        }
-        case 4: {
-          randomSelectorChar = 'r';
-          break;
-        }
-      }
-      while (question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==''||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==null){
-        randomSelectorID = random.nextInt(4);
-        switch (randomSelectorID) {
-          case 0: {
+        case 0:
+          {
             randomSelectorChar = 'a';
             break;
           }
-          case 1: {
+        case 1:
+          {
             randomSelectorChar = 'm';
             break;
           }
-          case 2: {
+        case 2:
+          {
             randomSelectorChar = 'y';
             break;
           }
-          case 3: {
+        case 3:
+          {
             randomSelectorChar = 't';
             break;
           }
-          case 4: {
+        case 4:
+          {
             randomSelectorChar = 'r';
             break;
           }
+      }
+      while (question.getQuestionText(
+          order.getQuestionID(randomQuestionID), randomSelectorChar) == '' ||
+          question.getQuestionText(
+              order.getQuestionID(randomQuestionID), randomSelectorChar) ==
+              null) {
+        randomSelectorID = random.nextInt(4);
+        switch (randomSelectorID) {
+          case 0:
+            {
+              randomSelectorChar = 'a';
+              break;
+            }
+          case 1:
+            {
+              randomSelectorChar = 'm';
+              break;
+            }
+          case 2:
+            {
+              randomSelectorChar = 'y';
+              break;
+            }
+          case 3:
+            {
+              randomSelectorChar = 't';
+              break;
+            }
+          case 4:
+            {
+              randomSelectorChar = 'r';
+              break;
+            }
         }
       }
       _orderplaceholder.usedAmount++;
 
       //Playerblock
       randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
-      while(randomFirstPlayerID==lastPlayerID){
+      while (randomFirstPlayerID == lastPlayerID) {
         randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
       }
-      finalFirstPlayer = player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
+      finalFirstPlayer =
+      player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
       lastPlayerID = finalFirstPlayer.id;
 
-      if(randomSelectorID==1){
-        while(randomSecondPlayerID==null||randomSecondPlayerID==randomFirstPlayerID){
+      if (randomSelectorID == 1) {
+        while (randomSecondPlayerID == null ||
+            randomSecondPlayerID == randomFirstPlayerID) {
           randomSecondPlayerID = random.nextInt(player.playerDatabase.length);
         }
-        finalSecondPlayer = player.playerDatabase[player.getPlayerIdFromList(randomSecondPlayerID)];
+        finalSecondPlayer =
+        player.playerDatabase[player.getPlayerIdFromList(randomSecondPlayerID)];
       }
-      else  {
+      else {
         finalSecondPlayer = null;
       }
 
       //Finalblock
-      finalQuestion = question.questionDatabase[(order.getQuestionID(randomQuestionID))];
-      finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
+      finalQuestion =
+      question.questionDatabase[(order.getQuestionID(randomQuestionID))];
+      finalOrderString = question.getQuestionText(
+          order.getQuestionID(randomQuestionID), randomSelectorChar);
       firstRow = _buildfirstRow(finalFirstPlayer, finalSecondPlayer);
       secondRow = _buildSecondRow(finalFirstPlayer, finalSecondPlayer);
       thirdRow = _buildThirdRow(finalQuestion);
@@ -265,247 +292,265 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
       //}
     }
 
-    else{
+    else {
       order.uoic++;
-      if(order.uoic >= order.orderDatabase.length * 0.75){
-        for(order _orderplaceholder in order.orderDatabase.values){
+      if (order.uoic >= order.orderDatabase.length * 0.75) {
+        for (order _orderplaceholder in order.orderDatabase.values) {
           order.setUsedAmount(_orderplaceholder.id, 0);
         }
-        order.uoic=0;
+        order.uoic = 0;
       }
       _buildorder();
     }
   }
 
-  Widget _buildfirstRow(player firstPlayer, player secondPlayer){
-  if (secondPlayer==null) {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        new Expanded(
-          child: new Text(
-            firstPlayer.points.toString(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24
-            )
-            ),
-            flex: 1
-        ),
-        new Expanded(
-          child: new Text(
-            firstPlayer.name,
-            textAlign: TextAlign.center,
-            style: firstPlayer.sex=='m'?_maletitlestyle:_femaletitlestyle
-          ),
-          flex: 1
-        ),
-        new Spacer(
-          flex: 1
-        )
-      ]
-    );
-  }
-  else{
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        new Expanded(
-          child: new Text(
-            firstPlayer.points.toString(),
-            textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 24
-              )
-          ),
-          flex: 1
-          ),
-        new Expanded(
-            child: new RichText(
-              text: TextSpan(
-                children: <TextSpan>  [
-                  TextSpan(
-                      text:finalFirstPlayer.name,
-                      style: finalFirstPlayer.sex=='m'?_maletitlestyle:_femaletitlestyle
-                  ),
-                  TextSpan(
-                    text:' & ',
+  Widget _buildfirstRow(player firstPlayer, player secondPlayer) {
+    if (secondPlayer == null) {
+      return new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            new Expanded(
+                child: new Text(
+                    firstPlayer.points.toString(),
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 36,
-                      color: Colors.black
+                        fontSize: 24
                     )
-                  ),
-                  TextSpan(
-                      text:finalSecondPlayer.name,
-                      style: finalSecondPlayer.sex=='m'?_maletitlestyle:_femaletitlestyle
-                  )
-                ]
-              ),
-              textAlign: TextAlign.center,
+                ),
+                flex: 1
             ),
-          flex: 1
-          ),
-        new Expanded(
-          child: new Text(
-            secondPlayer.points.toString(),
-            textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 24
-              )
-          ),
-          flex: 1
-          )
-      ]
-    );
-
-  }
-  }
-
-  Widget _buildSecondRow(player firstPlayer, player secondPlayer){
-    if (secondPlayer==null) {
-      return new RichText(text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(
-                text: finalOrderString,
-                style: _orderstyle,
-              )
-            ]
-          ),
-            textAlign: TextAlign.center,
-          );
+            new Expanded(
+                child: new Text(
+                    firstPlayer.name,
+                    textAlign: TextAlign.center,
+                    style: firstPlayer.sex == 'm'
+                        ? _maletitlestyle
+                        : _femaletitlestyle
+                ),
+                flex: 1
+            ),
+            new Spacer(
+                flex: 1
+            )
+          ]
+      );
     }
-    else  {
+    else {
+      return new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            new Expanded(
+                child: new Text(
+                    firstPlayer.points.toString(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 24
+                    )
+                ),
+                flex: 1
+            ),
+            new Expanded(
+                child: new RichText(
+                  text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: finalFirstPlayer.name,
+                            style: finalFirstPlayer.sex == 'm'
+                                ? _maletitlestyle
+                                : _femaletitlestyle
+                        ),
+                        TextSpan(
+                            text: ' & ',
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: Colors.black
+                            )
+                        ),
+                        TextSpan(
+                            text: finalSecondPlayer.name,
+                            style: finalSecondPlayer.sex == 'm'
+                                ? _maletitlestyle
+                                : _femaletitlestyle
+                        )
+                      ]
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                flex: 1
+            ),
+            new Expanded(
+                child: new Text(
+                    secondPlayer.points.toString(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 24
+                    )
+                ),
+                flex: 1
+            )
+          ]
+      );
+    }
+  }
+
+  Widget _buildSecondRow(player firstPlayer, player secondPlayer) {
+    if (secondPlayer == null) {
+      return new RichText(text: TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+              text: finalOrderString,
+              style: _orderstyle,
+            )
+          ]
+      ),
+        textAlign: TextAlign.center,
+      );
+    }
+    else {
       List<String> _splitstring;
       _splitstring = finalOrderString.split("\$placeholder");
       _splitstring[1].replaceAll("\$placeholder", "");
       return new RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(
+        text: TextSpan(
+          children: <TextSpan>[
+            TextSpan(
                 text: _splitstring[0],
                 style: _orderstyle
-              ),
-              TextSpan(
+            ),
+            TextSpan(
                 text: secondPlayer.name.toString(),
-                style: secondPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
-              ),
-              TextSpan(
-                  text: _splitstring[1],
-                  style: _orderstyle
-              )
-            ],
-          ),
-          textAlign: TextAlign.center,
-        );
+                style: secondPlayer.sex == 'm'
+                    ? _maleorderstyle
+                    : _femaleorderstyle
+            ),
+            TextSpan(
+                text: _splitstring[1],
+                style: _orderstyle
+            )
+          ],
+        ),
+        textAlign: TextAlign.center,
+      );
     }
   }
 
-  Widget _buildThirdRow(question question){
-    running?null:_timerbtnchild = Icon(Icons.timer);
-    if (finalQuestion.type_id==2){
+  Widget _buildThirdRow(question question) {
+    _buildTimerbutton();
+    return new Row(
+        children: [
+          new Expanded(
+              child: new FloatingActionButton(
+                  heroTag: "btn1",
+                  child: Icon(Icons.thumb_down),
+                  backgroundColor: Colors.red,
+                  onPressed: () {
+                    finalFirstPlayer.points++;
+                    finalSecondPlayer != null
+                        ? finalSecondPlayer.points++
+                        : null;
+                    _timer==null?null:_timer.cancel();
+                    _running = false;
+                    _buildorder();
+                    setState(() {});
+                  }
+              )
+          ),
+          new Expanded(
+              child: _timerbtn
+          ),
+          new Expanded(
+            child: new FloatingActionButton(
+              heroTag: "btn2",
+              backgroundColor: Colors.green,
+              child: Icon(Icons.thumb_up),
+              onPressed: () {
+                _timer==null?null:_timer.cancel();
+                _running = false;
+                _buildorder();
+                setState(() {});
+              },
+            ),
+          )
+        ]
+    );
+  }
+
+  void _buildTimerbutton() {
+    if (finalQuestion.type_id == 2) {       //if timed question
       _timerbtn = FloatingActionButton(
           heroTag: "btn3",
           backgroundColor: Colors.blue,
-          child: _timerbtnchild,
-            onPressed: () {
-            _starttimer();
+          child: Icon(Icons.timer),
+          onPressed: () {
+            _starttimer(finalQuestion.time);
           }
       );
-      return new Row(
-          children: [
-            new Expanded(
-                child: new FloatingActionButton(
-                    heroTag: "btn1",
-                    child: Icon(Icons.thumb_down),
-                    backgroundColor: Colors.red,
-                    onPressed: () {
-                      finalFirstPlayer.points++;
-                      finalSecondPlayer!=null?finalSecondPlayer.points++:null;
-                      _timer.cancel();
-                      running=false;
-                      _buildorder();
-                      setState(() {});
-                    }
-                )
-            ),
-            new Expanded(
-                child: _timerbtn
-            ),
-            new Expanded(
-              child: new FloatingActionButton(
-                heroTag: "btn2",
-                backgroundColor: Colors.green,
-                child: Icon(Icons.thumb_up),
-                onPressed: () {
-                  _timer.cancel();
-                  running=false;
-                  _buildorder();
-                  setState(() {});
-                },
-              ),
-            )
-          ]
-      );
+      if (_running) {                       // if timer is running
+        _timerbtn = FloatingActionButton(
+            heroTag: "btn3",
+            backgroundColor: Colors.blue,
+            child: _timerbtnchild,
+            onPressed: () {
+              _haltTimer();
+            }
+        );
+        if  (_halted) {                     //if timer is halted
+          _timerbtn = FloatingActionButton(
+              heroTag: "btn3",
+              backgroundColor: Colors.blue,
+              child: _timerbtnchild,
+              onPressed: () {
+                _resumeTimer();
+              }
+          );
+        }
+        if  (!_halted) {                    //if timer isnt halted
+
+        }
+      }
+      else {                                //if timer isnt running
+
+      }
     }
-    else  {
+    else {
       _timerbtn = FloatingActionButton(
           heroTag: "btn3",
           backgroundColor: Colors.grey,
           child: Icon(Icons.timer),
-          onPressed: () {
-          }
-      );
-      return new Row(
-          children: [
-            new Expanded(
-                child: new FloatingActionButton(
-                    heroTag: "btn1",
-                    child: Icon(Icons.thumb_down),
-                    backgroundColor: Colors.red,
-                    onPressed: () {
-                      finalFirstPlayer.points++;
-                      finalSecondPlayer!=null?finalSecondPlayer.points++:null;
-                      _timer.cancel();
-                      running=false;
-                      _buildorder();
-                      setState(() {});
-                    }
-                )
-            ),
-            new Expanded(
-                child: _timerbtn
-            ),
-            new Expanded(
-              child: new FloatingActionButton(
-                heroTag: "btn2",
-                backgroundColor: Colors.green,
-                child: Icon(Icons.thumb_up),
-                onPressed: () {
-                  _timer.cancel();
-                  running=false;
-                  _buildorder();
-                  setState(() {});
-                },
-              ),
-            )
-          ]
+          onPressed: () {}
       );
     }
   }
 
-  void _starttimer() {
-    int duration = finalQuestion.time;
+  void _haltTimer() {
+    _secondsLeftHalted = _secondsLeft;
+    _timer.cancel();
+    _halted = true;
+    _timerbtnchild= Icon(Icons.pause);
+    setState(() {
+      thirdRow = _buildThirdRow(finalQuestion);
+    });
+  }
+
+
+  void _resumeTimer() {
+    _starttimer(_secondsLeftHalted);
+
+  }
+
+  void _starttimer(int _duration) {
     _timer = Timer.periodic(Duration(seconds: 1), (Timer t) =>
         setState(() {
-          if (running == false) {
-            _countdownSeconds = duration;
-            running = true;
+          if (_running == false||_halted==true) {
+            _secondsLeft = _duration;
+            _running = true;
+            _halted = false;
           }
-          _countdownSeconds--;
-          _timerbtnchild = Text('$_countdownSeconds');
+          _secondsLeft--;
+          _timerbtnchild = Text('$_secondsLeft');
           thirdRow = _buildThirdRow(finalQuestion);
-          if (_countdownSeconds == 0) {
-            running = false;
+          if (_secondsLeft == 0) {
+            _running = false;
             _timer.cancel();
             _timerbtnchild = Icon(Icons.timer);
             thirdRow = _buildThirdRow(finalQuestion);
