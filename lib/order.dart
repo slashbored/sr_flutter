@@ -85,8 +85,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
   static int lastPlayerID;
 
   static Timer _timer;
-  static int _leftDuration;
   static var _timerbtnchild;
+  static int _countdownSeconds;
   static bool running;
 
   //Final block
@@ -143,6 +143,12 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
       running=false;
       _buildorder();
     });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -395,16 +401,14 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
   }
 
   Widget _buildThirdRow(question question){
-    running?_timerbtnchild = Text(_leftDuration.toString()):_timerbtnchild = Icon(Icons.timer);
+    running?null:_timerbtnchild = Icon(Icons.timer);
     if (finalQuestion.type_id==2){
       _timerbtn = FloatingActionButton(
           heroTag: "btn3",
           backgroundColor: Colors.blue,
           child: _timerbtnchild,
             onPressed: () {
-            _startTimer();
-            setState(() {
-            });
+            _starttimer();
           }
       );
       return new Row(
@@ -417,6 +421,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
                     onPressed: () {
                       finalFirstPlayer.points++;
                       finalSecondPlayer!=null?finalSecondPlayer.points++:null;
+                      _timer.cancel();
+                      running=false;
                       _buildorder();
                       setState(() {});
                     }
@@ -431,6 +437,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
                 backgroundColor: Colors.green,
                 child: Icon(Icons.thumb_up),
                 onPressed: () {
+                  _timer.cancel();
+                  running=false;
                   _buildorder();
                   setState(() {});
                 },
@@ -443,10 +451,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
       _timerbtn = FloatingActionButton(
           heroTag: "btn3",
           backgroundColor: Colors.grey,
-          child: _timerbtnchild,
+          child: Icon(Icons.timer),
           onPressed: () {
-            setState(() {
-            });
           }
       );
       return new Row(
@@ -459,6 +465,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
                     onPressed: () {
                       finalFirstPlayer.points++;
                       finalSecondPlayer!=null?finalSecondPlayer.points++:null;
+                      _timer.cancel();
+                      running=false;
                       _buildorder();
                       setState(() {});
                     }
@@ -473,6 +481,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
                 backgroundColor: Colors.green,
                 child: Icon(Icons.thumb_up),
                 onPressed: () {
+                  _timer.cancel();
+                  running=false;
                   _buildorder();
                   setState(() {});
                 },
@@ -483,22 +493,24 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin{
     }
   }
 
-
-  void _startTimer()  {
+  void _starttimer() {
     int duration = finalQuestion.time;
-    const _oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-        _oneSec, (Timer timer) => setState(() {
-          if (duration < 1) {
-            running=false;
-            timer.cancel();
-          } else {
-            running=true;
-            duration = duration - 1;
-            _leftDuration = duration;
-            _buildThirdRow(finalQuestion);
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) =>
+        setState(() {
+          if (running == false) {
+            _countdownSeconds = duration;
+            running = true;
           }
-        }));
+          _countdownSeconds--;
+          _timerbtnchild = Text('$_countdownSeconds');
+          thirdRow = _buildThirdRow(finalQuestion);
+          if (_countdownSeconds == 0) {
+            running = false;
+            _timer.cancel();
+            _timerbtnchild = Icon(Icons.timer);
+            thirdRow = _buildThirdRow(finalQuestion);
+          }
+        })
+    );
   }
-
 }
