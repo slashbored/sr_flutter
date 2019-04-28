@@ -138,7 +138,6 @@ class editPlayersState extends State<editPlayers> {
         player.playerIds.add(_playerplaceholder.id);
         _playerCounter++;
       }
-      print(_playerNamesAsString);
       /*timesPlayerCounter = playerCounter ~/ 3;
       modPlayerCounter = playerCounter % 3;*/
       return new GridView.count(

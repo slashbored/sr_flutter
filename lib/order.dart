@@ -84,7 +84,11 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   static int lastQuestionID;
   static int lastPlayerID;
 
-  //Timerblock
+  //Buttonblock
+  static FloatingActionButton _acceptedbtn;
+  static FloatingActionButton _deniedbtn;
+
+  //Timerbutton & -block
   static FloatingActionButton _timerbtn;
   static Timer _foregroundTimer;
   static var _timerbtnchild;
@@ -283,15 +287,11 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       //Finalblock
       finalQuestion =
       question.questionDatabase[(order.getQuestionID(randomQuestionID))];
-      finalOrderString = question.getQuestionText(
-          order.getQuestionID(randomQuestionID), randomSelectorChar);
+      finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
       firstRow = _buildfirstRow(finalFirstPlayer, finalSecondPlayer);
       secondRow = _buildSecondRow(finalFirstPlayer, finalSecondPlayer);
       thirdRow = _buildThirdRow(finalQuestion);
 
-      //if (finalOrderString.contains('%s')){
-      //  finalOrderString = sprintf(finalOrderString, [finalSecondPlayer.name]);
-      //}
     }
 
     else {
@@ -307,92 +307,136 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   }
 
   Widget _buildfirstRow(player firstPlayer, player secondPlayer) {
-    if (secondPlayer == null) {
-      return new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            new Expanded(
-                child: new Text(
-                    firstPlayer.points.toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 24
-                    )
-                ),
-                flex: 1
-            ),
-            new Expanded(
-                child: new Text(
-                    firstPlayer.name,
-                    textAlign: TextAlign.center,
-                    style: firstPlayer.sex == 'm'
-                        ? _maletitlestyle
-                        : _femaletitlestyle
-                ),
-                flex: 1
-            ),
-            new Spacer(
-                flex: 1
-            )
-          ]
-      );
-    }
-    else {
-      return new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            new Expanded(
-                child: new Text(
-                    firstPlayer.points.toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 24
-                    )
-                ),
-                flex: 1
-            ),
-            new Expanded(
-                child: new RichText(
-                  text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: finalFirstPlayer.name,
-                            style: finalFirstPlayer.sex == 'm'
-                                ? _maletitlestyle
-                                : _femaletitlestyle
-                        ),
-                        TextSpan(
-                            text: ' & ',
-                            style: TextStyle(
-                                fontSize: 36,
-                                color: Colors.black
+   if(finalQuestion.type_id!=4) {
+     if (secondPlayer == null) {
+       return new Row(
+           mainAxisAlignment: MainAxisAlignment.spaceAround,
+           children: [
+             new Expanded(
+                 child: new Text(
+                     firstPlayer.points.toString(),
+                     textAlign: TextAlign.center,
+                     style: TextStyle(
+                         fontSize: 24
+                     )
+                 ),
+                 flex: 1
+             ),
+             new Expanded(
+              child: Center(
+                  child: new RichText(
+                      text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: firstPlayer.name,
+                              style: firstPlayer.sex == 'm'
+                                  ? _maletitlestyle
+                                  : _femaletitlestyle,
                             )
-                        ),
-                        TextSpan(
-                            text: finalSecondPlayer.name,
-                            style: finalSecondPlayer.sex == 'm'
-                                ? _maletitlestyle
-                                : _femaletitlestyle
-                        )
-                      ]
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                flex: 1
-            ),
-            new Expanded(
-                child: new Text(
-                    secondPlayer.points.toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 24
-                    )
-                ),
-                flex: 1
-            )
-          ]
-      );
-    }
+                          ]
+                      )
+                  )
+              ),
+                 flex: 1
+             ),
+             new Spacer(
+                 flex: 1
+             )
+           ]
+       );
+     }
+     else {
+       return new Row(
+           mainAxisAlignment: MainAxisAlignment.spaceAround,
+           children: [
+             new Expanded(
+                 child: new Text(
+                     firstPlayer.points.toString(),
+                     textAlign: TextAlign.center,
+                     style: TextStyle(
+                         fontSize: 24
+                     )
+                 ),
+                 flex: 1
+             ),
+             new Expanded(
+                 child: new RichText(
+                   text: TextSpan(
+                       children: <TextSpan>[
+                         TextSpan(
+                             text: finalFirstPlayer.name,
+                             style: finalFirstPlayer.sex == 'm'
+                                 ? _maletitlestyle
+                                 : _femaletitlestyle
+                         ),
+                         TextSpan(
+                             text: ' & ',
+                             style: TextStyle(
+                                 fontSize: 36,
+                                 color: Colors.black
+                             )
+                         ),
+                         TextSpan(
+                             text: finalSecondPlayer.name,
+                             style: finalSecondPlayer.sex == 'm'
+                                 ? _maletitlestyle
+                                 : _femaletitlestyle
+                         )
+                       ]
+                   ),
+                   textAlign: TextAlign.center,
+                 ),
+                 flex: 1
+             ),
+             new Expanded(
+                 child: new Text(
+                     secondPlayer.points.toString(),
+                     textAlign: TextAlign.center,
+                     style: TextStyle(
+                         fontSize: 24
+                     )
+                 ),
+                 flex: 1
+             )
+           ]
+       );
+     }
+   }
+   else {
+     return new Row(
+       mainAxisAlignment: MainAxisAlignment.center,
+       children: <Widget>[
+         Center(
+             child: RichText(
+                 text: TextSpan(
+                     children: <TextSpan>[
+                       TextSpan(
+                           text: 'Angefangen bei ',
+                           style: TextStyle(
+                               fontSize: 36,
+                               color: Colors.black
+                           )
+                       ),
+                       TextSpan(
+                           text: finalFirstPlayer.name,
+                           style: finalFirstPlayer.sex== 'm'
+                               ? _maletitlestyle
+                               : _femaletitlestyle
+                       ),
+                       TextSpan(
+                           text: ':',
+                           style: TextStyle(
+                               fontSize: 36,
+                               color: Colors.black
+                           )
+                       )
+                     ]
+                 )
+             )
+         )
+       ],
+     );
+   }
   }
 
   Widget _buildSecondRow(player firstPlayer, player secondPlayer) {
@@ -421,9 +465,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             ),
             TextSpan(
                 text: secondPlayer.name.toString(),
-                style: secondPlayer.sex == 'm'
-                    ? _maleorderstyle
-                    : _femaleorderstyle
+                style: secondPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
             ),
             TextSpan(
                 text: _splitstring[1],
@@ -437,83 +479,126 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   }
 
   Widget _buildThirdRow(question question) {
+    _buildAcceptedbutton();
     _buildTimerbutton();
-    return new Row(
-        children: [
-          new Expanded(
-              child: new FloatingActionButton(
-                  heroTag: "btn1",
-                  child: Icon(Icons.thumb_down),
-                  backgroundColor: Colors.red,
-                  onPressed: () {
-                    finalFirstPlayer.points++;
-                    finalSecondPlayer!=null?finalSecondPlayer.points++:null;
-                    _foregroundTimer==null?null:_foregroundTimer.cancel();
-                    _running = false;
-
-                    _buildorder();
-                    setState(() {});
-                  }
-              )
-          ),
-          new Expanded(
-              child: _timerbtn
-          ),
-          new Expanded(
-            child: new FloatingActionButton(
-              heroTag: "btn2",
-              backgroundColor: Colors.green,
-              child: Icon(Icons.thumb_up),
-              onPressed: () {
-                _foregroundTimer==null?null:_foregroundTimer.cancel();
-                _running=false;
-                finalQuestion.type_id==3?_addToStack(finalQuestion.time, finalFirstPlayer, finalQuestion.taskq):null;
-                _buildorder();
-                setState(() {});
-              },
+    _buildDeniedbutton();
+    if (finalQuestion.type_id!=4) {
+      return new Row(
+          children: [
+            new Expanded(
+                child: _deniedbtn
             ),
-          )
-        ]
-    );
+            new Expanded(
+                child: _timerbtn
+            ),
+            new Expanded(
+                child: _acceptedbtn
+            )
+          ]
+      );
+    }
+    else  {
+      return new Row(
+          children: [
+            new Spacer(
+              flex: 1
+            ),
+            new Expanded(
+                child: _timerbtn,
+                flex: 1
+            ),
+            new Spacer(
+              flex: 1
+            )
+          ]
+      );
+    }
+  }
+
+  void  _buildDeniedbutton  ()
+  {
+     _deniedbtn = new FloatingActionButton(
+         heroTag: "btn1",
+         child: Icon(Icons.thumb_down),
+         backgroundColor: Colors.red,
+         onPressed: () {
+           finalFirstPlayer.points++;
+           finalSecondPlayer!=null?finalSecondPlayer.points++:null;
+           _foregroundTimer==null?null:_foregroundTimer.cancel();
+           _running = false;
+
+           _buildorder();
+           setState(() {});
+         }
+     );
+  }
+
+  void  _buildAcceptedbutton ()
+  {
+      _acceptedbtn =  new FloatingActionButton(
+        heroTag: "btn2",
+        backgroundColor: Colors.green,
+        child: Icon(Icons.thumb_up),
+        onPressed: () {
+          _foregroundTimer==null?null:_foregroundTimer.cancel();
+          _running=false;
+          finalQuestion.type_id==3?_addToStack(finalQuestion.time, finalFirstPlayer, finalQuestion.taskq):null;
+          _buildorder();
+          setState(() {});
+        },
+      );
   }
 
   void _buildTimerbutton() {
-    if (finalQuestion.type_id == 2) {       //if timed task
-      _timerbtn = FloatingActionButton(
-          heroTag: "btn3",
-          backgroundColor: Colors.blue,
-          child: Icon(Icons.timer),
-          onPressed: () {
-            _startForegroundtimer(finalQuestion.time);
-          }
-      );
-      if (_running) {                       // if timer is running
+    if  (finalQuestion.type_id!=4)  {
+      if (finalQuestion.type_id == 2) {       //if timed task
         _timerbtn = FloatingActionButton(
             heroTag: "btn3",
             backgroundColor: Colors.blue,
-            child: _timerbtnchild,
+            child: Icon(Icons.timer),
             onPressed: () {
-              _haltTimer();
+              _startForegroundtimer(finalQuestion.time);
             }
         );
-        if  (_halted) {                     //if timer is halted
+        if (_running) {                       // if timer is running
           _timerbtn = FloatingActionButton(
               heroTag: "btn3",
               backgroundColor: Colors.blue,
               child: _timerbtnchild,
               onPressed: () {
-                _resumeTimer();
+                _haltTimer();
               }
           );
+          if  (_halted) {                     //if timer is halted
+            _timerbtn = FloatingActionButton(
+                heroTag: "btn3",
+                backgroundColor: Colors.blue,
+                child: _timerbtnchild,
+                onPressed: () {
+                  _resumeTimer();
+                }
+            );
+          }
         }
       }
+      else {                                  //if non timed question
+        _timerbtn = FloatingActionButton(
+            heroTag: "btn3",
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.timer),
+            onPressed: () {}
+        );
+      }
     }
-    else {                                  //if non timed question
-      _timerbtn = FloatingActionButton(
-          heroTag: "btn3",
-          backgroundColor: Colors.grey,
-          child: Icon(Icons.timer),
-          onPressed: () {}
+    else  {
+      _timerbtn =  new FloatingActionButton(
+        heroTag: "btn3",
+        backgroundColor: Colors.green,
+        child: Icon(Icons.arrow_forward_ios),
+        onPressed: () {
+          _buildorder();
+          setState(() {});
+        },
       );
     }
   }
@@ -555,7 +640,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     );
   }
 
-  void _addToStack(int duration, player player, String task)  {
+  void _addToStack(int duration, player player, String task) {
     List<String> _splitstring;
     _splitstring = task.split("\$placeholder");
     _splitstring[1].replaceAll("\$placeholder", "");
@@ -580,14 +665,20 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       ),
       textAlign: TextAlign.center,
     );
-    _orderStack.length==0?_orderStack[0]= _qText:_orderStack[_orderStack.length] = _qText;
-    int pos = _orderStack.length-1;
+    int pos;
+    if (_orderStack.length == 0) {
+      pos = 0;
+      _orderStack[0] = _qText;
+    }
+    else  {
+      pos = _orderStack.length;
+      _orderStack[_orderStack.length] = _qText;
+    }
     _startBackgroundtimer(duration, pos);
   }
 
   void  _startBackgroundtimer(int duration, int pos) {
     _backgroundTimer = Timer(Duration(seconds: duration), () {
-      print(_orderStack[pos].toString());
       showDialog(context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
