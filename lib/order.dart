@@ -317,7 +317,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                      firstPlayer.points.toString(),
                      textAlign: TextAlign.center,
                      style: TextStyle(
-                         fontSize: 24
+                         fontSize: 36
                      )
                  ),
                  flex: 1
@@ -354,7 +354,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                      firstPlayer.points.toString(),
                      textAlign: TextAlign.center,
                      style: TextStyle(
-                         fontSize: 24
+                         fontSize:36
                      )
                  ),
                  flex: 1
@@ -393,7 +393,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                      secondPlayer.points.toString(),
                      textAlign: TextAlign.center,
                      style: TextStyle(
-                         fontSize: 24
+                         fontSize:36
                      )
                  ),
                  flex: 1

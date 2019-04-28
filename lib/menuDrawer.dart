@@ -97,7 +97,7 @@ Widget menuDrawer(BuildContext context){
 
              }*/
           if (player.playerDatabase.length>=3&&category.cic>=3){
-            SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]).then((_) {
+            SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight, DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
               SystemChrome.setEnabledSystemUIOverlays([]);
               Navigator.push(context, MaterialPageRoute(builder: (context) => viewOrder()));
             });
