@@ -312,20 +312,13 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                   text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: 'Alle, angefangen bei ',
-                            style: TextStyle(
-                                fontSize: 36,
-                                color: Colors.green
-                            )
-                        ),
-                        TextSpan(
                             text: finalFirstPlayer.name,
                             style: finalFirstPlayer.sex== 'm'
                                 ? _maletitlestyle
                                 : _femaletitlestyle
                         ),
                         TextSpan(
-                            text: ':',
+                            text: ' fängt an:',
                             style: TextStyle(
                                 fontSize: 36,
                                 color: Colors.green
