@@ -9,6 +9,7 @@ class category{
   static int cic = 0;
   static var categoryDatabase = {};
   static bool ranOnce;
+  static bool grpallowed = false;
   static var cbValues = {};
 
   category(this.id, this.descr, this.title_german);
@@ -64,12 +65,14 @@ class editCategories extends StatefulWidget{
 
 class editCategoriesState extends State<editCategories>{
 
+
   @override
   Widget build(BuildContext context) {
     if (category.ranOnce!=true){
       for(category _categoryplaceholder in category.categoryDatabase.values){
         category.cbValues[_categoryplaceholder.id] = false;
       }
+      //category.grpallowed=false;
     }
     category.ranOnce=true;
 
@@ -96,6 +99,9 @@ class editCategoriesState extends State<editCategories>{
                               setState(() {
                                 category.cbValues[index+1]==true?newCBValue=false:newCBValue=true;
                                 category.cbValues[index+1]=newCBValue;
+                                if  (category.cbValues[7]!=null||category.cbValues[7]==true)  {
+                                  category.cbValues[7] = false;
+                                }
                               });
                               for (bool selectedCategory in category.cbValues.values) {
                                 (selectedCategory)?category.cic++:null;

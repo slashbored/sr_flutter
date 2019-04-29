@@ -197,8 +197,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     randomQuestionID = random.nextInt(order.orderDatabase.length);
     order _orderplaceholder = order.orderDatabase[randomQuestionID];
     if (_orderplaceholder.usedAmount < _orderplaceholder.allowedAmount) {
-      question _questionplaceholder = question.questionDatabase[order
-          .getQuestionID(randomQuestionID)];
+      question _questionplaceholder = question.questionDatabase[order.getQuestionID(randomQuestionID)];
       randomSelectorID = random.nextInt(5);
       switch (randomSelectorID) {
         case 0:
@@ -218,7 +217,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           }
         case 3:
           {
-            randomSelectorChar = 't';
+            category.grpallowed?randomSelectorChar = 't':randomSelectorChar = '';
             break;
           }
         case 4:
@@ -227,12 +226,10 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             break;
           }
       }
-      while (question.getQuestionText(
-          order.getQuestionID(randomQuestionID), randomSelectorChar) == '' ||
-          question.getQuestionText(
-              order.getQuestionID(randomQuestionID), randomSelectorChar) ==
-              null) {
-        randomSelectorID = random.nextInt(4);
+      while (randomSelectorChar==''
+          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar) == ''
+          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==null) {
+        randomSelectorID = random.nextInt(5);
         switch (randomSelectorID) {
           case 0:
             {
@@ -251,7 +248,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             }
           case 3:
             {
-              randomSelectorChar = 't';
+              category.grpallowed?randomSelectorChar = 't':randomSelectorChar = '';
               break;
             }
           case 4:
@@ -268,8 +265,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       while (randomFirstPlayerID == lastPlayerID) {
         randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
       }
-      finalFirstPlayer =
-      player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
+      finalFirstPlayer=player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
       lastPlayerID = finalFirstPlayer.id;
 
       if (randomSelectorID == 1) {
@@ -307,7 +303,64 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   }
 
   Widget _buildfirstRow(player firstPlayer, player secondPlayer) {
-   if(finalQuestion.type_id!=4) {
+    if (finalQuestion.type_id==4) {
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+              child: RichText(
+                  text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Alle, angefangen bei ',
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: Colors.green
+                            )
+                        ),
+                        TextSpan(
+                            text: finalFirstPlayer.name,
+                            style: finalFirstPlayer.sex== 'm'
+                                ? _maletitlestyle
+                                : _femaletitlestyle
+                        ),
+                        TextSpan(
+                            text: ':',
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: Colors.green
+                            )
+                        )
+                      ]
+                  )
+              )
+          )
+        ],
+      );
+    }
+    if (finalQuestion.type_id==5) {
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+              child: RichText(
+                  text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Allesamt:',
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: Colors.green
+                            )
+                        )
+                      ]
+                  )
+              )
+          )
+        ],
+      );
+    }
+   else {
      if (secondPlayer == null) {
        return new Row(
            mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -402,41 +455,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
        );
      }
    }
-   else {
-     return new Row(
-       mainAxisAlignment: MainAxisAlignment.center,
-       children: <Widget>[
-         Center(
-             child: RichText(
-                 text: TextSpan(
-                     children: <TextSpan>[
-                       TextSpan(
-                           text: 'Angefangen bei ',
-                           style: TextStyle(
-                               fontSize: 36,
-                               color: Colors.black
-                           )
-                       ),
-                       TextSpan(
-                           text: finalFirstPlayer.name,
-                           style: finalFirstPlayer.sex== 'm'
-                               ? _maletitlestyle
-                               : _femaletitlestyle
-                       ),
-                       TextSpan(
-                           text: ':',
-                           style: TextStyle(
-                               fontSize: 36,
-                               color: Colors.black
-                           )
-                       )
-                     ]
-                 )
-             )
-         )
-       ],
-     );
-   }
   }
 
   Widget _buildSecondRow(player firstPlayer, player secondPlayer) {
@@ -482,7 +500,23 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     _buildAcceptedbutton();
     _buildTimerbutton();
     _buildDeniedbutton();
-    if (finalQuestion.type_id!=4) {
+    if  (finalQuestion.type_id==4||finalQuestion.type_id==5)  {
+      return new Row(
+          children: [
+            new Spacer(
+                flex: 1
+            ),
+            new Expanded(
+                child: _timerbtn,
+                flex: 1
+            ),
+            new Spacer(
+                flex: 1
+            )
+          ]
+      );
+    }
+    else {
       return new Row(
           children: [
             new Expanded(
@@ -493,22 +527,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             ),
             new Expanded(
                 child: _acceptedbtn
-            )
-          ]
-      );
-    }
-    else  {
-      return new Row(
-          children: [
-            new Spacer(
-              flex: 1
-            ),
-            new Expanded(
-                child: _timerbtn,
-                flex: 1
-            ),
-            new Spacer(
-              flex: 1
             )
           ]
       );
@@ -550,7 +568,18 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   }
 
   void _buildTimerbutton() {
-    if  (finalQuestion.type_id!=4)  {
+    if  (finalQuestion.type_id==4||finalQuestion.type_id==5)  {
+      _timerbtn =  new FloatingActionButton(
+        heroTag: "btn3",
+        backgroundColor: Colors.green,
+        child: Icon(Icons.arrow_forward_ios),
+        onPressed: () {
+          _buildorder();
+          setState(() {});
+        },
+      );
+    }
+    else  {
       if (finalQuestion.type_id == 2) {       //if timed task
         _timerbtn = FloatingActionButton(
             heroTag: "btn3",
@@ -589,17 +618,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             onPressed: () {}
         );
       }
-    }
-    else  {
-      _timerbtn =  new FloatingActionButton(
-        heroTag: "btn3",
-        backgroundColor: Colors.green,
-        child: Icon(Icons.arrow_forward_ios),
-        onPressed: () {
-          _buildorder();
-          setState(() {});
-        },
-      );
     }
   }
 
