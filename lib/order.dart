@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:sprintf/sprintf.dart';
-import 'package:async/async.dart';
+
 import 'dart:math';
 import 'player.dart';
 import 'question.dart';
 import 'category.dart';
 import 'dart:async';
-import 'overView.dart';
 
 class order{
   int id;
@@ -150,17 +147,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             }
           }
         }
-        /*if (category.cbAllowed[_categoryplaceholder.id]) {
-          for (question _questionplaceholder in question.questionDatabase
-              .values) {
-            if (_categoryplaceholder.id == _questionplaceholder.cat_id) {
-              order.addOrder(
-                  _questionplaceholder.id, _questionplaceholder.cat_id,
-                  _questionplaceholder.type_id, _questionplaceholder.subtype_id,
-                  1, 0);
-            }
-          }
-        }*/
       }
       _running = false;
       _halted = false;
@@ -206,7 +192,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     randomQuestionID = random.nextInt(order.orderDatabase.length);
     order _orderplaceholder = order.orderDatabase[randomQuestionID];
     if (_orderplaceholder.usedAmount < _orderplaceholder.allowedAmount) {
-      //question _questionplaceholder = question.questionDatabase[order.getQuestionID(randomQuestionID)];
       randomSelectorID = random.nextInt(5);
       switch (randomSelectorID) {
         case 0:
@@ -271,8 +256,13 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       i++;
       print(_orderplaceholder.questionID.toString() + ', ' + i.toString());
       if  (_orderplaceholder.subtypeID!=1)  {
-        for (order _orderplaceholder2 in order.orderDatabase.values)  {
-          _orderplaceholder2.subtypeID==_orderplaceholder.subtypeID?order.setUsedAmount(_orderplaceholder2.id, _orderplaceholder2.allowedAmount):null;
+        if(_orderplaceholder.subtypeID==2||_orderplaceholder.subtypeID==9||_orderplaceholder.subtypeID==10||_orderplaceholder.subtypeID==11||_orderplaceholder.subtypeID==13||_orderplaceholder.subtypeID==14||_orderplaceholder.subtypeID==18||_orderplaceholder.subtypeID==19)  {
+          _orderplaceholder.allowedAmount = 1;
+        }
+        else  {
+          for (order _orderplaceholder2 in order.orderDatabase.values)  {
+            _orderplaceholder2.subtypeID==_orderplaceholder.subtypeID?order.setUsedAmount(_orderplaceholder2.id, _orderplaceholder2.allowedAmount):null;
+          }
         }
       }
       else  {
@@ -312,7 +302,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       order.uoic++;
       if (order.uoic >= order.orderDatabase.length * 0.75) {
         for (order _orderplaceholder in order.orderDatabase.values) {
-          _orderplaceholder.subtypeID==1?order.setUsedAmount(_orderplaceholder.id, 0):null;
+          if  (_orderplaceholder.subtypeID==1)  {
+            order.setUsedAmount(_orderplaceholder.id, 0);
+          }
         }
         order.uoic = 0;
       }
