@@ -106,6 +106,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   static RichText secondRow;
   static Row thirdRow;
 
+  static int i=0;
+
   final TextStyle _maletitlestyle = const TextStyle(
       fontSize: 36,
       color: Colors.blue
@@ -204,7 +206,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     randomQuestionID = random.nextInt(order.orderDatabase.length);
     order _orderplaceholder = order.orderDatabase[randomQuestionID];
     if (_orderplaceholder.usedAmount < _orderplaceholder.allowedAmount) {
-      question _questionplaceholder = question.questionDatabase[order.getQuestionID(randomQuestionID)];
+      //question _questionplaceholder = question.questionDatabase[order.getQuestionID(randomQuestionID)];
       randomSelectorID = random.nextInt(5);
       switch (randomSelectorID) {
         case 0:
@@ -219,7 +221,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           }
         case 2:
           {
-            randomSelectorChar = 'y';
+            category.ownallowed?randomSelectorChar = 'y':randomSelectorChar = '';
             break;
           }
         case 3:
@@ -233,6 +235,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             break;
           }
       }
+
       while (randomSelectorChar==''
           ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar) == ''
           ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==null) {
@@ -250,7 +253,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             }
           case 2:
             {
-              randomSelectorChar = 'y';
+              category.ownallowed?randomSelectorChar = 'y':randomSelectorChar = '';
               break;
             }
           case 3:
@@ -265,7 +268,16 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             }
         }
       }
-      _orderplaceholder.usedAmount++;
+      i++;
+      print(_orderplaceholder.questionID.toString() + ', ' + i.toString());
+      if  (_orderplaceholder.subtypeID!=1)  {
+        for (order _orderplaceholder2 in order.orderDatabase.values)  {
+          _orderplaceholder2.subtypeID==_orderplaceholder.subtypeID?order.setUsedAmount(_orderplaceholder2.id, _orderplaceholder2.allowedAmount):null;
+        }
+      }
+      else  {
+        _orderplaceholder.usedAmount++;
+      }
 
       //Playerblock
       randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
@@ -288,8 +300,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       }
 
       //Finalblock
-      finalQuestion =
-      question.questionDatabase[(order.getQuestionID(randomQuestionID))];
+      finalQuestion = question.questionDatabase[(order.getQuestionID(randomQuestionID))];
       finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
       firstRow = _buildfirstRow(finalFirstPlayer, finalSecondPlayer);
       secondRow = _buildSecondRow(finalFirstPlayer, finalSecondPlayer);
@@ -301,7 +312,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       order.uoic++;
       if (order.uoic >= order.orderDatabase.length * 0.75) {
         for (order _orderplaceholder in order.orderDatabase.values) {
-          order.setUsedAmount(_orderplaceholder.id, 0);
+          _orderplaceholder.subtypeID==1?order.setUsedAmount(_orderplaceholder.id, 0):null;
         }
         order.uoic = 0;
       }

@@ -10,8 +10,9 @@ class category{
   static int cic = 0;
   static var categoryDatabase = {};
   static bool ranOnce;
-  static bool grpallowed = false;
   static var cbAllowed = {};
+  static bool grpallowed = false;
+  static bool ownallowed = false;
 
   category(this.id, this.descr, this.title_german, this.allowedAmount);
 

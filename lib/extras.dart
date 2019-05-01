@@ -23,15 +23,32 @@ class editExtrasState extends State<editExtras>{
           alignment: Alignment.center,
           heightFactor: 0.75,
           widthFactor: 0.75,
-          child: new SwitchListTile(
-            title: Text('Gruppenauswahl'),
-            onChanged: (bool _newGrpvalue) {
-              setState(() {
-                category.grpallowed==true?_newGrpvalue=false:_newGrpvalue=true;
-                category.grpallowed=_newGrpvalue;
-              });
-            },
-            value: category.grpallowed
+          child: new Center(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>  [
+                SwitchListTile(
+                    title: Text('Gruppenauswahl'),
+                    onChanged: (bool _newGrpvalue) {
+                      setState(() {
+                        category.grpallowed==true?_newGrpvalue=false:_newGrpvalue=true;
+                        category.grpallowed=_newGrpvalue;
+                      });
+                    },
+                    value: category.grpallowed
+                ),
+                SwitchListTile(
+                    title: Text('Eigene Auswahl'),
+                    onChanged: (bool _newOwnvalue) {
+                      setState(() {
+                        category.ownallowed==true?_newOwnvalue=false:_newOwnvalue=true;
+                        category.ownallowed=_newOwnvalue;
+                      });
+                    },
+                    value: category.ownallowed
+                )
+              ],
+            )
           ),
         )
       )
