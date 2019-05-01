@@ -112,17 +112,19 @@ class editCategoriesState extends State<editCategories>{
                               splashColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onPressed: () {
-                                if  (category.getCategoryAllowedAmount(index+1)!=0)    {
-                                  category.setCategoryAllowedAmount(index+1, category.getCategoryAllowedAmount(index+1)-1);
-                                  if  (category.getCategoryAllowedAmount(index+1)==0)  {
-                                    category.cbAllowed[index+1] = false;
+                                if (index+1!=7) {
+                                  if  (category.getCategoryAllowedAmount(index+1)!=0)    {
+                                    category.setCategoryAllowedAmount(index+1, category.getCategoryAllowedAmount(index+1)-1);
+                                    if  (category.getCategoryAllowedAmount(index+1)==0)  {
+                                      category.cbAllowed[index+1] = false;
+                                    }
                                   }
+                                  setState(() {
+                                    for (bool selectedCategory in category.cbAllowed.values) {
+                                      (selectedCategory)?category.cic++:null;
+                                    }
+                                  });
                                 }
-                                setState(() {
-                                  for (bool selectedCategory in category.cbAllowed.values) {
-                                    (selectedCategory)?category.cic++:null;
-                                  }
-                                });
                               },
                             ),
                             Text(category.getCategoryAllowedAmount(index+1).toString()),
@@ -132,13 +134,15 @@ class editCategoriesState extends State<editCategories>{
                               splashColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                                 onPressed: () {
-                                  category.setCategoryAllowedAmount(index+1, category.getCategoryAllowedAmount(index+1)+1);
-                                  category.cbAllowed[index+1] = true;
-                                  setState(() {
-                                    for (bool selectedCategory in category.cbAllowed.values) {
-                                      (selectedCategory)?category.cic++:null;
-                                    }
-                                  });
+                                  if (index+1!=7) {
+                                    category.setCategoryAllowedAmount(index+1, category.getCategoryAllowedAmount(index+1)+1);
+                                    category.cbAllowed[index+1] = true;
+                                    setState(() {
+                                      for (bool selectedCategory in category.cbAllowed.values) {
+                                        (selectedCategory)?category.cic++:null;
+                                      }
+                                    });
+                                  }
                                 }
                             )],
                           mainAxisSize: MainAxisSize.min,

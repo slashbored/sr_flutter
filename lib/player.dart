@@ -30,6 +30,12 @@ class player {
     return _playerplaceholder.sex.toString();
   }
 
+  static void setPlayerSex(int id, String sex)  {
+    player _playerplaceholder = player.playerDatabase[id];
+    sex=='m'?_playerplaceholder.sex='m':_playerplaceholder.sex='f';
+    player.playerDatabase[id]=_playerplaceholder;
+  }
+
   static int getPlayerPoints(int id){
     player _playerplaceholder = player.playerDatabase[id];
     return _playerplaceholder.points;
@@ -150,16 +156,17 @@ class editPlayersState extends State<editPlayers> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children:[
                           new Expanded(
-                          child: new Container(
+                            child: new Container(
                             child: null
-                          ),
+                            ),
+                            flex: 1
                           ),
                           new Expanded(
                             child: new Center(
                               child: new Text(
                                   player.getPlayerName(player.playerIds[index]),
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 24,
                                       color: (player.getPlayerSex(player.playerIds[index]).toString()=='m')?Colors.blue:Colors.red
                                   )
                               )
@@ -167,10 +174,29 @@ class editPlayersState extends State<editPlayers> {
                             flex: 1
                           ),
                           new Expanded(
-                            child: new IconButton(icon: Icon(Icons.clear), onPressed: (){
-                                player.playerDatabase.remove(player.playerIds[index]);
-                                setState((){});
-                              }
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>  [
+                                new IconButton(
+                                  icon: Icon(Icons.repeat),
+                                  color: Colors.green,
+                                  onPressed: (){
+                                    setState((){
+                                      if (player.getPlayerSex(player.playerIds[index]).toString()=='m') {
+                                        player.setPlayerSex(player.playerIds[index], 'f');
+                                      }
+                                      else  {
+                                        player.setPlayerSex(player.playerIds[index], 'm');
+                                      }
+                                    });
+                                  }
+                              ),
+                                new IconButton(icon: Icon(Icons.clear), onPressed: (){
+                                  player.playerDatabase.remove(player.playerIds[index]);
+                                  setState((){});
+                                }
+                                )
+                              ]
                             ),
                             flex: 1
                           )
