@@ -6,16 +6,17 @@ class category{
   int id;
   String descr;
   String title_german;
+  int allowedAmount;
   static int cic = 0;
   static var categoryDatabase = {};
   static bool ranOnce;
   static bool grpallowed = false;
-  static var cbValues = {};
+  static var cbAllowed = {};
 
-  category(this.id, this.descr, this.title_german);
+  category(this.id, this.descr, this.title_german, this.allowedAmount);
 
   category.addCategory(int id, String descr, String title_german){
-    category newCategory = new category(id, descr, title_german);
+    category newCategory = new category(id, descr, title_german, 0);
     categoryDatabase[id] = newCategory;
   }
 
@@ -27,6 +28,16 @@ class category{
   static String getCatergoryTitle_german(int id){
     category _categoryplaceholder = category.categoryDatabase[id];
     return _categoryplaceholder.title_german.toString();
+  }
+
+  static int getCategoryAllowedAmount(int id) {
+    category _categoryplaceholder = category.categoryDatabase[id];
+    return _categoryplaceholder.allowedAmount;
+  }
+
+  static void setCategoryAllowedAmount(int id, int amount) {
+    category _categoryplaceholder = category.categoryDatabase[id];
+    _categoryplaceholder.allowedAmount = amount ;
   }
   
 }
@@ -70,7 +81,7 @@ class editCategoriesState extends State<editCategories>{
   Widget build(BuildContext context) {
     if (category.ranOnce!=true){
       for(category _categoryplaceholder in category.categoryDatabase.values){
-        category.cbValues[_categoryplaceholder.id] = false;
+        category.cbAllowed[_categoryplaceholder.id] = false;
       }
       //category.grpallowed=false;
     }
@@ -91,23 +102,65 @@ class editCategoriesState extends State<editCategories>{
                   children: <Widget>[
                     ListView.builder(itemCount: category.categoryDatabase.length,
                       itemBuilder: (BuildContext context, int index){
-                        return new SwitchListTile(
+                      return new ListTile(
+                        title: new Text(category.getCatergoryTitle_german(index+1)),
+                        trailing: new Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove_circle),
+                              color: Colors.red,
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onPressed: () {
+                                if  (category.getCategoryAllowedAmount(index+1)!=0)    {
+                                  category.setCategoryAllowedAmount(index+1, category.getCategoryAllowedAmount(index+1)-1);
+                                  if  (category.getCategoryAllowedAmount(index+1)==0)  {
+                                    category.cbAllowed[index+1] = false;
+                                  }
+                                }
+                                setState(() {
+                                  for (bool selectedCategory in category.cbAllowed.values) {
+                                    (selectedCategory)?category.cic++:null;
+                                  }
+                                });
+                              },
+                            ),
+                            Text(category.getCategoryAllowedAmount(index+1).toString()),
+                            IconButton(
+                                icon: Icon(Icons.add_circle),
+                                color: Colors.green,
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                                onPressed: () {
+                                  category.setCategoryAllowedAmount(index+1, category.getCategoryAllowedAmount(index+1)+1);
+                                  category.cbAllowed[index+1] = true;
+                                  setState(() {
+                                    for (bool selectedCategory in category.cbAllowed.values) {
+                                      (selectedCategory)?category.cic++:null;
+                                    }
+                                  });
+                                }
+                            )],
+                          mainAxisSize: MainAxisSize.min,
+                        )
+                        );
+                        /*return new SwitchListTile(
                             title: new Text(category.getCatergoryTitle_german(index+1)),
-                            value: category.cbValues[index+1],
+                            value: category.cbAllowed[index+1],
                             onChanged: (bool newCBValue) {
                               category.cic = 0;
                               setState(() {
-                                category.cbValues[index+1]==true?newCBValue=false:newCBValue=true;
-                                category.cbValues[index+1]=newCBValue;
-                                if  (category.cbValues[7]!=null||category.cbValues[7]==true)  {
-                                  category.cbValues[7] = false;
+                                category.cbAllowed[index+1]==true?newCBValue=false:newCBValue=true;
+                                category.cbAllowed[index+1]=newCBValue;
+                                if  (category.cbAllowed[7]!=null||category.cbAllowed[7]==true)  {
+                                  category.cbAllowed[7] = false;
                                 }
                               });
-                              for (bool selectedCategory in category.cbValues.values) {
+                              for (bool selectedCategory in category.cbAllowed.values) {
                                 (selectedCategory)?category.cic++:null;
                               }
                             },
-                        );
+                        );*/
                       },
                       shrinkWrap: true,
                     )

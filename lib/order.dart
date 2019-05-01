@@ -137,7 +137,18 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     super.initState();
     setState(() {
       for (category _categoryplaceholder in category.categoryDatabase.values) {
-        if (category.cbValues[_categoryplaceholder.id]) {
+        if(_categoryplaceholder.allowedAmount>0)  {
+          for (question _questionplaceholder in question.questionDatabase
+              .values) {
+            if (_categoryplaceholder.id == _questionplaceholder.cat_id) {
+              order.addOrder(
+                  _questionplaceholder.id, _questionplaceholder.cat_id,
+                  _questionplaceholder.type_id, _questionplaceholder.subtype_id,
+                  _categoryplaceholder.allowedAmount, 0);
+            }
+          }
+        }
+        /*if (category.cbAllowed[_categoryplaceholder.id]) {
           for (question _questionplaceholder in question.questionDatabase
               .values) {
             if (_categoryplaceholder.id == _questionplaceholder.cat_id) {
@@ -147,7 +158,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                   1, 0);
             }
           }
-        }
+        }*/
       }
       _running = false;
       _halted = false;
