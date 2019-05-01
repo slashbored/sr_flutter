@@ -15,11 +15,13 @@ class viewOverviewState extends State<viewOverview>{
   static IconButton playerIcon;
   static IconButton categoryIcon;
 
+
+
   @override
   void initState() {
     super.initState();
-    setState(() {
 
+    setState(() {
     });
   }
 
@@ -62,41 +64,54 @@ class viewOverviewState extends State<viewOverview>{
           centerTitle: true,
         ),
         drawer: menuDrawer(context),
-        body: Center(
-          child: new Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              new Spacer(
-                flex: 1
-              ),
-              new Expanded(
-                child: new Column(
-                  children: [
-                    new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          new Text('Kategorienanzahl: ' + category.cic.toString()),
-                          categoryIcon
-                        ]
-                    ),
-                    new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          new Text('Spieleranzahl: ' + player.playerDatabase.length.toString()),
-                          playerIcon
-                        ]
-                    )
-                  ]
+        body: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Spacer(
+                        flex: 125
+                      ),
+                      new Expanded(
+                          child: new Text('Kategorienanzahl: ' + category.cic.toString(),
+                              style: TextStyle(
+                                  fontSize: 36,
+                              ),
+                            textAlign: TextAlign.center,
+                      ),
+                      flex: 750
+                      ),
+                      new Expanded(
+                        child: categoryIcon,
+                        flex: 125
+                      )
+                    ]
                 ),
-                flex: 1
-              ),
-              new Spacer(
-                flex: 1
-              )
-            ]
+                new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    new Spacer(flex: 125
+                    ),
+                      new Expanded(
+                        child: new Text('Spieleranzahl: ' + player.playerDatabase.length.toString(),
+                          style: TextStyle(
+                            fontSize: 36,
+                          ),
+                        textAlign: TextAlign.center,
+                        ),
+                      flex: 750
+          ),
+          new Expanded(
+              child: playerIcon,
+              flex: 125
+
+          )
+                    ]
+                )
+              ]
           )
         )
-    )
     );
   }
 

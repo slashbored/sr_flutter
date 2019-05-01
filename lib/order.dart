@@ -41,10 +41,6 @@ class order{
     orderDatabase[id] = _orderplaceholder;
   }
 
-  /*order.getOrder(int id){
-    order _orderplaceholder = orderDB[id];
-  }*/
-
   static int getQuestionID(int id){
     order _orderplaceholder = orderDatabase[id];
     return _orderplaceholder.questionID;
@@ -526,8 +522,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     }
   }
 
-  void  _buildDeniedbutton  ()
-  {
+  void  _buildDeniedbutton  () {
      _deniedbtn = new FloatingActionButton(
          heroTag: "btn1",
          child: Icon(Icons.thumb_down),
@@ -544,8 +539,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
      );
   }
 
-  void  _buildAcceptedbutton ()
-  {
+  void  _buildAcceptedbutton () {
       _acceptedbtn =  new FloatingActionButton(
         heroTag: "btn2",
         backgroundColor: Colors.green,
@@ -623,7 +617,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       thirdRow = _buildThirdRow(finalQuestion);
     });
   }
-
 
   void _resumeTimer() {                     //resuming the timer
     _startForegroundtimer(_secondsLeftHalted);

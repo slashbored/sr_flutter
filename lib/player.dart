@@ -80,17 +80,17 @@ class editPlayersState extends State<editPlayers> {
                 new Expanded(
                   child:
                     _iconbuttonmale(),
-                    flex: 1
+                    flex: 250
                   ),
                 new Expanded(
                   child:
                     _txtaddPlayers(),
-                    flex: 1
+                    flex: 500
                 ),
                 new Expanded(
                     child:
                       _iconbuttonfemale(),
-                      flex: 1
+                      flex: 250
                 )
 
               ]
