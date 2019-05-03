@@ -256,7 +256,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       i++;
       print(_orderplaceholder.questionID.toString() + ', ' + i.toString());
       if  (_orderplaceholder.subtypeID!=1)  {
-        if(_orderplaceholder.subtypeID==2||_orderplaceholder.subtypeID==9||_orderplaceholder.subtypeID==10||_orderplaceholder.subtypeID==11||_orderplaceholder.subtypeID==13||_orderplaceholder.subtypeID==14||_orderplaceholder.subtypeID==18||_orderplaceholder.subtypeID==19)  {
+        if(_orderplaceholder.subtypeID==2)  {
           _orderplaceholder.allowedAmount = 1;
           _orderplaceholder.usedAmount++;
         }
