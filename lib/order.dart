@@ -364,6 +364,28 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         ],
       );
     }
+    if (finalQuestion.type_id==6) {
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+              child: RichText(
+                  text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Stimmt gleichzeitig ab (bspw. linke/rechte Hand), die Verlierer trinken einen Schluck:',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.green
+                            )
+                        )
+                      ]
+                  )
+              )
+          )
+        ],
+      );
+    }
    else {
      if (secondPlayer == null) {
        return new Row(
@@ -520,6 +542,20 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           ]
       );
     }
+    if  (finalQuestion.type_id==6)  {
+      return new Row(
+          children: [
+            new Expanded(
+                child: _timerbtn,
+                flex: 1
+            ),
+            new Expanded(
+                child: _acceptedbtn,
+              flex: 1
+            )
+          ]
+      );
+    }
     else {
       return new Row(
           children: [
@@ -555,18 +591,33 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   }
 
   void  _buildAcceptedbutton () {
-      _acceptedbtn =  new FloatingActionButton(
-        heroTag: "btn2",
-        backgroundColor: Colors.green,
-        child: Icon(Icons.thumb_up),
-        onPressed: () {
-          _foregroundTimer==null?null:_foregroundTimer.cancel();
-          _running=false;
-          finalQuestion.type_id==3?_addToStack(finalQuestion.time, finalFirstPlayer, finalQuestion.taskq):null;
-          _buildorder();
-          setState(() {});
-        },
-      );
+      if (finalQuestion.type_id==6) {
+        _acceptedbtn =  new FloatingActionButton(
+          heroTag: "btn2",
+          backgroundColor: Colors.green,
+          child: Icon(Icons.play_arrow),
+          onPressed: () {
+            _foregroundTimer==null?null:_foregroundTimer.cancel();
+            _running=false;
+            _buildorder();
+            setState(() {});
+          },
+        );
+      }
+      else  {
+        _acceptedbtn =  new FloatingActionButton(
+          heroTag: "btn2",
+          backgroundColor: Colors.green,
+          child: Icon(Icons.thumb_up),
+          onPressed: () {
+            _foregroundTimer==null?null:_foregroundTimer.cancel();
+            _running=false;
+            finalQuestion.type_id==3?_addToStack(finalQuestion.time, finalFirstPlayer, finalQuestion.taskq):null;
+            _buildorder();
+            setState(() {});
+          },
+        );
+      }
   }
 
   void _buildTimerbutton() {
@@ -582,7 +633,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       );
     }
     else  {
-      if (finalQuestion.type_id == 2) {       //if timed task
+      if (finalQuestion.type_id == 2||finalQuestion.type_id == 6) {       //if timed task
         _timerbtn = FloatingActionButton(
             heroTag: "btn3",
             backgroundColor: Colors.blue,
