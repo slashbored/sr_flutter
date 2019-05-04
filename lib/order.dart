@@ -45,6 +45,21 @@ class order{
 
 }
 
+class combo {
+  int playerId;
+  int questionId;
+  static int coic = 0;
+  static var combohistory = {};
+
+  combo(this.playerId, this.questionId);
+
+  combo.addCombo(int playerId, int questionId) {
+    combo _comboplaceholder = new combo(playerId, questionId);
+    combohistory[coic] = _comboplaceholder;
+    coic;
+  }
+}
+
 class countdown extends AnimatedWidget {
   countdown({ Key key, this.animation }) : super(key: key, listenable: animation);
   Animation<int> animation;
@@ -76,6 +91,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   //Avoid the same
   static int lastQuestionID;
   static int lastPlayerID;
+  static bool duplicate;
 
   //Buttonblock
   static FloatingActionButton _acceptedbtn;
@@ -292,11 +308,23 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
       //Finalblock
       finalQuestion = question.questionDatabase[(order.getQuestionID(randomQuestionID))];
-      finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
-      firstRow = _buildfirstRow(finalFirstPlayer, finalSecondPlayer);
-      secondRow = _buildSecondRow(finalFirstPlayer, finalSecondPlayer);
-      thirdRow = _buildThirdRow(finalQuestion);
-
+      for (combo _comboplaceholder in combo.combohistory.values)  {
+        if  (duplicate!=true) {
+          combo _currentcombo = combo(finalFirstPlayer.id, finalQuestion.id);
+          _currentcombo==_comboplaceholder?duplicate=true:duplicate=false;
+        }
+      }
+      if (duplicate==true)  {
+        _buildorder();
+      }
+      else{
+        combo.addCombo(finalFirstPlayer.id, finalQuestion.id);
+        combo.coic++;
+        finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
+        firstRow = _buildfirstRow(finalFirstPlayer, finalSecondPlayer);
+        secondRow = _buildSecondRow(finalFirstPlayer, finalSecondPlayer);
+        thirdRow = _buildThirdRow(finalQuestion);
+      }
     }
 
     else {
