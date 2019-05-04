@@ -368,19 +368,23 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Center(
-              child: RichText(
-                  text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: 'Stimmt gleichzeitig ab (bspw. linke/rechte Hand), die Verlierer trinken einen Schluck:',
+          new Center(
+              child: new Container(
+                child: new RichText(
+                    text: new TextSpan(
+                        children: <TextSpan>[
+                          new TextSpan(
+                            text: 'Abstimmen, Verlierer trinken:',
                             style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.green
-                            )
-                        )
-                      ]
-                  )
+                                fontSize: 36,
+                                color: Colors.green,
+                            ),
+                          ),
+                        ]
+                    ),
+                  textAlign: TextAlign.center,
+                ),
+                width: MediaQuery.of(context).size.width*0.75,
               )
           )
         ],
@@ -485,14 +489,15 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   Widget _buildSecondRow(player firstPlayer, player secondPlayer) {
     if (secondPlayer == null) {
-      return new RichText(text: TextSpan(
+      return new RichText(
+        text: TextSpan(
           children: <TextSpan>[
-            TextSpan(
-              text: finalOrderString,
-              style: _orderstyle,
-            )
-          ]
-      ),
+          TextSpan(
+          text: finalOrderString,
+          style: _orderstyle,
+      )
+    ]
+    ),
         textAlign: TextAlign.center,
       );
     }
@@ -501,24 +506,28 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       _splitstring = finalOrderString.split("\$placeholder");
       _splitstring[1].replaceAll("\$placeholder", "");
       return new RichText(
-        text: TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-                text: _splitstring[0],
-                style: _orderstyle
-            ),
-            TextSpan(
-                text: secondPlayer.name.toString(),
-                style: secondPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
-            ),
-            TextSpan(
-                text: _splitstring[1],
-                style: _orderstyle
-            )
-          ],
-        ),
-        textAlign: TextAlign.center,
-      );
+          text: TextSpan(
+            children: <TextSpan>[
+              TextSpan(
+                  text: firstPlayer.name.toString(),
+                  style: firstPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
+              ),
+              TextSpan(
+                  text: _splitstring[0],
+                  style: _orderstyle
+              ),
+              TextSpan(
+                  text: secondPlayer.name.toString(),
+                  style: secondPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
+              ),
+              TextSpan(
+                  text: _splitstring[1],
+                  style: _orderstyle
+              )
+            ],
+          ),
+          textAlign: TextAlign.center,
+        );
     }
   }
 
@@ -640,6 +649,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             child: Icon(Icons.timer),
             onPressed: () {
               _startForegroundtimer(finalQuestion.time);
+              setState(() {});
             }
         );
         if (_running) {                       // if timer is running
