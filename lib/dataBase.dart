@@ -37,5 +37,3 @@ Future buildDatabase() async{
 
   connection.close();
 }
-
-
