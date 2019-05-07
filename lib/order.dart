@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'dart:math';
+import 'dart:async';
+
 import 'player.dart';
 import 'question.dart';
 import 'category.dart';
-import 'dart:async';
+import 'orderDrawer.dart';
 
 class order{
   int id;
@@ -197,7 +198,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                       child: thirdRow
                   )
                 ]
-            )
+            ),
+          drawer: orderDrawer(context),
         ),
         onWillPop: () async => false
     );
