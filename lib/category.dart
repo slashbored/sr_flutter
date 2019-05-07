@@ -124,6 +124,7 @@ class editCategoriesState extends State<editCategories>{
                                           }
                                         }
                                         setState(() {
+                                          category.cic=0;
                                           for (bool selectedCategory in category.cbAllowed.values) {
                                             (selectedCategory)?category.cic++:null;
                                           }
@@ -142,6 +143,7 @@ class editCategoriesState extends State<editCategories>{
                                           category.setCategoryAllowedAmount(index+1, category.getCategoryAllowedAmount(index+1)+1);
                                           category.cbAllowed[index+1] = true;
                                           setState(() {
+                                            category.cic=0;
                                             for (bool selectedCategory in category.cbAllowed.values) {
                                               (selectedCategory)?category.cic++:null;
                                             }
@@ -152,23 +154,6 @@ class editCategoriesState extends State<editCategories>{
                                 mainAxisSize: MainAxisSize.min,
                               )
                           );
-                          /*return new SwitchListTile(
-                            title: new Text(category.getCatergoryTitle_german(index+1)),
-                            value: category.cbAllowed[index+1],
-                            onChanged: (bool newCBValue) {
-                              category.cic = 0;
-                              setState(() {
-                                category.cbAllowed[index+1]==true?newCBValue=false:newCBValue=true;
-                                category.cbAllowed[index+1]=newCBValue;
-                                if  (category.cbAllowed[7]!=null||category.cbAllowed[7]==true)  {
-                                  category.cbAllowed[7] = false;
-                                }
-                              });
-                              for (bool selectedCategory in category.cbAllowed.values) {
-                                (selectedCategory)?category.cic++:null;
-                              }
-                            },
-                        );*/
                         },
                         shrinkWrap: true,
                       )
@@ -202,13 +187,3 @@ class editCategoriesState extends State<editCategories>{
     }
   }
 }
-
-/*
-
-                children: category.categoryDatabase.map((int _id){
-                  return new SwitchListTile(
-                      title: new Text(category.getCatergoryTitle_german(_id)),
-                      value: 
-                      onChanged: null)
-                })
- */
