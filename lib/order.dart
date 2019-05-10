@@ -181,25 +181,65 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return new WillPopScope(
         child: new Scaffold(
-            body: new Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  new Expanded(
-                      child: new Center(
-                          child: firstRow
+            body: new Row(
+              children: <Widget>[
+                new Expanded(
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      ListView.builder(
+                        itemCount: player.playerDatabase.length,
+                        itemBuilder: (BuildContext context, int index)  {
+                          return new ListTile(
+                            title:  new Text(
+                              player.getPlayerName(player.playerIds[index]),
+                              textAlign: TextAlign.center,),
+                            trailing: new Row(
+                              children: <Widget>[
+                                new Text(
+                                    player.getPlayerPoints(player.playerIds[index]).toString()
+                                ),
+                                new IconButton(
+                                  icon: Icon(Icons.remove_circle,),
+                                  color: Colors.red,
+                                  onPressed: null,)
+                              ],
+                              mainAxisSize: MainAxisSize.min,
+                            ),
+                          );
+                        },
+                        shrinkWrap: true,
                       )
+                    ],
                   ),
-                  new Expanded(
-                      child: new Center(
-                          child: secondRow
-                      )
+                  flex: 250
+                ),
+                new Expanded(
+                  child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        new Expanded(
+                            child: new Center(
+                                child: firstRow
+                            )
+                        ),
+                        new Expanded(
+                            child: new Center(
+                                child: secondRow
+                            )
+                        ),
+                        new Expanded(
+                            child: thirdRow
+                        )
+                      ]
                   ),
-                  new Expanded(
-                      child: thirdRow
-                  )
-                ]
-            ),
-          drawer: orderDrawer(context),
+                  flex: 500
+                ),
+                new Spacer(
+                  flex: 250
+                )
+              ],
+            )
         ),
         onWillPop: () async => false
     );
