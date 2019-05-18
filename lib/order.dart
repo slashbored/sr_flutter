@@ -147,20 +147,19 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       color: Colors.black
   );
 
-
   @override
   void initState() {
     super.initState();
     setState(() {
       for (category _categoryplaceholder in category.categoryDatabase.values) {
         if(_categoryplaceholder.allowedAmount>0)  {
-          for (question _questionplaceholder in question.questionDatabase
-              .values) {
+          for (question _questionplaceholder in question.questionDatabase.values) {
             if (_categoryplaceholder.id == _questionplaceholder.cat_id) {
               order.addOrder(
-                  _questionplaceholder.id, _questionplaceholder.cat_id,
-                  _questionplaceholder.type_id, _questionplaceholder.subtype_id,
-                  _categoryplaceholder.allowedAmount, 0);
+                _questionplaceholder.id, _questionplaceholder.cat_id,
+                _questionplaceholder.type_id, _questionplaceholder.subtype_id,
+                _categoryplaceholder.allowedAmount, 0
+              );
             }
           }
         }
@@ -180,68 +179,68 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
-        child: new Scaffold(
-            body: new Row(
-              children: <Widget>[
-                new Expanded(
-                  child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      ListView.builder(
-                        itemCount: player.playerDatabase.length,
-                        itemBuilder: (BuildContext context, int index)  {
-                          return new ListTile(
-                            title:  new Text(
-                              player.getPlayerName(player.playerIds[index]),
-                              textAlign: TextAlign.center,),
-                            trailing: new Row(
-                              children: <Widget>[
-                                new Text(
-                                    player.getPlayerPoints(player.playerIds[index]).toString()
-                                ),
-                                new IconButton(
-                                  icon: Icon(Icons.remove_circle,),
-                                  color: Colors.red,
-                                  onPressed: null,)
-                              ],
-                              mainAxisSize: MainAxisSize.min,
+      child: new Scaffold(
+        body: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  ListView.builder(
+                    itemCount: player.playerDatabase.length,
+                    itemBuilder: (BuildContext context, int index)  {
+                      return new ListTile(
+                        title:  new Text(
+                          player.getPlayerName(player.playerIds[index]),
+                          textAlign: TextAlign.center,),
+                          trailing: new Row(
+                          children: <Widget>[
+                            new Text(
+                              player.getPlayerPoints(player.playerIds[index]).toString()
                             ),
-                          );
-                        },
-                        shrinkWrap: true,
-                      )
-                    ],
-                  ),
-                  flex: 250
-                ),
-                new Expanded(
-                  child: new Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        new Expanded(
-                            child: new Center(
-                                child: firstRow
-                            )
+                            new IconButton(
+                              icon: Icon(Icons.remove_circle,),
+                              color: Colors.red,
+                              onPressed: null,)
+                          ],
+                        mainAxisSize: MainAxisSize.min,
                         ),
-                        new Expanded(
-                            child: new Center(
-                                child: secondRow
-                            )
-                        ),
-                        new Expanded(
-                            child: thirdRow
-                        )
-                      ]
+                      );
+                    },
+                  shrinkWrap: true,
+                  )
+                ],
+              ),
+              flex: 250
+            ),
+            new Expanded(
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  new Expanded(
+                    child: new Center(
+                      child: firstRow
+                    )
                   ),
-                  flex: 500
-                ),
-                new Spacer(
-                  flex: 250
-                )
-              ],
+                  new Expanded(
+                    child: new Center(
+                      child: secondRow
+                    )
+                  ),
+                  new Expanded(
+                    child: thirdRow
+                  )
+                ]
+              ),
+              flex: 500
+            ),
+            new Spacer(
+              flex: 250
             )
-        ),
-        onWillPop: () async => false
+          ],
+        )
+      ),
+      onWillPop: () async => false
     );
   }
 
@@ -252,63 +251,52 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     if (_orderplaceholder.usedAmount < _orderplaceholder.allowedAmount) {
       randomSelectorID = random.nextInt(5);
       switch (randomSelectorID) {
-        case 0:
-          {
+        case 0: {
+          randomSelectorChar = 'a';
+          break;
+        }
+        case 1: {
+          randomSelectorChar = 'm';
+          break;
+        }
+        case 2: {
+          category.ownallowed?randomSelectorChar = 'y':randomSelectorChar = '';
+          break;
+        }
+        case 3: {
+          category.grpallowed?randomSelectorChar = 't':randomSelectorChar = '';
+          break;
+        }
+        case 4: {
+          randomSelectorChar = 'r';
+          break;
+        }
+      }
+      while (randomSelectorChar==''
+          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar) == ''
+          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==null)  {
+        randomSelectorID = random.nextInt(5);
+        switch (randomSelectorID) {
+          case 0: {
             randomSelectorChar = 'a';
             break;
-          }
-        case 1:
-          {
+            }
+          case 1: {
             randomSelectorChar = 'm';
             break;
           }
-        case 2:
-          {
+          case 2: {
             category.ownallowed?randomSelectorChar = 'y':randomSelectorChar = '';
             break;
           }
-        case 3:
-          {
+          case 3: {
             category.grpallowed?randomSelectorChar = 't':randomSelectorChar = '';
             break;
           }
-        case 4:
-          {
+          case 4: {
             randomSelectorChar = 'r';
             break;
           }
-      }
-
-      while (randomSelectorChar==''
-          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar) == ''
-          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==null) {
-        randomSelectorID = random.nextInt(5);
-        switch (randomSelectorID) {
-          case 0:
-            {
-              randomSelectorChar = 'a';
-              break;
-            }
-          case 1:
-            {
-              randomSelectorChar = 'm';
-              break;
-            }
-          case 2:
-            {
-              category.ownallowed?randomSelectorChar = 'y':randomSelectorChar = '';
-              break;
-            }
-          case 3:
-            {
-              category.grpallowed?randomSelectorChar = 't':randomSelectorChar = '';
-              break;
-            }
-          case 4:
-            {
-              randomSelectorChar = 'r';
-              break;
-            }
         }
       }
       i++;
@@ -335,7 +323,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       }
       finalFirstPlayer=player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
       lastPlayerID = finalFirstPlayer.id;
-
       if (randomSelectorID == 1) {
         while (randomSecondPlayerID == null ||
             randomSecondPlayerID == randomFirstPlayerID) {
@@ -389,25 +376,23 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-              child: RichText(
-                  text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: finalFirstPlayer.name,
-                            style: finalFirstPlayer.sex== 'm'
-                                ? _maletitlestyle
-                                : _femaletitlestyle
-                        ),
-                        TextSpan(
-                            text: ' fängt an:',
-                            style: TextStyle(
-                                fontSize: 36,
-                                color: Colors.green
-                            )
-                        )
-                      ]
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                    text: finalFirstPlayer.name,
+                    style: finalFirstPlayer.sex== 'm'? _maletitlestyle : _femaletitlestyle
+                  ),
+                  TextSpan(
+                    text: ' fängt an:',
+                    style: TextStyle(
+                      fontSize: 36,
+                        color: Colors.green
+                    )
                   )
+                ]
               )
+            )
           )
         ],
       );
@@ -417,19 +402,19 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-              child: RichText(
-                  text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: 'Allesamt:',
-                            style: TextStyle(
-                                fontSize: 36,
-                                color: Colors.green
-                            )
-                        )
-                      ]
+            child: RichText(
+              text: TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Allesamt:',
+                    style: TextStyle(
+                        fontSize: 36,
+                        color: Colors.green
+                    )
                   )
+                ]
               )
+            )
           )
         ],
       );
@@ -439,23 +424,23 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           new Center(
-              child: new Container(
-                child: new RichText(
-                    text: new TextSpan(
-                        children: <TextSpan>[
-                          new TextSpan(
-                            text: 'Abstimmen, Verlierer trinken:',
-                            style: TextStyle(
-                                fontSize: 36,
-                                color: Colors.green,
-                            ),
-                          ),
-                        ]
+            child: new Container(
+              width: MediaQuery.of(context).size.width*0.75,
+              child: new RichText(
+                textAlign: TextAlign.center,
+                text: new TextSpan(
+                  children: <TextSpan>[
+                    new TextSpan(
+                      text: 'Abstimmen, Verlierer trinken:',
+                      style: TextStyle(
+                        fontSize: 36,
+                        color: Colors.green,
+                      ),
                     ),
-                  textAlign: TextAlign.center,
+                  ]
                 ),
-                width: MediaQuery.of(context).size.width*0.75,
-              )
+              ),
+            )
           )
         ],
       );
@@ -463,21 +448,21 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
    else {
      if (secondPlayer == null) {
        return new Row(
-           mainAxisAlignment: MainAxisAlignment.spaceAround,
-           children: [
-             new Expanded(
-                 child: new Text(
-                     firstPlayer.points.toString(),
-                     textAlign: TextAlign.center,
-                     style: TextStyle(
-                         fontSize: 36
-                     )
-                 ),
-                 flex: 1
+         mainAxisAlignment: MainAxisAlignment.spaceAround,
+         children: [
+           new Expanded(
+             child: new Text(
+               firstPlayer.points.toString(),
+               textAlign: TextAlign.center,
+               style: TextStyle(
+                 fontSize: 36
+               )
              ),
-             new Expanded(
-              child: Center(
-                  child: new RichText(
+             flex: 1
+           ),
+           new Expanded(
+            child: Center(
+              child: new RichText(
                       text: TextSpan(
                           children: <TextSpan>[
                             TextSpan(
