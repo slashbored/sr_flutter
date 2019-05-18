@@ -96,7 +96,10 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   //Buttonblock
   static FloatingActionButton _acceptedbtn;
-  static FloatingActionButton _deniedbtn;
+  static Row _deniedbtnrow;
+  static FloatingActionButton _deniedbtnfirstplayer;
+  static FloatingActionButton _deniedbtnsecondplayer;
+  static FloatingActionButton _deniedbtnboth;
 
   //Timerbutton & -block
   static FloatingActionButton _timerbtn;
@@ -147,19 +150,20 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       color: Colors.black
   );
 
+
   @override
   void initState() {
     super.initState();
     setState(() {
       for (category _categoryplaceholder in category.categoryDatabase.values) {
         if(_categoryplaceholder.allowedAmount>0)  {
-          for (question _questionplaceholder in question.questionDatabase.values) {
+          for (question _questionplaceholder in question.questionDatabase
+              .values) {
             if (_categoryplaceholder.id == _questionplaceholder.cat_id) {
               order.addOrder(
-                _questionplaceholder.id, _questionplaceholder.cat_id,
-                _questionplaceholder.type_id, _questionplaceholder.subtype_id,
-                _categoryplaceholder.allowedAmount, 0
-              );
+                  _questionplaceholder.id, _questionplaceholder.cat_id,
+                  _questionplaceholder.type_id, _questionplaceholder.subtype_id,
+                  _categoryplaceholder.allowedAmount, 0);
             }
           }
         }
@@ -179,68 +183,56 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
-      child: new Scaffold(
-        body: new Row(
-          children: <Widget>[
-            new Expanded(
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  ListView.builder(
-                    itemCount: player.playerDatabase.length,
-                    itemBuilder: (BuildContext context, int index)  {
-                      return new ListTile(
-                        title:  new Text(
-                          player.getPlayerName(player.playerIds[index]),
-                          textAlign: TextAlign.center,),
-                          trailing: new Row(
-                          children: <Widget>[
-                            new Text(
-                              player.getPlayerPoints(player.playerIds[index]).toString()
+        child: new Scaffold(
+            body:
+                  /*new Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      ListView.builder(
+                        itemCount: player.playerDatabase.length,
+                        itemBuilder: (BuildContext context, int index)  {
+                          return new ListTile(
+                            title:  new Text(
+                              player.getPlayerName(player.playerIds[index]),
+                              textAlign: TextAlign.center,),
+                            trailing: new Row(
+                              children: <Widget>[
+                                new Text(
+                                    player.getPlayerPoints(player.playerIds[index]).toString()
+                                ),
+                                new IconButton(
+                                  icon: Icon(Icons.remove_circle,),
+                                  color: Colors.red,
+                                  onPressed: null,)
+                              ],
+                              mainAxisSize: MainAxisSize.min,
                             ),
-                            new IconButton(
-                              icon: Icon(Icons.remove_circle,),
-                              color: Colors.red,
-                              onPressed: null,)
-                          ],
-                        mainAxisSize: MainAxisSize.min,
+                          );
+                        },
+                        shrinkWrap: true,
+                      )
+                    ],
+                  ),*/
+                    new Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        new Expanded(
+                            child: new Center(
+                                child: firstRow
+                            )
                         ),
-                      );
-                    },
-                  shrinkWrap: true,
-                  )
-                ],
-              ),
-              flex: 250
-            ),
-            new Expanded(
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  new Expanded(
-                    child: new Center(
-                      child: firstRow
-                    )
+                        new Expanded(
+                            child: new Center(
+                                child: secondRow
+                            )
+                        ),
+                        new Expanded(
+                            child: thirdRow
+                        )
+                      ]
                   ),
-                  new Expanded(
-                    child: new Center(
-                      child: secondRow
-                    )
-                  ),
-                  new Expanded(
-                    child: thirdRow
-                  )
-                ]
-              ),
-              flex: 500
-            ),
-            new Spacer(
-              flex: 250
-            )
-          ],
-        )
-      ),
-      onWillPop: () async => false
+        ),
+        onWillPop: () async => false
     );
   }
 
@@ -251,52 +243,63 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     if (_orderplaceholder.usedAmount < _orderplaceholder.allowedAmount) {
       randomSelectorID = random.nextInt(5);
       switch (randomSelectorID) {
-        case 0: {
-          randomSelectorChar = 'a';
-          break;
-        }
-        case 1: {
-          randomSelectorChar = 'm';
-          break;
-        }
-        case 2: {
-          category.ownallowed?randomSelectorChar = 'y':randomSelectorChar = '';
-          break;
-        }
-        case 3: {
-          category.grpallowed?randomSelectorChar = 't':randomSelectorChar = '';
-          break;
-        }
-        case 4: {
-          randomSelectorChar = 'r';
-          break;
-        }
-      }
-      while (randomSelectorChar==''
-          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar) == ''
-          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==null)  {
-        randomSelectorID = random.nextInt(5);
-        switch (randomSelectorID) {
-          case 0: {
+        case 0:
+          {
             randomSelectorChar = 'a';
             break;
-            }
-          case 1: {
+          }
+        case 1:
+          {
             randomSelectorChar = 'm';
             break;
           }
-          case 2: {
+        case 2:
+          {
             category.ownallowed?randomSelectorChar = 'y':randomSelectorChar = '';
             break;
           }
-          case 3: {
+        case 3:
+          {
             category.grpallowed?randomSelectorChar = 't':randomSelectorChar = '';
             break;
           }
-          case 4: {
+        case 4:
+          {
             randomSelectorChar = 'r';
             break;
           }
+      }
+
+      while (randomSelectorChar==''
+          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar) == ''
+          ||question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar)==null) {
+        randomSelectorID = random.nextInt(5);
+        switch (randomSelectorID) {
+          case 0:
+            {
+              randomSelectorChar = 'a';
+              break;
+            }
+          case 1:
+            {
+              randomSelectorChar = 'm';
+              break;
+            }
+          case 2:
+            {
+              category.ownallowed?randomSelectorChar = 'y':randomSelectorChar = '';
+              break;
+            }
+          case 3:
+            {
+              category.grpallowed?randomSelectorChar = 't':randomSelectorChar = '';
+              break;
+            }
+          case 4:
+            {
+              randomSelectorChar = 'r';
+              break;
+            }
         }
       }
       i++;
@@ -323,6 +326,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       }
       finalFirstPlayer=player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
       lastPlayerID = finalFirstPlayer.id;
+
       if (randomSelectorID == 1) {
         while (randomSecondPlayerID == null ||
             randomSecondPlayerID == randomFirstPlayerID) {
@@ -376,23 +380,25 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-            child: RichText(
-              text: TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: finalFirstPlayer.name,
-                    style: finalFirstPlayer.sex== 'm'? _maletitlestyle : _femaletitlestyle
-                  ),
-                  TextSpan(
-                    text: ' fängt an:',
-                    style: TextStyle(
-                      fontSize: 36,
-                        color: Colors.green
-                    )
+              child: RichText(
+                  text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: finalFirstPlayer.name,
+                            style: finalFirstPlayer.sex== 'm'
+                                ? _maletitlestyle
+                                : _femaletitlestyle
+                        ),
+                        TextSpan(
+                            text: ' fängt an:',
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: Colors.green
+                            )
+                        )
+                      ]
                   )
-                ]
               )
-            )
           )
         ],
       );
@@ -402,19 +408,19 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-            child: RichText(
-              text: TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Allesamt:',
-                    style: TextStyle(
-                        fontSize: 36,
-                        color: Colors.green
-                    )
+              child: RichText(
+                  text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Allesamt:',
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: Colors.green
+                            )
+                        )
+                      ]
                   )
-                ]
               )
-            )
           )
         ],
       );
@@ -424,23 +430,23 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           new Center(
-            child: new Container(
-              width: MediaQuery.of(context).size.width*0.75,
-              child: new RichText(
-                textAlign: TextAlign.center,
-                text: new TextSpan(
-                  children: <TextSpan>[
-                    new TextSpan(
-                      text: 'Abstimmen, Verlierer trinken:',
-                      style: TextStyle(
-                        fontSize: 36,
-                        color: Colors.green,
-                      ),
+              child: new Container(
+                child: new RichText(
+                    text: new TextSpan(
+                        children: <TextSpan>[
+                          new TextSpan(
+                            text: 'Abstimmen, Verlierer trinken:',
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: Colors.green,
+                            ),
+                          ),
+                        ]
                     ),
-                  ]
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            )
+                width: MediaQuery.of(context).size.width*0.75,
+              )
           )
         ],
       );
@@ -448,21 +454,21 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
    else {
      if (secondPlayer == null) {
        return new Row(
-         mainAxisAlignment: MainAxisAlignment.spaceAround,
-         children: [
-           new Expanded(
-             child: new Text(
-               firstPlayer.points.toString(),
-               textAlign: TextAlign.center,
-               style: TextStyle(
-                 fontSize: 36
-               )
+           mainAxisAlignment: MainAxisAlignment.spaceAround,
+           children: [
+             new Expanded(
+                 child: new Text(
+                     firstPlayer.points.toString(),
+                     textAlign: TextAlign.center,
+                     style: TextStyle(
+                         fontSize: 36
+                     )
+                 ),
+                 flex: 1
              ),
-             flex: 1
-           ),
-           new Expanded(
-            child: Center(
-              child: new RichText(
+             new Expanded(
+              child: Center(
+                  child: new RichText(
                       text: TextSpan(
                           children: <TextSpan>[
                             TextSpan(
@@ -589,7 +595,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   Widget _buildThirdRow(question question) {
     _buildAcceptedbutton();
     _buildTimerbutton();
-    _buildDeniedbutton();
+    _buildDeniedbuttonrow();
     if  (finalQuestion.type_id==4||finalQuestion.type_id==5)  {
       return new Row(
           children: [
@@ -624,40 +630,126 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       return new Row(
           children: [
             new Expanded(
-                child: _deniedbtn
+                child: _deniedbtnrow,
+                flex: 1
             ),
             new Expanded(
-                child: _timerbtn
+                child: _timerbtn,
+                flex: 1
             ),
             new Expanded(
-                child: _acceptedbtn
+                child: _acceptedbtn,
+                flex: 1
             )
           ]
       );
     }
   }
 
-  void  _buildDeniedbutton  () {
-     _deniedbtn = new FloatingActionButton(
-         heroTag: "btn1",
-         child: Icon(Icons.thumb_down),
-         backgroundColor: Colors.red,
-         onPressed: () {
-           finalFirstPlayer.points++;
-           finalSecondPlayer!=null?finalSecondPlayer.points++:null;
-           _foregroundTimer==null?null:_foregroundTimer.cancel();
-           _running = false;
+  void  _buildDeniedbuttonrow  () {
+    _deniedbtnfirstplayer = new FloatingActionButton(
+        heroTag: "btn1",
+        child: Icon(Icons.thumb_down),
+        backgroundColor: Colors.red,
+        onPressed: () {
+          finalFirstPlayer.points++;
+          _foregroundTimer==null?null:_foregroundTimer.cancel();
+          _running = false;
+          _buildorder();
+          setState(() {});
+        }
+    );
+    _deniedbtnrow = new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        _deniedbtnfirstplayer
+      ],
+    );
+    if (finalSecondPlayer!=null)  {
+       _deniedbtnfirstplayer = new FloatingActionButton(
+           heroTag: "btn1",
+           child: new Column(
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: <Widget>[
+               new Text(
+                   finalFirstPlayer.name
+               ),
+               new Icon(Icons.thumb_down)
+             ],
+           ),
+           backgroundColor: Colors.red,
+           onPressed: () {
+             finalFirstPlayer.points++;
+             _foregroundTimer==null?null:_foregroundTimer.cancel();
+             _running = false;
+             _buildorder();
+             setState(() {});
+           }
+       );
+       _deniedbtnsecondplayer = new FloatingActionButton(
+           heroTag: "btn2",
+           child: new Column(
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: <Widget>[
+               new Text(
+                   finalSecondPlayer.name
+               ),
+               new Icon(Icons.thumb_down)
+             ],
+           ),
+           backgroundColor: Colors.red,
+           onPressed: () {
+             finalSecondPlayer.points++;
+             _foregroundTimer==null?null:_foregroundTimer.cancel();
+             _running = false;
+             _buildorder();
+             setState(() {});
+           }
+       );
+       _deniedbtnboth = new FloatingActionButton(
+           heroTag: "btn3",
+           child: new Column(
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: <Widget>[
+               new Text(
+                   'Beide'
+               ),
+               new Icon(Icons.thumb_down)
+             ],
+           ),
+           backgroundColor: Colors.red,
+           onPressed: () {
+             finalFirstPlayer.points++;
+             finalSecondPlayer.points++;
+             _foregroundTimer==null?null:_foregroundTimer.cancel();
+             _running = false;
+             _buildorder();
+             setState(() {});
+           }
+       );
+       _deniedbtnrow = new Row(
+         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+         children: <Widget>[
+          Transform.scale(
+            scale: 0.75,
+            child: _deniedbtnfirstplayer,
+          ),
+          _deniedbtnboth,
+          Transform.scale(
+            scale: 0.75,
+            child:  _deniedbtnsecondplayer
+          )
+         ],
+       );
+     }
 
-           _buildorder();
-           setState(() {});
-         }
-     );
   }
+
 
   void  _buildAcceptedbutton () {
       if (finalQuestion.type_id==6) {
         _acceptedbtn =  new FloatingActionButton(
-          heroTag: "btn2",
+          heroTag: "btn4",
           backgroundColor: Colors.green,
           child: Icon(Icons.play_arrow),
           onPressed: () {
@@ -670,7 +762,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       }
       else  {
         _acceptedbtn =  new FloatingActionButton(
-          heroTag: "btn2",
+          heroTag: "btn4",
           backgroundColor: Colors.green,
           child: Icon(Icons.thumb_up),
           onPressed: () {
@@ -687,7 +779,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   void _buildTimerbutton() {
     if  (finalQuestion.type_id==4||finalQuestion.type_id==5)  {
       _timerbtn =  new FloatingActionButton(
-        heroTag: "btn3",
+        heroTag: "btn5",
         backgroundColor: Colors.green,
         child: Icon(Icons.arrow_forward_ios),
         onPressed: () {
@@ -699,7 +791,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     else  {
       if (finalQuestion.type_id == 2||finalQuestion.type_id == 6) {       //if timed task
         _timerbtn = FloatingActionButton(
-            heroTag: "btn3",
+            heroTag: "btn5",
             backgroundColor: Colors.blue,
             child: Icon(Icons.timer),
             onPressed: () {
@@ -709,7 +801,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         );
         if (_running) {                       // if timer is running
           _timerbtn = FloatingActionButton(
-              heroTag: "btn3",
+              heroTag: "btn5",
               backgroundColor: Colors.blue,
               child: _timerbtnchild,
               onPressed: () {
@@ -718,7 +810,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           );
           if  (_halted) {                     //if timer is halted
             _timerbtn = FloatingActionButton(
-                heroTag: "btn3",
+                heroTag: "btn5",
                 backgroundColor: Colors.blue,
                 child: _timerbtnchild,
                 onPressed: () {
@@ -730,7 +822,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       }
       else {                                  //if non timed question
         _timerbtn = FloatingActionButton(
-            heroTag: "btn3",
+            heroTag: "btn5",
             backgroundColor: Colors.grey,
             child: Icon(Icons.timer),
             onPressed: () {}
