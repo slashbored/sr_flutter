@@ -600,14 +600,14 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       return new Row(
           children: [
             new Spacer(
-                flex: 1
+                flex: 3
             ),
             new Expanded(
                 child: _timerbtn,
                 flex: 1
             ),
             new Spacer(
-                flex: 1
+                flex: 3
             )
           ]
       );
@@ -631,7 +631,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           children: [
             new Expanded(
                 child: _deniedbtnrow,
-                flex: 1
+                flex: 3
             ),
             new Expanded(
                 child: _timerbtn,
@@ -639,7 +639,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
             ),
             new Expanded(
                 child: _acceptedbtn,
-                flex: 1
+                flex: 3
             )
           ]
       );
