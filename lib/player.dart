@@ -6,15 +6,16 @@ class player {
   int id;
   String name;
   String sex;
+  String icon;
   int points;
   static int pic = 0;
   static var playerDatabase = {};
   static List playerIds = new List();
 
-  player(this.id, this.name, this.sex, this.points);
+  player(this.id, this.name, this.sex, this.icon, this.points);
 
-  player.addPlayer(String newName, String newSex, int newPoints) {
-    player newPlayer = new player(pic, newName, newSex, newPoints);
+  player.addPlayer(String newName, String newSex, String newIcon, int newPoints) {
+    player newPlayer = new player(pic, newName, newSex, newIcon, newPoints);
     playerDatabase[pic] = newPlayer;
     pic++;
   }
@@ -33,6 +34,11 @@ class player {
     player _playerplaceholder = player.playerDatabase[id];
     sex=='m'?_playerplaceholder.sex='m':_playerplaceholder.sex='f';
     player.playerDatabase[id]=_playerplaceholder;
+  }
+
+  static String getPlayerIcon(int id) {
+    player _playerplaceholder = player.playerDatabase[id];
+    return _playerplaceholder.icon;
   }
 
   static int getPlayerPoints(int id){
@@ -59,6 +65,8 @@ class editPlayersState extends State<editPlayers> {
   final TextStyle _normalFont = const TextStyle(
       fontSize: 18.0, color: Colors.black
   );
+  Set<String> iconDB = {" ", "🍆", "🍻", "🤤", "💩", "🦄", "🐽", "🤓", "👻", "🍑", "🍌", "🎈", "💯", "🍓", "🔥", "👑", "👀"};
+  String dropdownValue;
 
   @override
   Widget build(BuildContext context)  {
@@ -83,9 +91,16 @@ class editPlayersState extends State<editPlayers> {
                   child:  _iconbuttonmale(),
                   flex: 250
                 ),
+                new Spacer(
+                  flex: 125
+                ),
                 new Expanded(
                   child:  _txtaddPlayers(),
-                  flex: 500
+                  flex: 400
+                ),
+                new Expanded(
+                  child: _iconbuttonicon(),
+                  flex: 125
                 ),
                 new Expanded(
                   child:  _iconbuttonfemale(),
@@ -135,7 +150,7 @@ class editPlayersState extends State<editPlayers> {
                     new Expanded(
                       child: new Center(
                         child: new Text(
-                          player.getPlayerName(player.playerIds[index]),
+                          player.getPlayerName(player.playerIds[index]) + " " + player.getPlayerIcon(player.playerIds[index]),
                           style: TextStyle(
                             fontSize: 24,
                             color: (player.getPlayerSex(player.playerIds[index]).toString()=='m')?Colors.blue:Colors.red
@@ -163,6 +178,7 @@ class editPlayersState extends State<editPlayers> {
                             }
                           ),
                           new IconButton(icon: Icon(Icons.clear), onPressed: (){
+                            iconDB.add(player.getPlayerIcon(player.playerIds[index]));
                             player.playerDatabase.remove(player.playerIds[index]);
                             setState((){});
                             }
@@ -205,19 +221,39 @@ class editPlayersState extends State<editPlayers> {
     );
   }
 
+  Widget _iconbuttonicon()  {
+    return new DropdownButton<String>(
+        value: dropdownValue,
+        onChanged: (String newValue) {
+      setState(() {
+        dropdownValue = newValue;
+      });
+    },
+    //items: <String>["🍆", "🍻", "🤤", "💩", "🦄", "🐽", "🤓", "👻", "🍑", "🍌", "🎈", "💯", "🍓", "🔥", "👑", "👀"]
+        items: iconDB.map<DropdownMenuItem<String>>((String value) {
+    return DropdownMenuItem<String>(
+    value: value,
+    child: Text(value),
+    );
+    }).toList());
+  }
+
   Widget _iconbuttonmale()  {
     return new IconButton(
-      icon: Icon(Icons.add_circle),
+      icon: new Icon(Icons.add_circle),
       color: Colors.blue,
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onPressed: () {
-        if  (txtplayername!=''&&txtplayername!=null&&txtplayername!='null') {
-          player.addPlayer(txtplayername, "m", 0);
+      onPressed:  ()  {
+        if  (txtplayername!=''&&txtplayername!=null&&txtplayername!='null'&&dropdownValue!=" ") {
+          player.addPlayer(txtplayername, "m", dropdownValue, 0);
           _buildgridmid();
           _txtaddPlayersController.clear();
           txtplayername = '';
-          setState((){});
+          setState((){
+            iconDB.remove(dropdownValue);
+            dropdownValue=" ";
+          });
         }
       },
     );
@@ -225,17 +261,20 @@ class editPlayersState extends State<editPlayers> {
 
   Widget _iconbuttonfemale()  {
     return new IconButton(
-      icon: Icon(Icons.add_circle),
+      icon: new Icon(Icons.add_circle),
       color: Colors.red,
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed: () {
-        if  (txtplayername!=''&&txtplayername!=null&&txtplayername!='null') {
-          player.addPlayer(txtplayername, "f", 0);
+        if  (txtplayername!=''&&txtplayername!=null&&txtplayername!='null'&&dropdownValue!=" ") {
+          player.addPlayer(txtplayername, "f", dropdownValue, 0);
           _buildgridmid();
           _txtaddPlayersController.clear();
           txtplayername = '';
-          setState((){});
+          setState((){
+            iconDB.remove(dropdownValue);
+            dropdownValue=" ";
+          });
         }
       },
     );

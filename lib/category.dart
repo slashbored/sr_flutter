@@ -47,7 +47,7 @@ class type{
   int id;
   String descr;
   static int tid = 0;
-  static var typeDatabase ={};
+  static var typeDatabase = {};
 
   type(this.id, this.descr);
 
@@ -61,7 +61,7 @@ class subtype{
   int id;
   String descr;
   static int stid = 0;
-  static var subtypeDatabase ={};
+  static var subtypeDatabase  = {};
 
   subtype(this.id, this.descr);
   subtype.addSubtype(int id, String descr){
