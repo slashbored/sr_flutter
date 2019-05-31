@@ -122,7 +122,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   static Row firstRow;
   static RichText secondRow;
   static Row thirdRow;
+  static Row fourthRow;
 
+  static String scores;
   static int i=0;
 
   final TextStyle _maletitlestyle = const TextStyle(
@@ -217,17 +219,24 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         new Expanded(
-                            child: new Center(
-                                child: firstRow
-                            )
+                          child: new Center(
+                            child: firstRow
+                          ),
+                          flex: 310
                         ),
                         new Expanded(
-                            child: new Center(
-                                child: secondRow
-                            )
+                          child: new Center(
+                            child: secondRow
+                          ),
+                          flex: 310
                         ),
                         new Expanded(
-                            child: thirdRow
+                          child: thirdRow,
+                          flex: 310
+                        ),
+                        new Expanded(
+                          child: fourthRow,
+                          flex: 70
                         )
                       ]
                   ),
@@ -357,6 +366,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         firstRow = _buildfirstRow(finalFirstPlayer, finalSecondPlayer);
         secondRow = _buildSecondRow(finalFirstPlayer, finalSecondPlayer);
         thirdRow = _buildThirdRow(finalQuestion);
+        fourthRow = _buildFourthRow();
       }
     }
 
@@ -384,17 +394,23 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                   text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: finalFirstPlayer.name,
-                            style: finalFirstPlayer.sex== 'm'
-                                ? _maletitlestyle
-                                : _femaletitlestyle
+                          text: finalFirstPlayer.name,
+                          style: finalFirstPlayer.sex== 'm'
+                            ? _maletitlestyle
+                            : _femaletitlestyle
                         ),
                         TextSpan(
-                            text: ' fängt an:',
-                            style: TextStyle(
-                                fontSize: 36,
-                                color: Colors.green
-                            )
+                        text: " " + finalFirstPlayer.icon,
+                          style: TextStyle(
+                            fontSize: 36
+                          )
+                        ),
+                        TextSpan(
+                          text: ' fängt an:',
+                          style: TextStyle(
+                            fontSize: 36,
+                            color: Colors.green
+                          )
                         )
                       ]
                   )
@@ -454,9 +470,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
    else {
      if (secondPlayer == null) {
        return new Row(
-           mainAxisAlignment: MainAxisAlignment.spaceAround,
+           mainAxisAlignment: MainAxisAlignment.center,
            children: [
-             new Expanded(
+             /*new Expanded(
                  child: new Text(
                      firstPlayer.points.toString(),
                      textAlign: TextAlign.center,
@@ -465,9 +481,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                      )
                  ),
                  flex: 1
-             ),
+             ),*/
              new Expanded(
-              child: Center(
                   child: new RichText(
                       text: TextSpan(
                           children: <TextSpan>[
@@ -476,24 +491,26 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                               style: firstPlayer.sex == 'm'
                                   ? _maletitlestyle
                                   : _femaletitlestyle,
-                            )
+                            ),
+                            TextSpan(
+                                text: " " + finalFirstPlayer.icon,
+                                style: TextStyle(
+                                    fontSize: 36
+                                )
+                            ),
                           ]
-                      )
-                  )
-              ),
-                 flex: 1
+                      ),
+                    textAlign: TextAlign.center,
+                  ),
              ),
-             new Spacer(
-                 flex: 1
-             )
            ]
        );
      }
      else {
        return new Row(
-           mainAxisAlignment: MainAxisAlignment.spaceAround,
+           mainAxisAlignment: MainAxisAlignment.center,
            children: [
-             new Expanded(
+             /*new Expanded(
                  child: new Text(
                      firstPlayer.points.toString(),
                      textAlign: TextAlign.center,
@@ -502,7 +519,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                      )
                  ),
                  flex: 1
-             ),
+             ),*/
              new Expanded(
                  child: new RichText(
                    text: TextSpan(
@@ -512,6 +529,12 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                              style: finalFirstPlayer.sex == 'm'
                                  ? _maletitlestyle
                                  : _femaletitlestyle
+                         ),
+                         TextSpan(
+                             text: " " + finalFirstPlayer.icon,
+                             style: TextStyle(
+                                 fontSize: 36
+                             )
                          ),
                          TextSpan(
                              text: ' & ',
@@ -525,14 +548,20 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                              style: finalSecondPlayer.sex == 'm'
                                  ? _maletitlestyle
                                  : _femaletitlestyle
-                         )
+                         ),
+                         TextSpan(
+                             text: " " + finalSecondPlayer.icon,
+                             style: TextStyle(
+                                 fontSize: 36
+                             )
+                         ),
                        ]
                    ),
                    textAlign: TextAlign.center,
                  ),
                  flex: 1
              ),
-             new Expanded(
+             /*new Expanded(
                  child: new Text(
                      secondPlayer.points.toString(),
                      textAlign: TextAlign.center,
@@ -541,7 +570,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                      )
                  ),
                  flex: 1
-             )
+             )*/
            ]
        );
      }
@@ -549,7 +578,17 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   }
 
   Widget _buildSecondRow(player firstPlayer, player secondPlayer) {
+    List<String> _splitstring;
+    int sipsp1;
+    int sipsp2;
     if (secondPlayer == null) {
+      if (finalOrderString.contains("\$pointholderone")) {
+        sipsp1 = firstPlayer.points +1;
+        finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholderone"), sipsp1.toString());
+        if (sipsp1==1&&finalOrderString.contains("Schlücke")) {
+          finalOrderString = finalOrderString.replaceAll(new RegExp(r"Schlücke"), "Schluck");
+        }
+      }
       return new RichText(
         text: TextSpan(
           children: <TextSpan>[
@@ -563,9 +602,15 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       );
     }
     else {
-      List<String> _splitstring;
+      if (finalOrderString.contains("\$pointholderone")) {
+        sipsp1 = firstPlayer.points +1;
+        sipsp2 = secondPlayer.points +1;
+        finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholderone"), sipsp1.toString());
+        finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholdertwo"), sipsp2.toString());
+      }
       _splitstring = finalOrderString.split("\$placeholder");
       _splitstring[1].replaceAll("\$placeholder", "");
+      _splitstring[2].replaceAll("\$placeholder", "");
       return new RichText(
           text: TextSpan(
             children: <TextSpan>[
@@ -583,6 +628,14 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
               ),
               TextSpan(
                   text: _splitstring[1],
+                  style: _orderstyle
+              ),
+              TextSpan(
+                  text: secondPlayer.name.toString(),
+                  style: secondPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
+              ),
+              TextSpan(
+                  text: _splitstring[2],
                   style: _orderstyle
               )
             ],
@@ -644,6 +697,24 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           ]
       );
     }
+  }
+
+  Widget _buildFourthRow()  {
+    scores="";
+    for (player _playerplaceholder in player.playerDatabase.values)  {
+      scores = scores + " " + _playerplaceholder.icon + ":" + _playerplaceholder.points.toString() + " ";
+    }
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        new Text(
+          scores,
+          style: TextStyle(
+            fontSize: 12
+          ),
+        )
+      ],
+    );
   }
 
   void  _buildDeniedbuttonrow  () {
