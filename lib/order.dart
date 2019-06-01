@@ -607,6 +607,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         sipsp2 = secondPlayer.points +1;
         finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholderone"), sipsp1.toString());
         finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholdertwo"), sipsp2.toString());
+        if (sipsp2==1&&finalOrderString.contains("Schlücke")) {
+          finalOrderString = finalOrderString.replaceAll(new RegExp(r"Schlücke"), "Schluck");
+        }
       }
       _splitstring = finalOrderString.split("\$placeholder");
       _splitstring[1].replaceAll("\$placeholder", "");
