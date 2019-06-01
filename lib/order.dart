@@ -537,7 +537,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
                              )
                          ),
                          TextSpan(
-                             text: ' & ',
+                             text: '\n&\n',
                              style: TextStyle(
                                  fontSize: 36,
                                  color: Colors.black
