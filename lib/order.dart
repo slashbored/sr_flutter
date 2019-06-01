@@ -802,17 +802,29 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
            }
        );
        _deniedbtnrow = new Row(
-         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+         mainAxisSize: MainAxisSize.min,
+         mainAxisAlignment: MainAxisAlignment.center,
          children: <Widget>[
-          Transform.scale(
-            scale: 0.75,
-            child: _deniedbtnfirstplayer,
+          new Expanded(
+            child: Transform.scale(
+              scale: 0.5,
+              child: _deniedbtnfirstplayer,
+            ),
+            flex: 2
           ),
-          _deniedbtnboth,
-          Transform.scale(
-            scale: 0.75,
-            child:  _deniedbtnsecondplayer
-          )
+           new Expanded(
+            child: _deniedbtnboth,
+            flex :3
+          ),
+           new Expanded(
+             child: Transform.scale(
+               scale: 0.5,
+               child: _deniedbtnsecondplayer,
+               ),
+             flex: 2
+
+
+           )
          ],
        );
      }
