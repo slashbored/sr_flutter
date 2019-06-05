@@ -91,7 +91,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   //Avoid the same
   static int lastQuestionID;
-  static int lastPlayerID;
+  static int lastFirstplayerID;
+  static int lastSecondplayerID;
   static bool duplicate;
 
   //Buttonblock
@@ -330,19 +331,21 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
       //Playerblock
       randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
-      while (randomFirstPlayerID == lastPlayerID) {
+      while (randomFirstPlayerID == lastFirstplayerID) {
         randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
       }
       finalFirstPlayer=player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
-      lastPlayerID = finalFirstPlayer.id;
+
 
       if (randomSelectorID == 1) {
         while (randomSecondPlayerID == null ||
-            randomSecondPlayerID == randomFirstPlayerID) {
+            randomSecondPlayerID == randomFirstPlayerID ||
+            randomSecondPlayerID == lastSecondplayerID) {
           randomSecondPlayerID = random.nextInt(player.playerDatabase.length);
         }
         finalSecondPlayer =
         player.playerDatabase[player.getPlayerIdFromList(randomSecondPlayerID)];
+
       }
       else {
         finalSecondPlayer = null;
@@ -360,6 +363,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         _buildorder();
       }
       else{
+        lastFirstplayerID = finalFirstPlayer.id;
+        finalSecondPlayer!=null?lastSecondplayerID = finalSecondPlayer.id:null;
         combo.addCombo(finalFirstPlayer.id, finalQuestion.id);
         combo.coic++;
         finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
@@ -583,11 +588,11 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     int sipsp2;
     if (secondPlayer == null) {
       if (finalOrderString.contains("\$pointholderone")) {
-        sipsp1 = firstPlayer.points +1;
+        sipsp1 = firstPlayer.points +2;
         finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholderone"), sipsp1.toString());
-        if (sipsp1==1&&finalOrderString.contains("Schlücke")) {
+        /*if (sipsp1==1&&finalOrderString.contains("Schlücke")) {
           finalOrderString = finalOrderString.replaceAll(new RegExp(r"Schlücke"), "Schluck");
-        }
+        }*/
       }
       return new RichText(
         text: TextSpan(
@@ -603,13 +608,13 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     }
     else {
       if (finalOrderString.contains("\$pointholderone")) {
-        sipsp1 = firstPlayer.points +1;
-        sipsp2 = secondPlayer.points +1;
+        sipsp1 = firstPlayer.points +2;
+        sipsp2 = secondPlayer.points +2;
         finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholderone"), sipsp1.toString());
         finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholdertwo"), sipsp2.toString());
-        if (sipsp2==1&&finalOrderString.contains("Schlücke")) {
+        /*if (sipsp2==1&&finalOrderString.contains("Schlücke")) {
           finalOrderString = finalOrderString.replaceAll(new RegExp(r"Schlücke"), "Schluck");
-        }
+        }*/
       }
       _splitstring = finalOrderString.split("\$placeholder");
       _splitstring[1].replaceAll("\$placeholder", "");
@@ -726,7 +731,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         child: Icon(Icons.thumb_down),
         backgroundColor: Colors.red,
         onPressed: () {
-          finalFirstPlayer.points++;
+          finalFirstPlayer.points = finalFirstPlayer.points + 2;
           _foregroundTimer==null?null:_foregroundTimer.cancel();
           _running = false;
           _buildorder();
@@ -753,7 +758,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
            ),
            backgroundColor: Colors.red,
            onPressed: () {
-             finalFirstPlayer.points++;
+             finalFirstPlayer.points = finalFirstPlayer.points + 2;
              _foregroundTimer==null?null:_foregroundTimer.cancel();
              _running = false;
              _buildorder();
@@ -773,7 +778,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
            ),
            backgroundColor: Colors.red,
            onPressed: () {
-             finalSecondPlayer.points++;
+             finalSecondPlayer.points = finalSecondPlayer.points + 2;
              _foregroundTimer==null?null:_foregroundTimer.cancel();
              _running = false;
              _buildorder();
@@ -793,8 +798,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
            ),
            backgroundColor: Colors.red,
            onPressed: () {
-             finalFirstPlayer.points++;
-             finalSecondPlayer.points++;
+             finalFirstPlayer.points = finalFirstPlayer.points + 2;
+             finalSecondPlayer.points = finalSecondPlayer.points + 2;
              _foregroundTimer==null?null:_foregroundTimer.cancel();
              _running = false;
              _buildorder();
