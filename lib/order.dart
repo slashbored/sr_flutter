@@ -5,6 +5,8 @@ import 'dart:async';
 import 'player.dart';
 import 'question.dart';
 import 'category.dart';
+import 'orderFirstRow.dart';
+import 'orderSecondRow.dart';
 import 'orderDrawer.dart';
 
 class order{
@@ -96,22 +98,22 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   static bool duplicate;
 
   //Buttonblock
-  static FloatingActionButton _acceptedbtn;
-  static Row _deniedbtnrow;
-  static FloatingActionButton _deniedbtnfirstplayer;
-  static FloatingActionButton _deniedbtnsecondplayer;
-  static FloatingActionButton _deniedbtnboth;
+  static FloatingActionButton acceptedbtn;
+  static Row deniedbtnrow;
+  static FloatingActionButton deniedbtnfirstplayer;
+  static FloatingActionButton deniedbtnsecondplayer;
+  static FloatingActionButton deniedbtnboth;
 
   //Timerbutton & -block
-  static FloatingActionButton _timerbtn;
-  static Timer _foregroundTimer;
-  static var _timerbtnchild;
-  static int _secondsLeft;
-  static int _secondsLeftHalted;
-  static bool _running;
-  static bool _halted;
-  static Timer _backgroundTimer;
-  static var _orderStack = {};
+  static FloatingActionButton timerbtn;
+  static Timer foregroundTimer;
+  static var timerbtnchild;
+  static int secondsLeft;
+  static int secondsLeftHalted;
+  static bool running;
+  static bool halted;
+  static Timer backgroundTimer;
+  static var orderStack = {};
 
   //Finalblock
   static player finalFirstPlayer;
@@ -128,30 +130,20 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   static String scores;
   static int i=0;
 
-  final TextStyle _maletitlestyle = const TextStyle(
-      fontSize: 36,
-      color: Colors.blue
-  );
-
-  final TextStyle _maleorderstyle = const TextStyle(
+  /*final TextStyle maleorderstyle = const TextStyle(
       fontSize: 24,
       color: Colors.blue
-  );
+  );*/
 
-  final TextStyle _femaletitlestyle = const TextStyle(
-      fontSize: 36,
-      color: Colors.red
-  );
-
-  final TextStyle _femaleorderstyle = const TextStyle(
+  /*final TextStyle femaleorderstyle = const TextStyle(
       fontSize: 24,
       color: Colors.red
-  );
+  );*/
 
-  final TextStyle _orderstyle = const TextStyle(
+  /*final TextStyle orderstyle = const TextStyle(
       fontSize: 24,
       color: Colors.black
-  );
+  );*/
 
 
   @override
@@ -171,15 +163,15 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           }
         }
       }
-      _running = false;
-      _halted = false;
-      _buildorder();
+      running = false;
+      halted = false;
+      buildorder();
     });
   }
 
   @override
   void dispose() {
-    _foregroundTimer.cancel();
+    foregroundTimer.cancel();
     super.dispose();
   }
 
@@ -188,34 +180,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     return new WillPopScope(
         child: new Scaffold(
             body:
-                  /*new Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      ListView.builder(
-                        itemCount: player.playerDatabase.length,
-                        itemBuilder: (BuildContext context, int index)  {
-                          return new ListTile(
-                            title:  new Text(
-                              player.getPlayerName(player.playerIds[index]),
-                              textAlign: TextAlign.center,),
-                            trailing: new Row(
-                              children: <Widget>[
-                                new Text(
-                                    player.getPlayerPoints(player.playerIds[index]).toString()
-                                ),
-                                new IconButton(
-                                  icon: Icon(Icons.remove_circle,),
-                                  color: Colors.red,
-                                  onPressed: null,)
-                              ],
-                              mainAxisSize: MainAxisSize.min,
-                            ),
-                          );
-                        },
-                        shrinkWrap: true,
-                      )
-                    ],
-                  ),*/
                     new Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -246,7 +210,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     );
   }
 
-  void _buildorder() {
+  void buildorder() {
     //Questionblock
     randomQuestionID = random.nextInt(order.orderDatabase.length);
     order _orderplaceholder = order.orderDatabase[randomQuestionID];
@@ -360,7 +324,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         }
       }
       if (duplicate==true)  {
-        _buildorder();
+        buildorder();
       }
       else{
         lastFirstplayerID = finalFirstPlayer.id;
@@ -368,9 +332,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         combo.addCombo(finalFirstPlayer.id, finalQuestion.id);
         combo.coic++;
         finalOrderString = question.getQuestionText(order.getQuestionID(randomQuestionID), randomSelectorChar);
-        firstRow = _buildfirstRow(finalFirstPlayer, finalSecondPlayer);
-        secondRow = _buildSecondRow(finalFirstPlayer, finalSecondPlayer);
-        thirdRow = _buildThirdRow(finalQuestion);
+        firstRow = buildfirstRow(context, finalFirstPlayer, finalSecondPlayer, finalQuestion);
+        secondRow = buildSecondRow(finalFirstPlayer, finalSecondPlayer, finalOrderString);
+        thirdRow = buildThirdRow(finalQuestion, finalFirstPlayer, finalSecondPlayer);
         fourthRow = _buildFourthRow();
       }
     }
@@ -385,11 +349,11 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         }
         order.uoic = 0;
       }
-      _buildorder();
+      buildorder();
     }
   }
 
-  Widget _buildfirstRow(player firstPlayer, player secondPlayer) {
+  /* Widget buildfirstRow(player firstPlayer, player secondPlayer) {
     if (finalQuestion.type_id==4) {
       return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -580,9 +544,9 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
        );
      }
    }
-  }
+  } */
 
-  Widget _buildSecondRow(player firstPlayer, player secondPlayer) {
+  /*Widget buildSecondRow(player firstPlayer, player secondPlayer) {
     List<String> _splitstring;
     int sipsp1;
     int sipsp2;
@@ -651,20 +615,20 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           textAlign: TextAlign.center,
         );
     }
-  }
+  }*/
 
-  Widget _buildThirdRow(question question) {
+  Widget buildThirdRow(question question, player firstPlayer, player secondPlayer) {
     _buildAcceptedbutton();
-    _buildTimerbutton();
-    _buildDeniedbuttonrow();
-    if  (finalQuestion.type_id==4||finalQuestion.type_id==5)  {
+    _buildTimerbutton(question);
+    _buildDeniedbuttonrow(firstPlayer, secondPlayer);
+    if  (question.type_id==4||question.type_id==5)  {
       return new Row(
           children: [
             new Spacer(
                 flex: 3
             ),
             new Expanded(
-                child: _timerbtn,
+                child: timerbtn,
                 flex: 1
             ),
             new Spacer(
@@ -673,15 +637,15 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           ]
       );
     }
-    if  (finalQuestion.type_id==6)  {
+    if  (question.type_id==6)  {
       return new Row(
           children: [
             new Expanded(
-                child: _timerbtn,
+                child: timerbtn,
                 flex: 1
             ),
             new Expanded(
-                child: _acceptedbtn,
+                child: acceptedbtn,
               flex: 1
             )
           ]
@@ -691,15 +655,15 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       return new Row(
           children: [
             new Expanded(
-                child: _deniedbtnrow,
+                child: deniedbtnrow,
                 flex: 3
             ),
             new Expanded(
-                child: _timerbtn,
+                child: timerbtn,
                 flex: 1
             ),
             new Expanded(
-                child: _acceptedbtn,
+                child: acceptedbtn,
                 flex: 3
             )
           ]
@@ -725,67 +689,67 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     );
   }
 
-  void  _buildDeniedbuttonrow  () {
-    _deniedbtnfirstplayer = new FloatingActionButton(
+  void  _buildDeniedbuttonrow  (player firstPlayer, player secondPlayer) {
+    deniedbtnfirstplayer = new FloatingActionButton(
         heroTag: "btn1",
         child: Icon(Icons.thumb_down),
         backgroundColor: Colors.red,
         onPressed: () {
-          finalFirstPlayer.points = finalFirstPlayer.points + 2;
-          _foregroundTimer==null?null:_foregroundTimer.cancel();
-          _running = false;
-          _buildorder();
+          firstPlayer.points = firstPlayer.points + 2;
+          foregroundTimer==null?null:foregroundTimer.cancel();
+          running = false;
+          buildorder();
           setState(() {});
         }
     );
-    _deniedbtnrow = new Row(
+    deniedbtnrow = new Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        _deniedbtnfirstplayer
+        deniedbtnfirstplayer
       ],
     );
-    if (finalSecondPlayer!=null)  {
-       _deniedbtnfirstplayer = new FloatingActionButton(
+    if (secondPlayer!=null)  {
+       deniedbtnfirstplayer = new FloatingActionButton(
            heroTag: "btn1",
            child: new Column(
              mainAxisAlignment: MainAxisAlignment.center,
              children: <Widget>[
                new Text(
-                   finalFirstPlayer.name
+                   firstPlayer.name
                ),
                new Icon(Icons.thumb_down)
              ],
            ),
            backgroundColor: Colors.red,
            onPressed: () {
-             finalFirstPlayer.points = finalFirstPlayer.points + 2;
-             _foregroundTimer==null?null:_foregroundTimer.cancel();
-             _running = false;
-             _buildorder();
+             firstPlayer.points = firstPlayer.points + 2;
+             foregroundTimer==null?null:foregroundTimer.cancel();
+             running = false;
+             buildorder();
              setState(() {});
            }
        );
-       _deniedbtnsecondplayer = new FloatingActionButton(
+       deniedbtnsecondplayer = new FloatingActionButton(
            heroTag: "btn2",
            child: new Column(
              mainAxisAlignment: MainAxisAlignment.center,
              children: <Widget>[
                new Text(
-                   finalSecondPlayer.name
+                   secondPlayer.name
                ),
                new Icon(Icons.thumb_down)
              ],
            ),
            backgroundColor: Colors.red,
            onPressed: () {
-             finalSecondPlayer.points = finalSecondPlayer.points + 2;
-             _foregroundTimer==null?null:_foregroundTimer.cancel();
-             _running = false;
-             _buildorder();
+             secondPlayer.points = secondPlayer.points + 2;
+             foregroundTimer==null?null:foregroundTimer.cancel();
+             running = false;
+             buildorder();
              setState(() {});
            }
        );
-       _deniedbtnboth = new FloatingActionButton(
+       deniedbtnboth = new FloatingActionButton(
            heroTag: "btn3",
            child: new Column(
              mainAxisAlignment: MainAxisAlignment.center,
@@ -798,33 +762,33 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
            ),
            backgroundColor: Colors.red,
            onPressed: () {
-             finalFirstPlayer.points = finalFirstPlayer.points + 2;
-             finalSecondPlayer.points = finalSecondPlayer.points + 2;
-             _foregroundTimer==null?null:_foregroundTimer.cancel();
-             _running = false;
-             _buildorder();
+             firstPlayer.points = firstPlayer.points + 2;
+             secondPlayer.points = secondPlayer.points + 2;
+             foregroundTimer==null?null:foregroundTimer.cancel();
+             running = false;
+             buildorder();
              setState(() {});
            }
        );
-       _deniedbtnrow = new Row(
+       deniedbtnrow = new Row(
          mainAxisSize: MainAxisSize.min,
          mainAxisAlignment: MainAxisAlignment.center,
          children: <Widget>[
           new Expanded(
             child: Transform.scale(
               scale: 0.5,
-              child: _deniedbtnfirstplayer,
+              child: deniedbtnfirstplayer,
             ),
             flex: 2
           ),
            new Expanded(
-            child: _deniedbtnboth,
+            child: deniedbtnboth,
             flex :3
           ),
            new Expanded(
              child: Transform.scale(
                scale: 0.5,
-               child: _deniedbtnsecondplayer,
+               child: deniedbtnsecondplayer,
                ),
              flex: 2
 
@@ -836,83 +800,82 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   }
 
-
   void  _buildAcceptedbutton () {
       if (finalQuestion.type_id==6) {
-        _acceptedbtn =  new FloatingActionButton(
+        acceptedbtn =  new FloatingActionButton(
           heroTag: "btn4",
           backgroundColor: Colors.green,
           child: Icon(Icons.play_arrow),
           onPressed: () {
-            _foregroundTimer==null?null:_foregroundTimer.cancel();
-            _running=false;
-            _buildorder();
+            foregroundTimer==null?null:foregroundTimer.cancel();
+            running=false;
+            buildorder();
             setState(() {});
           },
         );
       }
       else  {
-        _acceptedbtn =  new FloatingActionButton(
+        acceptedbtn =  new FloatingActionButton(
           heroTag: "btn4",
           backgroundColor: Colors.green,
           child: Icon(Icons.thumb_up),
           onPressed: () {
-            _foregroundTimer==null?null:_foregroundTimer.cancel();
-            _running=false;
-            finalQuestion.type_id==3?_addToStack(finalQuestion.time, finalFirstPlayer, finalQuestion.taskq):null;
-            _buildorder();
+            foregroundTimer==null?null:foregroundTimer.cancel();
+            running=false;
+            finalQuestion.type_id==3?addToStack(finalQuestion.time, finalFirstPlayer, finalQuestion.taskq):null;
+            buildorder();
             setState(() {});
           },
         );
       }
   }
 
-  void _buildTimerbutton() {
-    if  (finalQuestion.type_id==4||finalQuestion.type_id==5)  {
-      _timerbtn =  new FloatingActionButton(
+  void _buildTimerbutton(question question) {
+    if  (question.type_id==4||question.type_id==5)  {
+      timerbtn =  new FloatingActionButton(
         heroTag: "btn5",
         backgroundColor: Colors.green,
         child: Icon(Icons.arrow_forward_ios),
         onPressed: () {
-          _buildorder();
+          buildorder();
           setState(() {});
         },
       );
     }
     else  {
-      if (finalQuestion.type_id == 2||finalQuestion.type_id == 6) {       //if timed task
-        _timerbtn = FloatingActionButton(
+      if (question.type_id == 2||question.type_id == 6) {       //if timed task
+        timerbtn = FloatingActionButton(
             heroTag: "btn5",
             backgroundColor: Colors.blue,
             child: Icon(Icons.timer),
             onPressed: () {
-              _startForegroundtimer(finalQuestion.time);
+              startForegroundtimer(question.time);
               setState(() {});
             }
         );
-        if (_running) {                       // if timer is running
-          _timerbtn = FloatingActionButton(
+        if (running) {                       // if timer is running
+          timerbtn = FloatingActionButton(
               heroTag: "btn5",
               backgroundColor: Colors.blue,
-              child: _timerbtnchild,
+              child: timerbtnchild,
               onPressed: () {
-                _haltTimer();
+                haltTimer();
               }
           );
-          if  (_halted) {                     //if timer is halted
-            _timerbtn = FloatingActionButton(
+          if  (halted) {                     //if timer is halted
+            timerbtn = FloatingActionButton(
                 heroTag: "btn5",
                 backgroundColor: Colors.blue,
-                child: _timerbtnchild,
+                child: timerbtnchild,
                 onPressed: () {
-                  _resumeTimer();
+                  resumeTimer();
                 }
             );
           }
         }
       }
       else {                                  //if non timed question
-        _timerbtn = FloatingActionButton(
+        timerbtn = FloatingActionButton(
             heroTag: "btn5",
             backgroundColor: Colors.grey,
             child: Icon(Icons.timer),
@@ -922,43 +885,43 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
     }
   }
 
-  void _haltTimer() {                       //halting the timer
-    _secondsLeftHalted = _secondsLeft;
-    _foregroundTimer.cancel();
-    _halted = true;
-    _timerbtnchild= Icon(Icons.pause);
+  void haltTimer() {                       //halting the timer
+    secondsLeftHalted = secondsLeft;
+    foregroundTimer.cancel();
+    halted = true;
+    timerbtnchild= Icon(Icons.pause);
     setState(() {
-      thirdRow = _buildThirdRow(finalQuestion);
+      thirdRow = buildThirdRow(finalQuestion, finalFirstPlayer, finalSecondPlayer);
     });
   }
 
-  void _resumeTimer() {                     //resuming the timer
-    _startForegroundtimer(_secondsLeftHalted);
+  void resumeTimer() {                     //resuming the timer
+    startForegroundtimer(secondsLeftHalted);
 
   }
 
-  void _startForegroundtimer(int _duration) {         // starting the timer
-    _foregroundTimer = Timer.periodic(Duration(seconds: 1), (Timer t) =>
+  void startForegroundtimer(int _duration) {         // starting the timer
+    foregroundTimer = Timer.periodic(Duration(seconds: 1), (Timer t) =>
         setState(() {
-          if (_running == false||_halted==true) {
-            _secondsLeft = _duration;
-            _running = true;
-            _halted = false;
+          if (running == false||halted==true) {
+            secondsLeft = _duration;
+            running = true;
+            halted = false;
           }
-          _secondsLeft--;
-          _timerbtnchild = Text('$_secondsLeft');
-          thirdRow = _buildThirdRow(finalQuestion);
-          if (_secondsLeft == 0) {
-            _running = false;
-            _foregroundTimer.cancel();
-            _timerbtnchild = Icon(Icons.timer);
-            thirdRow = _buildThirdRow(finalQuestion);
+          secondsLeft--;
+          timerbtnchild = Text('$secondsLeft');
+          thirdRow = buildThirdRow(finalQuestion, finalFirstPlayer, finalSecondPlayer);
+          if (secondsLeft == 0) {
+            running = false;
+            foregroundTimer.cancel();
+            timerbtnchild = Icon(Icons.timer);
+            thirdRow = buildThirdRow(finalQuestion, finalFirstPlayer, finalSecondPlayer);
           }
         })
     );
   }
 
-  void _addToStack(int duration, player player, String task) {
+  void addToStack(int duration, player player, String task) {
     List<String> _splitstring;
     _splitstring = task.split("\$placeholder");
     _splitstring[1].replaceAll("\$placeholder", "");
@@ -967,41 +930,41 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         children: <TextSpan>[
           TextSpan(
               text: _splitstring[0],
-              style: _orderstyle
+              style: orderstyle
           ),
           TextSpan(
               text: player.name.toString(),
               style: player.sex == 'm'
-                  ? _maleorderstyle
-                  : _femaleorderstyle
+                  ? maleorderstyle
+                  : femaleorderstyle
           ),
           TextSpan(
               text: _splitstring[1],
-              style: _orderstyle
+              style: orderstyle
           )
         ],
       ),
       textAlign: TextAlign.center,
     );
     int pos;
-    if (_orderStack.length == 0) {
+    if (orderStack.length == 0) {
       pos = 0;
-      _orderStack[0] = _qText;
+      orderStack[0] = _qText;
     }
     else  {
-      pos = _orderStack.length;
-      _orderStack[_orderStack.length] = _qText;
+      pos = orderStack.length;
+      orderStack[orderStack.length] = _qText;
     }
-    _startBackgroundtimer(duration, pos);
+    startBackgroundtimer(duration, pos);
   }
 
-  void  _startBackgroundtimer(int duration, int pos) {
-    _backgroundTimer = Timer(Duration(seconds: duration), () {
+  void  startBackgroundtimer(int duration, int pos) {
+    backgroundTimer = Timer(Duration(seconds: duration), () {
       showDialog(context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Container(child: _orderStack[pos]),
+              content: Container(child: orderStack[pos]),
               actions: <Widget>[
                 new FlatButton(
                   child: new Text('OK'),
