@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'counterBloc.dart';
 
 import 'player.dart';
 import 'question.dart';
@@ -83,6 +86,7 @@ class viewOrder extends StatefulWidget{
 
 class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
+
   // Randomblock
   static Random random = new Random();
   static int randomQuestionID;
@@ -130,21 +134,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   static String scores;
   static int i=0;
 
-  /*final TextStyle maleorderstyle = const TextStyle(
-      fontSize: 24,
-      color: Colors.blue
-  );*/
-
-  /*final TextStyle femaleorderstyle = const TextStyle(
-      fontSize: 24,
-      color: Colors.red
-  );*/
-
-  /*final TextStyle orderstyle = const TextStyle(
-      fontSize: 24,
-      color: Colors.black
-  );*/
-
+  final CounterBloc _counterBloc = CounterBloc();
 
   @override
   void initState() {
@@ -177,38 +167,44 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(
-        child: new Scaffold(
-            body:
-                    new Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        new Expanded(
+          return BlocProvider(
+            bloc: _counterBloc,
+            child: new WillPopScope(
+          child: new Scaffold(
+          body: BlocBuilder(bloc: _counterBloc,
+              builder: (context, int count) {
+                return new Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      new Expanded(
                           child: new Center(
-                            child: firstRow
+                              child: firstRow
                           ),
                           flex: 310
-                        ),
-                        new Expanded(
+                      ),
+                      new Expanded(
                           child: new Center(
-                            child: secondRow
+                              child: secondRow
                           ),
                           flex: 310
-                        ),
-                        new Expanded(
+                      ),
+                      new Expanded(
                           child: thirdRow,
                           flex: 310
-                        ),
-                        new Expanded(
+                      ),
+                      new Expanded(
                           child: fourthRow,
                           flex: 70
-                        )
-                      ]
-                  ),
-        ),
-        onWillPop: () async => false
-    );
+                      ),
+                      //new Expanded(child: Text(count.toString()), flex: 70),
+                    ]
+                );
+              })
+    ),
+    onWillPop: () async => false
+    ));
   }
+
 
   void buildorder() {
     //Questionblock
@@ -352,270 +348,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       buildorder();
     }
   }
-
-  /* Widget buildfirstRow(player firstPlayer, player secondPlayer) {
-    if (finalQuestion.type_id==4) {
-      return new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-              child: RichText(
-                  text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: finalFirstPlayer.name,
-                          style: finalFirstPlayer.sex== 'm'
-                            ? _maletitlestyle
-                            : _femaletitlestyle
-                        ),
-                        TextSpan(
-                        text: " " + finalFirstPlayer.icon,
-                          style: TextStyle(
-                            fontSize: 36
-                          )
-                        ),
-                        TextSpan(
-                          text: ' fängt an:',
-                          style: TextStyle(
-                            fontSize: 36,
-                            color: Colors.green
-                          )
-                        )
-                      ]
-                  )
-              )
-          )
-        ],
-      );
-    }
-    if (finalQuestion.type_id==5) {
-      return new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-              child: RichText(
-                  text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: 'Allesamt:',
-                            style: TextStyle(
-                                fontSize: 36,
-                                color: Colors.green
-                            )
-                        )
-                      ]
-                  )
-              )
-          )
-        ],
-      );
-    }
-    if (finalQuestion.type_id==6) {
-      return new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          new Center(
-              child: new Container(
-                child: new RichText(
-                    text: new TextSpan(
-                        children: <TextSpan>[
-                          new TextSpan(
-                            text: 'Abstimmen, Verlierer trinken:',
-                            style: TextStyle(
-                                fontSize: 36,
-                                color: Colors.green,
-                            ),
-                          ),
-                        ]
-                    ),
-                  textAlign: TextAlign.center,
-                ),
-                width: MediaQuery.of(context).size.width*0.75,
-              )
-          )
-        ],
-      );
-    }
-   else {
-     if (secondPlayer == null) {
-       return new Row(
-           mainAxisAlignment: MainAxisAlignment.center,
-           children: [
-             /*new Expanded(
-                 child: new Text(
-                     firstPlayer.points.toString(),
-                     textAlign: TextAlign.center,
-                     style: TextStyle(
-                         fontSize: 36
-                     )
-                 ),
-                 flex: 1
-             ),*/
-             new Expanded(
-                  child: new RichText(
-                      text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: firstPlayer.name,
-                              style: firstPlayer.sex == 'm'
-                                  ? _maletitlestyle
-                                  : _femaletitlestyle,
-                            ),
-                            TextSpan(
-                                text: " " + finalFirstPlayer.icon,
-                                style: TextStyle(
-                                    fontSize: 36
-                                )
-                            ),
-                          ]
-                      ),
-                    textAlign: TextAlign.center,
-                  ),
-             ),
-           ]
-       );
-     }
-     else {
-       return new Row(
-           mainAxisAlignment: MainAxisAlignment.center,
-           children: [
-             /*new Expanded(
-                 child: new Text(
-                     firstPlayer.points.toString(),
-                     textAlign: TextAlign.center,
-                     style: TextStyle(
-                         fontSize:36
-                     )
-                 ),
-                 flex: 1
-             ),*/
-             new Expanded(
-                 child: new RichText(
-                   text: TextSpan(
-                       children: <TextSpan>[
-                         TextSpan(
-                             text: finalFirstPlayer.name,
-                             style: finalFirstPlayer.sex == 'm'
-                                 ? _maletitlestyle
-                                 : _femaletitlestyle
-                         ),
-                         TextSpan(
-                             text: " " + finalFirstPlayer.icon,
-                             style: TextStyle(
-                                 fontSize: 36
-                             )
-                         ),
-                         TextSpan(
-                             text: '\n&\n',
-                             style: TextStyle(
-                                 fontSize: 36,
-                                 color: Colors.black
-                             )
-                         ),
-                         TextSpan(
-                             text: finalSecondPlayer.name,
-                             style: finalSecondPlayer.sex == 'm'
-                                 ? _maletitlestyle
-                                 : _femaletitlestyle
-                         ),
-                         TextSpan(
-                             text: " " + finalSecondPlayer.icon,
-                             style: TextStyle(
-                                 fontSize: 36
-                             )
-                         ),
-                       ]
-                   ),
-                   textAlign: TextAlign.center,
-                 ),
-                 flex: 1
-             ),
-             /*new Expanded(
-                 child: new Text(
-                     secondPlayer.points.toString(),
-                     textAlign: TextAlign.center,
-                     style: TextStyle(
-                         fontSize:36
-                     )
-                 ),
-                 flex: 1
-             )*/
-           ]
-       );
-     }
-   }
-  } */
-
-  /*Widget buildSecondRow(player firstPlayer, player secondPlayer) {
-    List<String> _splitstring;
-    int sipsp1;
-    int sipsp2;
-    if (secondPlayer == null) {
-      if (finalOrderString.contains("\$pointholderone")) {
-        sipsp1 = firstPlayer.points +2;
-        finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholderone"), sipsp1.toString());
-        /*if (sipsp1==1&&finalOrderString.contains("Schlücke")) {
-          finalOrderString = finalOrderString.replaceAll(new RegExp(r"Schlücke"), "Schluck");
-        }*/
-      }
-      return new RichText(
-        text: TextSpan(
-          children: <TextSpan>[
-          TextSpan(
-          text: finalOrderString,
-          style: _orderstyle,
-      )
-    ]
-    ),
-        textAlign: TextAlign.center,
-      );
-    }
-    else {
-      if (finalOrderString.contains("\$pointholderone")) {
-        sipsp1 = firstPlayer.points +2;
-        sipsp2 = secondPlayer.points +2;
-        finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholderone"), sipsp1.toString());
-        finalOrderString = finalOrderString.replaceAll(new RegExp(r"\$pointholdertwo"), sipsp2.toString());
-        /*if (sipsp2==1&&finalOrderString.contains("Schlücke")) {
-          finalOrderString = finalOrderString.replaceAll(new RegExp(r"Schlücke"), "Schluck");
-        }*/
-      }
-      _splitstring = finalOrderString.split("\$placeholder");
-      _splitstring[1].replaceAll("\$placeholder", "");
-      _splitstring[2].replaceAll("\$placeholder", "");
-      return new RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(
-                  text: firstPlayer.name.toString(),
-                  style: firstPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
-              ),
-              TextSpan(
-                  text: _splitstring[0],
-                  style: _orderstyle
-              ),
-              TextSpan(
-                  text: secondPlayer.name.toString(),
-                  style: secondPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
-              ),
-              TextSpan(
-                  text: _splitstring[1],
-                  style: _orderstyle
-              ),
-              TextSpan(
-                  text: secondPlayer.name.toString(),
-                  style: secondPlayer.sex=='m'?_maleorderstyle:_femaleorderstyle
-              ),
-              TextSpan(
-                  text: _splitstring[2],
-                  style: _orderstyle
-              )
-            ],
-          ),
-          textAlign: TextAlign.center,
-        );
-    }
-  }*/
 
   Widget buildThirdRow(question question, player firstPlayer, player secondPlayer) {
     _buildAcceptedbutton();
@@ -809,6 +541,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           onPressed: () {
             foregroundTimer==null?null:foregroundTimer.cancel();
             running=false;
+            _counterBloc.dispatch(CounterEvent.increment);
             buildorder();
             setState(() {});
           },
@@ -822,6 +555,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           onPressed: () {
             foregroundTimer==null?null:foregroundTimer.cancel();
             running=false;
+            _counterBloc.dispatch(CounterEvent.increment);
             finalQuestion.type_id==3?addToStack(finalQuestion.time, finalFirstPlayer, finalQuestion.taskq):null;
             buildorder();
             setState(() {});

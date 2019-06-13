@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math';
 import 'dart:async';
 import 'player.dart';
 import 'question.dart';
 import 'category.dart';
 import 'order.dart';
+import 'counterBloc.dart';
 
 final TextStyle orderstyle = const TextStyle(
     fontSize: 24,
@@ -22,6 +24,7 @@ final TextStyle femaleorderstyle = const TextStyle(
 );
 
 Widget buildSecondRow(firstPlayer, player secondPlayer, String orderString) {
+  RichText secondRow;
   List<String> _splitstring;
   int sipsp1;
   int sipsp2;
@@ -33,14 +36,14 @@ Widget buildSecondRow(firstPlayer, player secondPlayer, String orderString) {
           finalOrderString = finalOrderString.replaceAll(new RegExp(r"Schlücke"), "Schluck");
         }*/
     }
-    return new RichText(
+    secondRow = RichText(
       text: TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-              text: orderString,
-              style: orderstyle,
-            )
-          ]
+        children: <TextSpan>[
+          TextSpan(
+            text: orderString,
+            style: orderstyle
+          ),
+        ],
       ),
       textAlign: TextAlign.center,
     );
@@ -58,7 +61,7 @@ Widget buildSecondRow(firstPlayer, player secondPlayer, String orderString) {
     _splitstring = orderString.split("\$placeholder");
     _splitstring[1].replaceAll("\$placeholder", "");
     _splitstring[2].replaceAll("\$placeholder", "");
-    return new RichText(
+    secondRow = RichText(
       text: TextSpan(
         children: <TextSpan>[
           TextSpan(
@@ -90,4 +93,5 @@ Widget buildSecondRow(firstPlayer, player secondPlayer, String orderString) {
       textAlign: TextAlign.center,
     );
   }
+  return secondRow;
 }
