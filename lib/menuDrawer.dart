@@ -6,6 +6,7 @@ import 'player.dart';
 import 'category.dart';
 import 'extras.dart';
 import 'order.dart';
+import 'testPage.dart';
 
 Widget menuDrawer(BuildContext context){
 
@@ -105,7 +106,19 @@ Widget menuDrawer(BuildContext context){
             });
           }
            },
-         )
+         ),
+            ListTile(
+              title: Text(
+                "Testpage",
+                style: TextStyle(
+                  color: Colors.blue
+                ),
+                textAlign: TextAlign.center,
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => testPage()));
+              }
+            )
         ],
       ),
     )
