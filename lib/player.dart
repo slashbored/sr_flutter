@@ -36,6 +36,12 @@ class player {
     player.playerDatabase[id]=_playerplaceholder;
   }
 
+  static void swapSex(int id) {
+    player _playerplaceholder = player.playerDatabase[id];
+    _playerplaceholder.sex=='f'?_playerplaceholder.sex='m':_playerplaceholder.sex='f';
+    player.playerDatabase[id]=_playerplaceholder;
+  }
+
   static String getPlayerIcon(int id) {
     player _playerplaceholder = player.playerDatabase[id];
     return _playerplaceholder.icon;
@@ -64,17 +70,21 @@ class editPlayersState extends State<editPlayers> {
   List playerlist;
 
   final TextStyle _normalFont = const TextStyle(
-      fontSize: 18.0,
+      fontSize: 12.0,
       color: Colors.black
   );
 
   final TextStyle _normalFontInverted = const TextStyle(
-      fontSize: 18.0,
+      fontSize: 12.0,
       color: Colors.white
   );
 
   Set<String> iconDB = {" ", "🍆", "🍻", "🤤", "💩", "🦄", "🐽", "🤓", "👻", "🍑", "🍌", "🎈", "💯", "🍓", "🔥", "👑", "👀"};
   String dropdownValue;
+  Row inputChipLabel = new Row(
+  );
+
+
 
   @override
   Widget build(BuildContext context)  {
@@ -121,6 +131,18 @@ class editPlayersState extends State<editPlayers> {
               child: _buildgridmid(),
             ),
             flex: 10,
+          ),
+          new Expanded(
+            child: new InputChip(
+              label: Text(
+                "abc"
+              ),
+              avatar: CircleAvatar(
+                child: Text(
+                  "ab"
+                ),
+              ),
+            ),
           )
         ]
       ),
@@ -141,6 +163,8 @@ class editPlayersState extends State<editPlayers> {
       return Center(
         child: Wrap(
           spacing: 10,
+          runSpacing: 10,
+            alignment: WrapAlignment.center,
             children:  List.generate(_playerCounter, (index) {
               return Chip(
                 avatar: CircleAvatar(
@@ -150,18 +174,33 @@ class editPlayersState extends State<editPlayers> {
                   ),
                   backgroundColor: getSexcolor(player.playerIds[index]),
                 ),
-                label: Text(
-                  player.getPlayerName(player.playerIds[index]),
-                  style: _normalFontInverted
+                label: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                        player.getPlayerName(player.playerIds[index]),
+                        style: _normalFontInverted
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.autorenew),
+                      color: Colors.green,
+                      onPressed: () {
+                        setState(() {
+                          player.swapSex(player.playerIds[index]);
+                        });
+                      },
+                    ),
+                  ],
                 ),
                 backgroundColor: getSexcolor(player.playerIds[index]),
                 deleteIconColor: Colors.white,
+                deleteIcon: Icon(Icons.close),
                 onDeleted: () {
                   setState(() {
                     iconDB.add(player.getPlayerIcon(player.playerIds[index]));
                     player.playerDatabase.remove(player.playerIds[index]);
-                  });;
-                },
+                  });
+                }
               );
             }
             )
