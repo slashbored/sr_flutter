@@ -131,18 +131,6 @@ class editPlayersState extends State<editPlayers> {
               child: _buildgridmid(),
             ),
             flex: 10,
-          ),
-          new Expanded(
-            child: new InputChip(
-              label: Text(
-                "abc"
-              ),
-              avatar: CircleAvatar(
-                child: Text(
-                  "ab"
-                ),
-              ),
-            ),
           )
         ]
       ),
@@ -166,8 +154,12 @@ class editPlayersState extends State<editPlayers> {
           runSpacing: 5,
             alignment: WrapAlignment.center,
             children:  List.generate(_playerCounter, (index) {
-              return Chip(
-                padding: EdgeInsets.all(0.0),
+              return InputChip(
+                onPressed: () {
+                  setState(() {
+                    player.swapSex(player.playerIds[index]);
+                  });
+                },
                 avatar: CircleAvatar(
                   child: Text(
                     player.getPlayerIcon(player.playerIds[index]),
@@ -176,20 +168,12 @@ class editPlayersState extends State<editPlayers> {
                   backgroundColor: getSexcolor(player.playerIds[index]),
                 ),
                 label: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Text(
-                        player.getPlayerName(player.playerIds[index]),
-                        style: _normalFontInverted
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.autorenew),
-                      color: Colors.green,
-                      onPressed: () {
-                        setState(() {
-                          player.swapSex(player.playerIds[index]);
-                        });
-                      },
+                    new Text(
+                      player.getPlayerName(player.playerIds[index]),
+                      style: _normalFontInverted,
                     ),
                   ],
                 ),
@@ -207,68 +191,6 @@ class editPlayersState extends State<editPlayers> {
             )
         ),
       );
-      /*return new GridView.count(
-        crossAxisCount: 3,
-        children: List.generate(_playerCounter, (index) {
-          return GridTile(
-            child: new Card(
-              child: new Center(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children:[
-                    new Expanded(
-                      child: new Container(
-                        child: null
-                      ),
-                      flex: 1
-                    ),
-                    new Expanded(
-                      child: new Center(
-                        child: new Text(
-                          player.getPlayerName(player.playerIds[index]) + " " + player.getPlayerIcon(player.playerIds[index]),
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: (player.getPlayerSex(player.playerIds[index]).toString()=='m')?Colors.blue:Colors.red
-                          )
-                        )
-                      ),
-                      flex: 1
-                    ),
-                    new Expanded(
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>  [
-                          new IconButton(
-                            icon: Icon(Icons.repeat),
-                            color: Colors.green,
-                            onPressed: (){
-                              setState((){
-                                if (player.getPlayerSex(player.playerIds[index]).toString()=='m') {
-                                  player.setPlayerSex(player.playerIds[index], 'f');
-                                }
-                                else  {
-                                  player.setPlayerSex(player.playerIds[index], 'm');
-                                }
-                              });
-                            }
-                          ),
-                          new IconButton(icon: Icon(Icons.clear), onPressed: (){
-                            iconDB.add(player.getPlayerIcon(player.playerIds[index]));
-                            player.playerDatabase.remove(player.playerIds[index]);
-                            setState((){});
-                            }
-                          )
-                        ]
-                      ),
-                      flex: 1
-                    )
-                  ]
-                )
-              )
-            )
-          );
-        })
-      )*/
       }
     else  {
       return new Center(
