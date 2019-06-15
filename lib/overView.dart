@@ -1,150 +1,137 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:async';
+import 'menuDrawer.dart';
+import 'overViewOld.dart';
 import 'player.dart';
 import 'category.dart';
-import 'menuDrawer.dart';
+import 'extras.dart';
+import 'order.dart';
 
-class viewOverview extends StatefulWidget{
+class viewOverview extends StatefulWidget {
   @override
-  viewOverviewState createState() => new viewOverviewState();
+  State<StatefulWidget> createState() {
+    return viewOverviewState();
+  }
 }
 
-class viewOverviewState extends State<viewOverview>{
+class viewOverviewState extends State<viewOverview> {
 
-  static IconButton playerIcon;
-  static IconButton categoryIcon;
+  int bottomSelectedIndex = 0;
 
+  TextStyle _normalStyleInverted = TextStyle(
+    color: Colors.white,
+    fontSize: 10
+  );
 
-
-  @override
-  void initState() {
-    super.initState();
-
+  void pageChanged(int index)  {
     setState(() {
+      bottomSelectedIndex = index;
     });
   }
 
-  Future<bool> onWillPop() {
-    return showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text('Tschüsschen?',
-          textAlign: TextAlign.center,),
-        content: new Text('Willst du die App wirklich beenden?',
-          textAlign: TextAlign.center,),
-        actions: <Widget>[
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children:[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: new Text('Ja'),
-              ),
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('Nein'),
-              ),
-            ]
-          )
-
-        ],
-      ),
-    ) ?? false;
+  void bottomTapped(int index) {
+    setState(() {
+      bottomSelectedIndex = index;
+      pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+    });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _getIcons();
-    return new WillPopScope(onWillPop: onWillPop,
-      child: new Scaffold(
-        appBar: new AppBar(
-          //automaticallyImplyLeading: false,
-          title: Text('Übersicht'),
-          centerTitle: true,
-        ),
-        drawer: menuDrawer(context),
-        body: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      new Spacer(
-                        flex: 125
-                      ),
-                      new Expanded(
-                          child: new Text('Kategorienanzahl: ' + category.cic.toString(),
-                              style: TextStyle(
-                                  fontSize: 36,
-                              ),
-                            textAlign: TextAlign.center,
-                      ),
-                      flex: 750
-                      ),
-                      new Expanded(
-                        child: categoryIcon,
-                        flex: 125
-                      )
-                    ]
-                ),
-                new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    new Spacer(flex: 125
-                    ),
-                      new Expanded(
-                        child: new Text('Spieleranzahl: ' + player.playerDatabase.length.toString(),
-                          style: TextStyle(
-                            fontSize: 36,
-                          ),
-                        textAlign: TextAlign.center,
-                        ),
-                      flex: 750
-          ),
-          new Expanded(
-              child: playerIcon,
-              flex: 125
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true
+  );
 
-          )
-                    ]
-                )
-              ]
-          )
-        )
+  Widget buildPage() {
+    return PageView(
+      controller: pageController,
+      onPageChanged: (index) {
+        pageChanged (index);
+      },
+      children: <Widget>[
+        editPlayers(),
+        editCategories(),
+        editExtras(),
+        viewOverviewOld()
+      ],
     );
   }
 
-  void _getIcons(){
-    if(player.playerDatabase.length<3){
-      playerIcon = IconButton(
-          icon: Icon(Icons.close),
-          color: Colors.red,
-          disabledColor: Colors.red,
-          onPressed: null);
-    }
-    else{
-      playerIcon = IconButton(
-          icon: Icon(Icons.check),
-          color: Colors.green,
-          disabledColor: Colors.green,
-          onPressed: null);
-    }
-    if(category.cic<3){
-      categoryIcon = IconButton(
-          icon: Icon(Icons.close),
-          color: Colors.red,
-          disabledColor: Colors.red,
-          onPressed: null);
-    }
-    else{
-      categoryIcon = IconButton(
-          icon: Icon(Icons.check),
-          color: Colors.green,
-          disabledColor: Colors.green,
-          onPressed: null);
-    }
+
+  @override
+  Widget build(BuildContext context)  {
+    return Scaffold(
+      /*appBar: AppBar(
+        title: Text(
+          "Testpage"
+        )
+      ),*/
+      //drawer: menuDrawer(context),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: bottomSelectedIndex,
+        onTap: (index)  {
+          bottomTapped(index);
+        },
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: new Icon(
+              Icons.person,
+            ),
+            activeIcon: new Icon(
+              Icons.person,
+              color: Colors.green,
+            ),
+            title: new Text(
+              "Spieler",
+              style: _normalStyleInverted,
+            ),
+            backgroundColor: Colors.black
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(
+              Icons.clear_all),
+            activeIcon: new Icon(
+              Icons.clear_all,
+              color: Colors.blue,
+            ),
+            title: new Text(
+              "Kategorien",
+              style: _normalStyleInverted,
+            ),
+            backgroundColor: Colors.black
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(
+              Icons.star,
+            ),
+            activeIcon: new Icon(
+              Icons.star,
+              color: Colors.yellow,
+            ),
+            title: new Text(
+              "Extras",
+              style: _normalStyleInverted,
+            ),
+            backgroundColor: Colors.black
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(
+              Icons.arrow_forward_ios,
+            ),
+            activeIcon: new Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.red,
+            ),
+            title: new Text(
+              "Feuer!",
+              style: _normalStyleInverted,
+            ),
+            backgroundColor: Colors.black
+          )
+        ],
+        showUnselectedLabels: true,
+        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.black,
+      ),
+      body: buildPage(),
+    );
   }
-
-
 }

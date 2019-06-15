@@ -17,7 +17,7 @@ class editExtrasState extends State<editExtras>{
         title: Text('Extras'),
         centerTitle: true,
       ),
-      drawer: menuDrawer(context),
+      //drawer: menuDrawer(context),
       body: new Center(
         child: new FractionallySizedBox(
           alignment: Alignment.center,

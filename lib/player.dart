@@ -77,9 +77,7 @@ class editPlayersState extends State<editPlayers> {
         ),
         centerTitle: true,
       ),
-      drawer: menuDrawer(
-        context
-      ),
+      //drawer: menuDrawer(context),
       body: new Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

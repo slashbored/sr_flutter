@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'overView.dart';
+import 'overViewOld.dart';
 
 class viewDisclaimer extends StatefulWidget{
   @override
@@ -71,7 +71,7 @@ class viewDisclaimerState extends State<viewDisclaimer>{
   Widget _closeButton(){
     return new IconButton(icon: Icon(Icons.clear),
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => viewOverview()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => viewOverviewOld()));
       }
     );
   }

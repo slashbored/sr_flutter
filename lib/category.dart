@@ -78,23 +78,32 @@ class editCategories extends StatefulWidget{
 class editCategoriesState extends State<editCategories>{
 
   static String amountIndicator;
+  static String placeholderle;
+  double sliderValue = 0;
+  var sliderValues = {};
 
   @override
   Widget build(BuildContext context) {
     if (category.ranOnce!=true){
       for(category _categoryplaceholder in category.categoryDatabase.values){
-        category.cbAllowed[_categoryplaceholder.id] = false;
+        category.cbAllowed[_categoryplaceholder.id-1] = false;
+        sliderValues[_categoryplaceholder.id-1] = 0.toDouble();
       }
+      category.ranOnce=true;
       //category.grpallowed=false;
     }
-    category.ranOnce=true;
+    else  {
+      for(category _categoryplaceholder in category.categoryDatabase.values)  {
+       sliderValues[_categoryplaceholder.id-1] = category.getCategoryAllowedAmount(_categoryplaceholder.id).toDouble();
+      }
+    }
 
     return new Scaffold(
       appBar: new AppBar(
         title: Text('Kategorien bearbeiten'),
         centerTitle: true,
       ),
-      drawer: menuDrawer(context),
+      //drawer: menuDrawer(context),
       body: Center(
           child:new FractionallySizedBox(
             alignment: Alignment.center,
@@ -106,9 +115,70 @@ class editCategoriesState extends State<editCategories>{
                     children: <Widget>[
                       ListView.builder(itemCount: category.categoryDatabase.length,
                         itemBuilder: (BuildContext context, int index){
-                          return new ListTile(
+                        placeholderle = category.getCatergoryTitle_german(index+1);
+                          return new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              new Column(
+                                //mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  new Text(
+                                      placeholderle
+                                  ),
+                                  new Slider(
+                                      min: 0,
+                                      max: 3,
+                                      value: sliderValues[index],
+                                      divisions: 3,
+                                      onChanged: (double newvalue)  {
+                                        setState(() {
+                                          sliderValues[index] = newvalue;
+                                          if  (index!=6)  {
+                                            category.setCategoryAllowedAmount(index+1, sliderValues[index].toInt());
+                                            if  (category.getCategoryAllowedAmount(index+1)==0)  {
+                                              category.cbAllowed[index] = false;
+                                            }
+                                            if  (category.getCategoryAllowedAmount(index+1)>0)  {
+                                              category.cbAllowed[index] = true;
+                                            }
+                                          }
+                                          else  {
+                                            sliderValues[index] = 0.toDouble();
+                                          }
+                                          category.cic=0;
+                                          for (bool allowed in category.cbAllowed.values)  {
+                                            allowed?category.cic++:null;
+                                          }
+                                        });
+                                      },
+                                  label: getAmountIndicator(sliderValues [index].toInt()),)
+                                ],
+                              )
+                            ],
+                          )
+                          /*ListTile(
                               title: new Text(category.getCatergoryTitle_german(index+1)),
-                              trailing: new Row(
+                              trailing: new Slider(
+                                    min: 0,
+                                    max: 3,
+                                    value: sliderValues[index],
+                                    divisions: 3,
+                                    onChanged: (double newvalue)  {
+                                      setState(() {
+                                        sliderValues[index] = newvalue;
+                                        if  (index!=6)  {
+                                          category.setCategoryAllowedAmount(index+1, sliderValues[index].toInt());
+                                          if  (category.getCategoryAllowedAmount(index+1)==0)  {
+                                            category.cbAllowed[index] = false;
+                                          }
+                                          if  (category.getCategoryAllowedAmount(index+1)>0)  {
+                                            category.cbAllowed[index] = true;
+                                          }
+                                        }
+                                      });
+                                    }),
+
+                            /*new Row(
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.remove_circle),
@@ -152,17 +222,30 @@ class editCategoriesState extends State<editCategories>{
                                       }
                                   )],
                                 mainAxisSize: MainAxisSize.min,
-                              )
-                          );
+                              )*/
+                          )*/;
                         },
                         shrinkWrap: true,
                       )
                     ],
                   )
                   ),
-                  new Container(
+                  /*new Container(
                     child: new Text('Erklärung:\n😑 = ausgeschaltet, 😊 = normale Häufigkeit,\n😳 = doppelte Häufigkeit, 😱 = dreifache Häufigkeit', textAlign: TextAlign.center,)
-                  )
+                  ),
+                  new Slider(
+                    min: 0,
+                    max: 3,
+                    value: sliderValue,
+                    divisions: 3,
+                    onChanged: (double newvalue)  {
+                      setState(() {
+                        sliderValue = newvalue;
+                        placeholderle = newvalue.toString();
+                      });
+                    }
+                  ),
+                  new Text(getAmountIndicator(sliderValue.toInt()))*/
                 ],
               )
       )
@@ -173,16 +256,16 @@ class editCategoriesState extends State<editCategories>{
   String getAmountIndicator(int Amount) {
     switch  (Amount)  {
       case 0: {
-        return '😑';
+        return 'deaktiviert';
       }
       case 1: {
-        return '😊';
+        return 'normal';
       }
       case 2: {
-        return '😳';
+        return 'häufig';
       }
       case 3: {
-        return '😱';
+        return 'sehr häufig';
       }
     }
   }

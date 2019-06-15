@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'overView.dart';
+import 'overViewOld.dart';
 import 'player.dart';
 import 'category.dart';
 import 'extras.dart';
 import 'order.dart';
-import 'testPage.dart';
+import 'overView.dart';
 
 Widget menuDrawer(BuildContext context){
 
@@ -40,7 +40,7 @@ Widget menuDrawer(BuildContext context){
                textAlign: TextAlign.center
            ),
            onTap: () {
-             Navigator.push(context, MaterialPageRoute(builder: (context) => viewOverview()));
+             Navigator.push(context, MaterialPageRoute(builder: (context) => viewOverviewOld()));
            },
          ),
           ListTile(
@@ -116,7 +116,7 @@ Widget menuDrawer(BuildContext context){
                 textAlign: TextAlign.center,
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => testPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => viewOverview()));
               }
             )
         ],
