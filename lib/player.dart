@@ -70,12 +70,12 @@ class editPlayersState extends State<editPlayers> {
   List playerlist;
 
   final TextStyle _normalFont = const TextStyle(
-      fontSize: 15.0,
+      fontSize: 12.0,
       color: Colors.black
   );
 
   final TextStyle _normalFontInverted = const TextStyle(
-      fontSize: 15.0,
+      fontSize: 12.0,
       color: Colors.white
   );
 
@@ -166,42 +166,42 @@ class editPlayersState extends State<editPlayers> {
           runSpacing: 5,
             alignment: WrapAlignment.center,
             children:  List.generate(_playerCounter, (index) {
-              return Transform.scale(scale: 0.75,child: Chip(
-                  avatar: CircleAvatar(
-                    child: Text(
-                      player.getPlayerIcon(player.playerIds[index]),
-                      style: _normalFontInverted,
-                    ),
-                    backgroundColor: getSexcolor(player.playerIds[index]),
-                  ),
-                  label: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                          player.getPlayerName(player.playerIds[index]),
-                          style: _normalFontInverted
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.autorenew),
-                        color: Colors.green,
-                        onPressed: () {
-                          setState(() {
-                            player.swapSex(player.playerIds[index]);
-                          });
-                        },
-                      ),
-                    ],
+              return Chip(
+                avatar: CircleAvatar(
+                  child: Text(
+                    player.getPlayerIcon(player.playerIds[index]),
+                    style: _normalFontInverted,
                   ),
                   backgroundColor: getSexcolor(player.playerIds[index]),
-                  deleteIconColor: Colors.white,
-                  deleteIcon: Icon(Icons.close),
-                  onDeleted: () {
-                    setState(() {
-                      iconDB.add(player.getPlayerIcon(player.playerIds[index]));
-                      player.playerDatabase.remove(player.playerIds[index]);
-                    });
-                  }
-              ),);
+                ),
+                label: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                        player.getPlayerName(player.playerIds[index]),
+                        style: _normalFontInverted
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.autorenew),
+                      color: Colors.green,
+                      onPressed: () {
+                        setState(() {
+                          player.swapSex(player.playerIds[index]);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                backgroundColor: getSexcolor(player.playerIds[index]),
+                deleteIconColor: Colors.white,
+                deleteIcon: Icon(Icons.close),
+                onDeleted: () {
+                  setState(() {
+                    iconDB.add(player.getPlayerIcon(player.playerIds[index]));
+                    player.playerDatabase.remove(player.playerIds[index]);
+                  });
+                }
+              );
             }
             )
         ),
