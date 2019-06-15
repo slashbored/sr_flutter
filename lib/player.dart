@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'menuDrawer.dart';
+import 'pickEmojiDialog.dart';
 
 class player {
   int id;
@@ -10,6 +11,8 @@ class player {
   int points;
   static int pic = 0;
   static var playerDatabase = {};
+  static Set<String> iconDB = {"🍆", "🍻", "🤤", "💩", "🦄", "🐽", "🤓", "👻", "🍑", "🍌", "🎈", "💯", "🍓", "🔥", "👑", "👀"};
+  static String selectedIcon="";
   static List playerIds = new List();
 
   player(this.id, this.name, this.sex, this.icon, this.points);
@@ -151,7 +154,7 @@ class editPlayersState extends State<editPlayers> {
       return Center(
         child: Wrap(
           spacing: 5,
-          runSpacing: 5,
+          runSpacing: 0,
             alignment: WrapAlignment.center,
             children:  List.generate(_playerCounter, (index) {
               return InputChip(
@@ -179,16 +182,16 @@ class editPlayersState extends State<editPlayers> {
                 ),
                 backgroundColor: getSexcolor(player.playerIds[index]),
                 deleteIconColor: Colors.white,
+
                 deleteIcon: Icon(Icons.close),
                 onDeleted: () {
                   setState(() {
-                    iconDB.add(player.getPlayerIcon(player.playerIds[index]));
+                    player.iconDB.add(player.getPlayerIcon(player.playerIds[index]));
                     player.playerDatabase.remove(player.playerIds[index]);
                   });
                 }
               );
-            }
-            )
+            })
         ),
       );
       }
@@ -219,7 +222,38 @@ class editPlayersState extends State<editPlayers> {
   }
 
   Widget _iconbuttonicon()  {
-    return new DropdownButton<String>(
+    String tempIcon;
+    player.selectedIcon==""?tempIcon="😑":tempIcon=player.selectedIcon;
+    return IconButton(
+      icon: Text(
+        tempIcon
+      ),
+      onPressed: () {
+        showDialog(context: context, builder: (BuildContext context) => SimpleDialog(
+          children: <Widget>[
+            Wrap(
+                alignment: WrapAlignment.center,
+                children:
+                List.generate(player.iconDB.length, (index) {
+                  String emojiplaceholder = player.iconDB.elementAt(index);
+                  return IconButton(
+                    icon: Text(
+                        player.iconDB.elementAt(index)),
+                    onPressed: () {
+                      setState(() {
+                        player.selectedIcon = player.iconDB.elementAt(index);
+                        player.iconDB.remove(player.selectedIcon);
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  );
+                })
+            )
+          ],
+        ));
+      },
+    );
+    /*return new DropdownButton<String>(
         value: dropdownValue,
         onChanged: (String newValue) {
       setState(() {
@@ -232,7 +266,7 @@ class editPlayersState extends State<editPlayers> {
     value: value,
     child: Text(value),
     );
-    }).toList());
+    }).toList());*/
   }
 
   Widget _iconbuttonmale()  {
@@ -242,14 +276,15 @@ class editPlayersState extends State<editPlayers> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed:  ()  {
-        if  (txtplayername!=''&&txtplayername!=null&&txtplayername!='null'&&dropdownValue!=" ") {
-          player.addPlayer(txtplayername, "m", dropdownValue, 0);
+        if  (txtplayername!=''&&txtplayername!=null&&txtplayername!='null'&&player.selectedIcon!="") {
+          player.addPlayer(txtplayername, "m", player.selectedIcon, 0);
           _buildgridmid();
           _txtaddPlayersController.clear();
           txtplayername = '';
           setState((){
-            iconDB.remove(dropdownValue);
-            dropdownValue=" ";
+            iconDB.remove(player.selectedIcon);
+            player.selectedIcon="";
+            //dropdownValue=" ";
           });
         }
       },
@@ -263,14 +298,15 @@ class editPlayersState extends State<editPlayers> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onPressed: () {
-        if  (txtplayername!=''&&txtplayername!=null&&txtplayername!='null'&&dropdownValue!=" ") {
-          player.addPlayer(txtplayername, "f", dropdownValue, 0);
+        if  (txtplayername!=''&&txtplayername!=null&&txtplayername!='null'&&player.selectedIcon!="") {
+          player.addPlayer(txtplayername, "f", player.selectedIcon, 0);
           _buildgridmid();
           _txtaddPlayersController.clear();
           txtplayername = '';
           setState((){
-            iconDB.remove(dropdownValue);
-            dropdownValue=" ";
+            iconDB.remove(player.selectedIcon);
+            player.selectedIcon="";
+            //dropdownValue=" ";
           });
         }
       },
