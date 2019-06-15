@@ -62,9 +62,17 @@ class editPlayersState extends State<editPlayers> {
   final _txtaddPlayersController = new TextEditingController();
   String txtplayername;
   List playerlist;
+
   final TextStyle _normalFont = const TextStyle(
-      fontSize: 18.0, color: Colors.black
+      fontSize: 18.0,
+      color: Colors.black
   );
+
+  final TextStyle _normalFontInverted = const TextStyle(
+      fontSize: 18.0,
+      color: Colors.white
+  );
+
   Set<String> iconDB = {" ", "🍆", "🍻", "🤤", "💩", "🦄", "🐽", "🤓", "👻", "🍑", "🍌", "🎈", "💯", "🍓", "🔥", "👑", "👀"};
   String dropdownValue;
 
@@ -113,7 +121,7 @@ class editPlayersState extends State<editPlayers> {
               child: _buildgridmid(),
             ),
             flex: 10,
-          ),
+          )
         ]
       ),
       resizeToAvoidBottomPadding: false,
@@ -130,7 +138,36 @@ class editPlayersState extends State<editPlayers> {
         player.playerIds.add(_playerplaceholder.id);
         _playerCounter++;
       }
-      return new GridView.count(
+      return Center(
+        child: Wrap(
+          spacing: 10,
+            children:  List.generate(_playerCounter, (index) {
+              return Chip(
+                avatar: CircleAvatar(
+                  child: Text(
+                    player.getPlayerIcon(player.playerIds[index]),
+                    style: _normalFontInverted,
+                  ),
+                  backgroundColor: getSexcolor(player.playerIds[index]),
+                ),
+                label: Text(
+                  player.getPlayerName(player.playerIds[index]),
+                  style: _normalFontInverted
+                ),
+                backgroundColor: getSexcolor(player.playerIds[index]),
+                deleteIconColor: Colors.white,
+                onDeleted: () {
+                  setState(() {
+                    iconDB.add(player.getPlayerIcon(player.playerIds[index]));
+                    player.playerDatabase.remove(player.playerIds[index]);
+                  });;
+                },
+              );
+            }
+            )
+        ),
+      );
+      /*return new GridView.count(
         crossAxisCount: 3,
         children: List.generate(_playerCounter, (index) {
           return GridTile(
@@ -191,8 +228,8 @@ class editPlayersState extends State<editPlayers> {
             )
           );
         })
-      );
-    }
+      )*/
+      }
     else  {
       return new Center(
         child:
@@ -278,4 +315,16 @@ class editPlayersState extends State<editPlayers> {
     );
   }
 
+  TextStyle getTextstyle(int id)  {
+    TextStyle styleplaceholder =   TextStyle(
+      fontSize: 18.0,
+      color: getSexcolor(id)
+    );
+    return styleplaceholder;
+  }
+
+  Color getSexcolor(int id) {
+    Color colorplaceholder = player.getPlayerSex(id)=="f"?Colors.red:Colors.blue;
+    return colorplaceholder;
+  }
 }
