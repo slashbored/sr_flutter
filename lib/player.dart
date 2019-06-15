@@ -167,6 +167,7 @@ class editPlayersState extends State<editPlayers> {
             alignment: WrapAlignment.center,
             children:  List.generate(_playerCounter, (index) {
               return Chip(
+                padding: EdgeInsets.all(0.0),
                 avatar: CircleAvatar(
                   child: Text(
                     player.getPlayerIcon(player.playerIds[index]),
