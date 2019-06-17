@@ -13,10 +13,10 @@ class editExtrasState extends State<editExtras>{
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
+      /*appBar: new AppBar(
         title: Text('Extras'),
         centerTitle: true,
-      ),
+      ),*/
       //drawer: menuDrawer(context),
       body: new Center(
         child: new FractionallySizedBox(
@@ -46,6 +46,32 @@ class editExtrasState extends State<editExtras>{
                       });
                     },
                     value: category.ownallowed
+                ),
+                IconButton(
+                  icon: Icon(Icons.info_outline),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Lizenzinfo"),
+                          content: Text(
+                            "Die Kategorieicons sind alle auf iconfinder.com gefunden worden\n"
+                            "Bis auf das Zelticon sind alle vom Benutzer \" Alpár-Etele Méder\" (thoseicons.com) und unterstehen zum Teil der Creative Commons License 3.0.\n"
+                            "Das Zelticon ist vom Benutzer \"Pondok Multimedia\" (keine Webseite gefunden, ggf. pondokmultimedia.com).\n"
+                            "Alle Icons wurden nicht in ihrem Inhalt modifiziert. Lediglich ihre Größe wurde geändert.",
+                          textAlign: TextAlign.center
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text("OK"),
+                              onPressed:  () {Navigator.of(context).pop();},
+                            )
+                          ],
+                        );
+                      }
+                    );
+                  },
                 )
               ],
             )
@@ -55,3 +81,4 @@ class editExtrasState extends State<editExtras>{
     );
   }
 }
+

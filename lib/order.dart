@@ -170,34 +170,43 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           return BlocProvider(
             bloc: _counterBloc,
             child: new WillPopScope(
-          child: new Scaffold(
-          body: BlocBuilder(bloc: _counterBloc,
-              builder: (context, int count) {
-                return new Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: new Scaffold(
+                body: BlocBuilder(bloc: _counterBloc,
+                builder: (context, int count) {
+                  return new Stack(
+                    alignment: Alignment.center,
                     children: [
-                      new Expanded(
-                          child: new Center(
-                              child: firstRow
-                          ),
-                          flex: 310
+                      Center(
+                        child: Transform.scale(scale: 0.25,child: Opacity(
+                          opacity: 0.5, child: Image.asset('assets/icons/${finalQuestion.cat_id}.png'),
+                        ),),
                       ),
-                      new Expanded(
-                          child: new Center(
-                              child: secondRow
-                          ),
-                          flex: 310
-                      ),
-                      new Expanded(
-                          child: thirdRow,
-                          flex: 310
-                      ),
-                      new Expanded(
-                          child: fourthRow,
-                          flex: 70
-                      ),
-                      //new Expanded(child: Text(count.toString()), flex: 70),
-                    ]
+                      Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          new Expanded(
+                            child: new Center(
+                                child: firstRow
+                            ),
+                            flex: 310
+                        ),
+                        new Expanded(
+                            child: new Center(
+                                child: secondRow
+                            ),
+                            flex: 310
+                        ),
+                        new Expanded(
+                            child: thirdRow,
+                            flex: 310
+                        ),
+                        new Expanded(
+                            child: fourthRow,
+                            flex: 70
+                        ),
+                        //new Expanded(child: Text(count.toString()), flex: 70),
+                      ]
+                  )],
                 );
               })
     ),
@@ -299,12 +308,11 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
       if (randomSelectorID == 1) {
         while (randomSecondPlayerID == null ||
-            randomSecondPlayerID == randomFirstPlayerID ||
-            randomSecondPlayerID == lastSecondplayerID) {
+          randomSecondPlayerID == randomFirstPlayerID ||
+          randomSecondPlayerID == lastSecondplayerID) {
           randomSecondPlayerID = random.nextInt(player.playerDatabase.length);
         }
-        finalSecondPlayer =
-        player.playerDatabase[player.getPlayerIdFromList(randomSecondPlayerID)];
+        finalSecondPlayer = player.playerDatabase[player.getPlayerIdFromList(randomSecondPlayerID)];
 
       }
       else {

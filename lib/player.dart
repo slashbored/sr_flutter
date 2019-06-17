@@ -92,12 +92,12 @@ class editPlayersState extends State<editPlayers> {
   @override
   Widget build(BuildContext context)  {
     return new Scaffold(
-      appBar: new AppBar(
+      /*appBar: new AppBar(
         title: Text(
             'Spieler bearbeiten'
         ),
         centerTitle: true,
-      ),
+      ),*/
       //drawer: menuDrawer(context),
       body: new Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -9,17 +9,17 @@ import 'order.dart';
 import 'counterBloc.dart';
 
 final TextStyle orderstyle = const TextStyle(
-    fontSize: 24,
+    fontSize: 20,
     color: Colors.black
 );
 
 final TextStyle maleorderstyle = const TextStyle(
-    fontSize: 24,
+    fontSize: 20,
     color: Colors.blue
 );
 
 final TextStyle femaleorderstyle = const TextStyle(
-    fontSize: 24,
+    fontSize: 20,
     color: Colors.red
 );
 
