@@ -60,6 +60,14 @@ class player {
     return _playerplaceholder.id;
   }
 
+  static player getPlayerByIcon(String icon)  {
+    player _returnplayer;
+    for(player _playerplaceholder in player.playerDatabase.values) {
+      _playerplaceholder.icon==icon?_returnplayer=_playerplaceholder:null;
+    }
+    return _returnplayer;
+  }
+
 }
 
 class editPlayers extends StatefulWidget  {

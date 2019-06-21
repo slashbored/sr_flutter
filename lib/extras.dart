@@ -56,7 +56,7 @@ class editExtrasState extends State<editExtras>{
                         return AlertDialog(
                           title: Text("Lizenzinfo"),
                           content: Text(
-                            "Die Kategorieicons sind alle auf iconfinder.com gefunden worden\n"
+                            "Die Kategorieicons sind alle auf iconfinder.com gefunden worden.\n"
                             "Bis auf das Zelticon sind alle vom Benutzer \" Alpár-Etele Méder\" (thoseicons.com) und unterstehen zum Teil der Creative Commons License 3.0.\n"
                             "Das Zelticon ist vom Benutzer \"Pondok Multimedia\" (keine Webseite gefunden, ggf. pondokmultimedia.com).\n"
                             "Alle Icons wurden nicht in ihrem Inhalt modifiziert. Lediglich ihre Größe wurde geändert.",

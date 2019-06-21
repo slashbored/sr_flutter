@@ -89,6 +89,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
 
   // Randomblock
   static Random random = new Random();
+  static String randomFirstPlayerIcon;
+  static String randomSecondPlayerIcon;
   static int randomQuestionID;
   static int randomSelectorID;
   static int randomFirstPlayerID;
@@ -99,6 +101,8 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   static int lastQuestionID;
   static int lastFirstplayerID;
   static int lastSecondplayerID;
+  static String lastFirstPlayerIcon;
+  static String lastSecondPlayerIcon;
   static bool duplicate;
 
   //Buttonblock
@@ -124,6 +128,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
   static player finalSecondPlayer;
   static question finalQuestion;
   static String finalOrderString;
+  static List<String> probabilityDB = [];
 
   //Rowblock
   static Row firstRow;
@@ -153,6 +158,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
           }
         }
       }
+      fillProbDB();
       running = false;
       halted = false;
       buildorder();
@@ -282,7 +288,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         }
       }
       i++;
-      print(_orderplaceholder.questionID.toString() + ', ' + i.toString());
+      //print(_orderplaceholder.questionID.toString() + ', ' + i.toString());
       if  (_orderplaceholder.subtypeID!=1)  {
         if(_orderplaceholder.subtypeID==2)  {
           _orderplaceholder.allowedAmount = 1;
@@ -299,17 +305,18 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       }
 
       //Playerblock
-      randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
-      while (randomFirstPlayerID == lastFirstplayerID) {
-        randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
+      if(_orderplaceholder.typeID!=5&&_orderplaceholder.typeID!=6)  {
+        randomFirstPlayerIcon=probabilityDB[random.nextInt(probabilityDB.length)];
+        fillProbDB();
+        probabilityDB.removeWhere((item) => item==randomFirstPlayerIcon);
+        finalFirstPlayer=player.getPlayerByIcon(randomFirstPlayerIcon);
       }
-      finalFirstPlayer=player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];
-
+      print(probabilityDB);
 
       if (randomSelectorID == 1) {
         while (randomSecondPlayerID == null ||
-          randomSecondPlayerID == randomFirstPlayerID ||
-          randomSecondPlayerID == lastSecondplayerID) {
+            randomSecondPlayerID == finalFirstPlayer.id ||
+            randomSecondPlayerID == lastSecondplayerID) {
           randomSecondPlayerID = random.nextInt(player.playerDatabase.length);
         }
         finalSecondPlayer = player.playerDatabase[player.getPlayerIdFromList(randomSecondPlayerID)];
@@ -318,6 +325,13 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       else {
         finalSecondPlayer = null;
       }
+
+      /*randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
+      while (randomFirstPlayerID == lastFirstplayerID) {
+        randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
+      }
+      finalFirstPlayer=player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];*/
+
 
       //Finalblock
       finalQuestion = question.questionDatabase[(order.getQuestionID(randomQuestionID))];
@@ -720,4 +734,11 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       );
     });
   }
+
+  void fillProbDB() {
+    for(player _playerplaceholder in player.playerDatabase.values)  {
+      probabilityDB.add(_playerplaceholder.icon);
+    }
+  }
+
 }

@@ -100,46 +100,35 @@ class editCategoriesState extends State<editCategories>{
 
     return new Scaffold(
       body: Center(
-          child:new FractionallySizedBox(
-            alignment: Alignment.center,
-            heightFactor: 0.9,
-            widthFactor: 0.75,
-              child: new Column(
-                children: <Widget>[
-                  new Expanded(child: new ListView(
+        child:new ListView(
                     children: <Widget>[
-                      ListView.builder(
-                        itemCount: category.categoryDatabase.length,
-                        itemBuilder: (BuildContext context, int index){
-                        placeholderle = category.getCatergoryTitle_german(index+1);
-                        return  new Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                    ListView.builder(
+                      itemCount: category.categoryDatabase.length,
+                      itemBuilder: (BuildContext context, int index){
+                      placeholderle = category.getCatergoryTitle_german(index+1);
+                      return new Card(
+                        child: new Row(
+                          children: <Widget>[
+                            new Expanded(
+                                child: new CircleAvatar(
+                                  child: Image.asset(
+                                      'assets/icons/${index+1}.png'
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              flex: 1,
+                            ),
+                            new Expanded(
+                              child: new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  new CircleAvatar(
-                                    backgroundColor: Colors.transparent
-                                    ,
-                                    child: Transform.scale(
-                                      scale: 0.75,
-                                      child: Image.asset(
-                                        'assets/icons/${index+1}.png',
-                                      ),
+                                  new Text(
+                                    placeholderle,
+                                    style: TextStyle(
+                                      fontSize: 20
                                     ),
                                   ),
-                                  new Text(
-                                      placeholderle
-                                  )
-                                ],
-                              ),
-                              new Row(
-                                children: <Widget>[
-                                  new Spacer(
-                                    flex: 1,
-                                  ),
-                                  new Expanded(
-                                    child: new Slider(
+                                  new Slider(
                                       min: 0,
                                       max: 3,
                                       value: sliderValues[index],
@@ -166,27 +155,90 @@ class editCategoriesState extends State<editCategories>{
                                         });
                                       },
                                       label: getAmountIndicator(sliderValues [index].toInt())
-                                  ),
-                                  flex: 3,),
-                                  new Spacer(
-                                    flex: 1
                                   )
                                 ],
-                              )
-                            ],
-                          );
-                        },
-                        shrinkWrap: true,
-                      )
-                    ],
-                  )
-                  ),
-                ],
-              )
-      )
+                              ),
+                              flex: 3
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    shrinkWrap: true,
+                    )
+                  ],
+                )
       ),
-      );
+    );
   }
+
+
+  /*
+  new Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                new CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  child: Transform.scale(
+                                    scale: 0.75,
+                                    child: Image.asset(
+                                      'assets/icons/${index+1}.png',
+                                    ),
+                                  ),
+                                ),
+                                new Text(
+                                    placeholderle
+                                )
+                              ],
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                new Spacer(
+                                  flex: 1,
+                                ),
+                                new Expanded(
+                                    child: new Slider(
+                                        min: 0,
+                                        max: 3,
+                                        value: sliderValues[index],
+                                        divisions: 3,
+                                        onChanged: (double newvalue)  {
+                                          setState(() {
+                                            sliderValues[index] = newvalue;
+                                            if  (index!=6)  {
+                                              category.setCategoryAllowedAmount(index+1, sliderValues[index].toInt());
+                                              if  (category.getCategoryAllowedAmount(index+1)==0)  {
+                                                category.cbAllowed[index] = false;
+                                              }
+                                              if  (category.getCategoryAllowedAmount(index+1)>0)  {
+                                                category.cbAllowed[index] = true;
+                                              }
+                                            }
+                                            else  {
+                                              sliderValues[index] = 0.toDouble();
+                                            }
+                                            category.cic=0;
+                                            for (bool allowed in category.cbAllowed.values)  {
+                                              allowed?category.cic++:null;
+                                            }
+                                          });
+                                        },
+                                        label: getAmountIndicator(sliderValues [index].toInt())
+                                    ),
+                                    flex: 3
+                                ),
+                                new Spacer(
+                                    flex: 1
+                                )
+                              ],
+                            )
+                          ],
+                        )
+   */
+
 
   String getAmountIndicator(int Amount) {
     switch  (Amount)  {
