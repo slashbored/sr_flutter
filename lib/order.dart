@@ -326,13 +326,6 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
         finalSecondPlayer = null;
       }
 
-      /*randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
-      while (randomFirstPlayerID == lastFirstplayerID) {
-        randomFirstPlayerID = random.nextInt(player.playerDatabase.length);
-      }
-      finalFirstPlayer=player.playerDatabase[player.getPlayerIdFromList(randomFirstPlayerID)];*/
-
-
       //Finalblock
       finalQuestion = question.questionDatabase[(order.getQuestionID(randomQuestionID))];
       for (combo _comboplaceholder in combo.combohistory.values)  {
