@@ -336,6 +336,7 @@ class viewOrderState extends State<viewOrder> with TickerProviderStateMixin {
       }
       if (duplicate==true)  {
         buildorder();
+        print("dupe");
       }
       else{
         lastFirstplayerID = finalFirstPlayer.id;
